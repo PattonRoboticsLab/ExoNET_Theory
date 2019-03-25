@@ -1,6 +1,6 @@
 % evaluate cost function for desired torques TAUs at positions PHIs
 % ~~ BEGIN PROGRAM: ~~
-
+% Small Edit to See if Git Works
 function cost=cost(p)
 
 global PHIs TAUsDesired TAUs_1
