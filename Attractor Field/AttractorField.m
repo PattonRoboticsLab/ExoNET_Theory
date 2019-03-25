@@ -6,13 +6,13 @@ global F1 TAUs_1
 %% Load Data
 data = load('AttractorFieldData.txt');
 %x01=[.5 -.1];
-x01=[.375 -.125 ];
-x02 = [.3 .05];
+x01=[.3 -.1 ];
+%x02 = [.3 .05];
 x=data(:,1:2);
 
 %% Define Mean and Sigma of Gaussian Distribution
 mu = [0.05 0.05]; % max force at this distance from center
-Sigma = [.1 0; 0 .1]; % variance (sigma) for the Gaussian
+Sigma = [.05 0; 0 .05]; % variance (sigma) for the Gaussian
 
 %% Calculate Multivariate Gaussian
 F = mvnpdf([x(:,1) x(:,2)],mu,Sigma);
