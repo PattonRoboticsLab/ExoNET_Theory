@@ -3,7 +3,7 @@
 % modified from second half of optimizedTorque_mixedDevice by carella
 
 function plotVectField_3(PHIs,Bod,Pos,tau,Colr)
-scaleF =.09;    % graphical scale factor for gforce vectors
+scaleF =1;    % graphical scale factor for gforce vectors
 scaleTau =.002;    % graphical scale factor toque pseudo-vectors
 global F1
 %% euclidian position

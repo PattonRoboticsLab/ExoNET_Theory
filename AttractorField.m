@@ -6,13 +6,13 @@ global F1 TAUs_1
 %% Load Data
 data = load('AttractorFieldData.txt');
 %x01=[.5 -.1];
-x01=[.375 -.125 ];
-x02 = [.3 .05];
+x01=[.3 -.1 ];
+x02 = [.4 .1];
 x=data(:,1:2);
 
 %% Define Mean and Sigma of Gaussian Distribution
 mu = [0.05 0.05]; % max force at this distance from center
-Sigma = [.1 0; 0 .1]; % variance (sigma) for the Gaussian
+Sigma = [1 0; 0 1]; % variance (sigma) for the Gaussian
 
 %% Calculate Multivariate Gaussian
 F = mvnpdf([x(:,1) x(:,2)],mu,Sigma);
@@ -22,10 +22,10 @@ F = mvnpdf([x(:,1) x(:,2)],mu,Sigma);
 F1 = zeros(size(x));
 for i = 1:size(x,1)
     r(i,:) = x01-x(i,:);%x(i,:)-x01;
-    r1(i,:) = x02 - x(i,:);
+    %r1(i,:) = x02 - x(i,:);
     %F = myGaussian(m,s,r);
-    F1(i,1) = F(i).*r(i,1);
-    F1(i,2) = F(i).*r(i,2);
+    F1(i,1) = F(i).*r(i,1)+F(i).*r1(i,1);
+    F1(i,2) = F(i).*r(i,2)+F(i).*r1(i,2);
     %F2(i,1) = F(i).*r(i,1);
     %F2(i,2) = F(i).*r(i,2);
     %F1(i,:) = F1(i,:)./norm(F1(i,:));
@@ -41,7 +41,7 @@ PHIs=inverseKin(x,Bod.L); %
 Pos=forwardKin(PHIs,Bod);   % positions assoc w/ these angle combinations
 
 
-for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L))*F1(i,:)'); end; %  tau=JT*F
+for i=1:size(x,1), TAUs(i,:)=((jacobian(PHIs(i,:),Bod.L))*F1(i,:)'); end; %  tau=JT*F
 
 end
  
