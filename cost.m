@@ -5,6 +5,7 @@ function cost=cost(p)
 
 global PHIs TAUsDesired TAUs_1
 lamda=1e7;
+
 e=TAUs_1-exoNetTorques(p,PHIs); % torques errors
 cost=sum(sum(e.^2));  % Sum of squares of all errors at all positons
 

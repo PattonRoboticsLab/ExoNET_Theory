@@ -43,15 +43,15 @@ setUp % set most variables and plots;
 % drawnow; pause(.1);   % updates display
 % save EAField
 
-%% Attractor Field
-fprintf('\n _____  Attractor field :  _____ \n')
+%% Single Attractor 
+fprintf('\n _____  Single Attractor field :  _____ \n')
 figure(3);
 PHIsWorkspace=PHIs;
-[TAUs,PHIs,Pos]=AttractorField(Bod);           % set torques2cancelGrav
-plotVectField_3(PHIs,Bod,Pos,TAUs,'r');        % plot desired field 
+[TAUs_1,PHIs,Pos]=SingleAttractor(Bod);           % set torques2cancelGrav
+plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
 [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
-figure(2);    subplot(1,2,1);                                  
-plotVectField_3(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
+figure(3);    subplot(1,2,1);                                  
+plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
 plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
 PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
 Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
@@ -59,9 +59,28 @@ TAUs=exoNetTorques(p,PHIs);                         % torques @these points
 plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
 subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
 drawExonets(p,phiPose)                              % exonets as lineSegs
-suptitle('Error Augmenting Field'); 
+suptitle('Single Attractor'); 
 drawnow; pause(.1);   % updates display
-save EAField
+%save Single Attractor
 
+%% Dual Attractor 
+fprintf('\n _____  Dual Attractor field :  _____ \n')
+figure(4);
+PHIsWorkspace=PHIs;
+[TAUs_1,PHIs,Pos]=DualAttractor(Bod);           % set torques2cancelGrav
+plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
+[p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
+figure(4);    subplot(1,2,1);                                  
+plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
+plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
+PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
+Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
+TAUs=exoNetTorques(p,PHIs);                         % torques @these points
+plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
+subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
+drawExonets(p,phiPose)                              % exonets as lineSegs
+suptitle('Dual Attractor'); 
+drawnow; pause(.1);   % updates display
+%save Dual Attractor
 %%
 fprintf(' end MAIN script. \n')
