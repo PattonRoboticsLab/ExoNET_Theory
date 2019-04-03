@@ -3,13 +3,13 @@
 % modified from second half of optimizedTorque_mixedDevice by carella
 
 function plotVectField(PHIs,Bod,Pos,tau,Colr)
-scaleF =1;    % graphical scale factor for gforce vectors
+scaleF =.1;    % graphical scale factor for gforce vectors
 scaleTau =.002;    % graphical scale factor toque pseudo-vectors
 
 %% euclidian position
 subplot(1,2,1); % figure(1);
 for i=1:size(PHIs,1)  % loop ea config
-  eqWrF=(    inv (jacobian(PHIs(i,:),Bod.L)')* -1*tau(i,:)')'; % Force
+  eqWrF=(    inv (jacobian(PHIs(i,:),Bod.L)')*tau(i,:)')'; % Force
   
    simpleArrow(Pos.wr(i,:),Pos.wr(i,:)+scaleF*eqWrF,Colr,.5); hold on
    plot(Pos.wr(i,1),Pos.wr(i,2),'.','Color',Colr); % dot

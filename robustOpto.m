@@ -32,7 +32,7 @@ for i=1:nTries
          p0(i*2-1+2) = r_length(i);
      end
      %p0
-   p0=randn(1,length(p0));                       % PICK RANDOM init
+   %p0=randn(1,length(p0));                       % PICK RANDOM init
   [p,c]=fminsearch('cost',p0);                  % OPTIMIZATION !
   if c<bestCost, 
     fprintf('new c=%g, ',c); bestCost=c; bestP=p% update with better cost 
