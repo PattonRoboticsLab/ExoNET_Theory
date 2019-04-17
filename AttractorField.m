@@ -35,8 +35,12 @@ Sigma = [1 0; 0 1]; % variance (sigma) for the Gaussian
 %% Calculate Multivariate Gaussian
 F = mvnpdf([x(:,1) x(:,2)],mu,Sigma);
 %F = F./norm(F)
-Fx1 = mvnpdf([x1(:,1) x1(:,2)],mu,Sigma);
-Fx2 = mvnpdf([x2(:,1) x2(:,2)],mu,Sigma);
+%Fx1 = mvnpdf([x1(:,1) x1(:,2)],mu,Sigma);
+%Fx2 = mvnpdf([x2(:,1) x2(:,2)],mu,Sigma);
+for i = 1:size(x1,1)
+    Fx1(i) = exp(x1(i,:))/(exp(x1(i,:))+1);
+end
+
 %% Initialize Force Matrix (F1(i,1) = Fx and F1(i,2) = Fy)
 F1 = zeros(size(x));
 F1x1 = zeros(size(x1));
@@ -48,15 +52,15 @@ for i = 1:size(x1,1)
         
 end
 
-F1x2 = zeros(size(x2));
-for i = 1:size(x2,1)
-    r(i,:) = x02-x1(i,:);%x(i,:)-x01;
-    %r1(i,:) = x02 - x(i,:);
-    %F = myGaussian(m,s,r);
-    F1x2(i,1) = Fx2(i).*r(i,1);%+F(i).*r1(i,1);
-    F1x2(i,2) = Fx2(i).*r(i,2);%+F(i).*r1(i,2);
-        
-end
+% F1x2 = zeros(size(x2));
+% for i = 1:size(x2,1)
+%     r(i,:) = x02-x1(i,:);%x(i,:)-x01;
+%     %r1(i,:) = x02 - x(i,:);
+%     %F = myGaussian(m,s,r);
+%     F1x2(i,1) = Fx2(i).*r(i,1);%+F(i).*r1(i,1);
+%     F1x2(i,2) = Fx2(i).*r(i,2);%+F(i).*r1(i,2);
+%         
+% end
 
 %F1 = [F1x1;F1x2];
 F1 = F1x1;

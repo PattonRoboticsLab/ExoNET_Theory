@@ -35,7 +35,7 @@ Bod.L = [.35 .26;];           % segment lengths (humerous, arm)
 Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments 
 
 %% set full span of posture evaluation points (angles)
-nAngles = 7; % # shoulder & elbow angles in a span for evaluation
+nAngles = 5; % # shoulder & elbow angles in a span for evaluation
 phi1=pi/180*linspace(-100,0,nAngles); phi2=pi/180*linspace(25,145,nAngles);  
 PHIs=[];  
 for i=1:length(phi1), % nested 2 loop establishes grid of phi combinations
@@ -58,7 +58,7 @@ plot(Pos.wr(:,1),Pos.wr(:,2),'.','color',.8*[1 1 1]); % plot positions grey
 %% Optimization params:
 options.MaxIter = 1E4;                            % optimization limit
 options.MaxFunEvals = 1E4;                        % optimization limit
-options.nTries = 5
+options.nTries = 10
 p0=.05*(1:(Exo.nParams*Exo.nElements*Exo.nJnts)); % INIT.GUESS (L0,r,theta)
 bestCost=1e7;                                    % init very high 
 

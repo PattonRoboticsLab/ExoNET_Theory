@@ -6,11 +6,11 @@ global F TAUs_1
 %% Initialize Range of Attractor 1
 %x min,max, range
 min_x = .1;
-max_x = .2;
+max_x = .3;
 x1range = min_x:.025:max_x;
 
 %y min,max, range
-min_y =-0.1;
+min_y =-0.3;
 max_y = 0;
 y1range = min_y:.025:max_y;
 
@@ -27,12 +27,12 @@ center1 = [mean(x1range) mean(y1range)];
 %% Initialize Range of Attractor 2
 %x min,max, range
 min_x = .1;
-max_x = .2;
+max_x = .3;
 x2range = min_x:.025:max_x;
 
 %y min,max, range
 min_y =.1;
-max_y = 0.2;
+max_y = 0.25;
 y2range = min_y:.025:max_y;
 
 % All combinations of X and Y in x matrix
@@ -48,25 +48,36 @@ center2 = [mean(x2range) mean(y2range)];
 x = [x1;x2];
 
 %% Define Mean and Sigma of Gaussian Distribution
-mu = [0.05 0.05]; % max force at this distance from center
-Sigma = [1 0; 0 1]; % variance (sigma) for the Gaussian
-
-%% Calculate Multivariate Gaussian
-Fx1 = mvnpdf([x1(:,1) x1(:,2)],mu,Sigma);
-Fx2 = mvnpdf([x2(:,1) x2(:,2)],mu,Sigma);
-%% Initialize Force Matrix (F1(i,1) = Fx and F1(i,2) = Fy)
-F1x1 = zeros(size(x1));
-F1x2 = zeros(size(x2));
 for i = 1:size(x1,1)
-    r(i,:) = center1-x1(i,:);%x(i,:)-x01;
-    F1x1(i,:) = Fx1(i).*r(i,:);       
+    r1(i,:) = center1-x1(i,:);
+    R1(i,:) = 20*norm(r1(i,:));
 end
 for i = 1:size(x2,1)
-    r(i,:) = center2-x2(i,:);
-    F1x2(i,:) = Fx2(i).*r(i,:);      
+    r2(i,:) = center2-x2(i,:);
+    R2(i,:) = 20*norm(r2(i,:));
 end
 
-F = [F1x1;F1x2];
+
+meanR1 = (max(R1)-min(R1))/2;
+meanR2 = (max(R2)-min(R2))/2;
+
+Fx1 = zeros(size(r1));
+Fx2 = zeros(size(r2));
+for i = 1:size(r1,1)
+    F1x1(i) = exp(-1*(R1(i)-meanR1).^2/(2));
+    Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
+end
+
+for i = 1:size(r2,1)
+F1x2(i) = exp(-1*(R2(i)-meanR2).^2/(2));
+    Fx2(i,:) = transpose(F1x2(i).*r2(i,:)');
+end
+
+    
+
+
+%% Initialize Force Matrix (F1(i,1) = Fx and F1(i,2) = Fy)
+F = [Fx1;Fx2];
 
 
 

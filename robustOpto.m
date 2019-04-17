@@ -19,7 +19,7 @@ for i=1:nTries
   r_length_high = 5.1;
   r_length_low = .5;
   % radius range
-  rad_high = .05;
+  rad_high = .1;
   rad_low = .0100;
   
   %13 for 3 elements, 22 for 5 elements, 3 for 1 element

@@ -12,7 +12,7 @@ for i=1:size(PHIs,1)  % loop ea config
   eqWrF=(    inv (jacobian(PHIs(i,:),Bod.L)') * tau(i,:)')'; % Force
   
    simpleArrow(Pos.wr(i,:),Pos.wr(i,:)+scaleF*F(i,:),Colr,.5); hold on
-   plot(Pos.wr(i,1),Pos.wr(i,2),'.','Color',Colr); % dot
+   %plot(Pos.wr(i,1),Pos.wr(i,2),'.','Color',Colr); % dot
 end
 
 %plot(.1-[0 -scaleF*10],Pos.wr(1,2)-[0 0]-.1,Colr); % FOR LEGEND

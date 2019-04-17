@@ -20,7 +20,7 @@ global tension
   
 lVect=[L*cos(phi)   L*sin(phi)    0];     % position vector of endpoint
 rVect=[r*cos(theta) r*sin(theta)  0];     % position vector of rotatorHub
-Tdir=rVect-lVect;                         % vector of tension element
+Tdir=lVect-rVect;%rVect-lVect;                         % vector of tension element
 Tdist=norm(Tdir);                         % magnitude:length, rotator2endpt
 Tdir=Tdir./Tdist;                         % tension direction vector 
 T=tension(L0,Tdist);                      % map stretch2tension 
