@@ -16,6 +16,7 @@
 %
 %% ~~ BEGIN PROGRAM: ~~
 global Exo Bod PHIs TAUsDesired tension 
+put_fig(5,.035,.113,.75,.8); subplot(1,2,1) % clear and set display:
 put_fig(4,.035,.113,.75,.8); subplot(1,2,1) % clear and set display:
 put_fig(3,.035,.113,.75,.8); subplot(1,2,1) % clear and set display:
 put_fig(2,.035,.113,.75,.8); subplot(1,2,1) % clear and set display:
@@ -27,7 +28,7 @@ fprintf('\n  Set marionets...')
 Exo.K=500;          % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow 
-Exo.nElements=1;     % number of stacked elements per joint
+Exo.nElements=3;     % number of stacked elements per joint
 
 %% Bod
 Bod.M = 70;                   % body mass 
@@ -53,12 +54,14 @@ figure(3); drawBody2(phiPose, Bod); % draw at one posture
 plot(Pos.wr(:,1),Pos.wr(:,2),'.','color',.8*[1 1 1]); % plot positions grey
 figure(4); drawBody2(phiPose, Bod); % draw at one posture
 plot(Pos.wr(:,1),Pos.wr(:,2),'.','color',.8*[1 1 1]); % plot positions grey
+figure(5); drawBody2(phiPose, Bod); % draw at one posture
+plot(Pos.wr(:,1),Pos.wr(:,2),'.','color',.8*[1 1 1]); % plot positions grey
 
 
 %% Optimization params:
 options.MaxIter = 1E4;                            % optimization limit
 options.MaxFunEvals = 1E4;                        % optimization limit
-options.nTries = 10
+options.nTries = 5
 p0=.05*(1:(Exo.nParams*Exo.nElements*Exo.nJnts)); % INIT.GUESS (L0,r,theta)
 bestCost=1e7;                                    % init very high 
 

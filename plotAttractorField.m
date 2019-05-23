@@ -3,16 +3,18 @@
 % modified from second half of optimizedTorque_mixedDevice by carella
 
 function plotAttractorField(PHIs,Bod,Pos,tau,Colr)
-scaleF =.1;    % graphical scale factor for gforce vectors
-scaleTau =.002;    % graphical scale factor toque pseudo-vectors
+global TAUs_1
+scaleF =.01;    % graphical scale factor for gforce vectors
+scaleTau =.04;    % graphical scale factor toque pseudo-vectors
 global F
 %% euclidian position
 subplot(1,2,1); % figure(1);
+
 for i=1:size(PHIs,1)  % loop ea config
-  eqWrF=(    inv (jacobian(PHIs(i,:),Bod.L)') * tau(i,:)')'; % Force
+  eqWrF(i,:)=(    inv (jacobian(PHIs(i,:),Bod.L)') * TAUs_1(i,:)')'; % Force
   
    simpleArrow(Pos.wr(i,:),Pos.wr(i,:)+scaleF*F(i,:),Colr,.5); hold on
-   %plot(Pos.wr(i,1),Pos.wr(i,2),'.','Color',Colr); % dot
+  % plot(Pos.wr(i,1),Pos.wr(i,2),'.','Color',Colr); % dot
 end
 
 %plot(.1-[0 -scaleF*10],Pos.wr(1,2)-[0 0]-.1,Colr); % FOR LEGEND
@@ -23,7 +25,7 @@ axis image
 subplot(1,2,2); % figure(2)
 % plot(0,0,'.'); hold on
 for i=1:size(PHIs,1), 
-  simpleArrow(PHIs(i,:),PHIs(i,:)+scaleTau*F(i,:),Colr,1.5); 
+  simpleArrow(PHIs(i,:),PHIs(i,:)+scaleTau*F(i,:),Colr,.5); 
   plot(PHIs(i,1),PHIs(i,2),'.','color',Colr); hold on; % dot
 end
 xlabel('\phi _1'); ylabel('\phi _2'); title('Torques at positions'); 

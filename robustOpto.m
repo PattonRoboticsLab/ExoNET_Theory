@@ -16,17 +16,17 @@ for i=1:nTries
   fprintf('Opt#%d..',i)
   
   % resting length range
-  r_length_high = 5.1;
-  r_length_low = .5;
+  r_length_high = 5.001;
+  r_length_low = 0.1;
   % radius range
   rad_high = .1;
   rad_low = .0100;
   
   %13 for 3 elements, 22 for 5 elements, 3 for 1 element
-     for i = 1:3
-         rad(i) = abs((rad_high-rad_low).*randn(1,1)+rad_low);
-         theta(i) = randn(1,1);
-         r_length(i) = abs((r_length_high - r_length_low).*randn(1,1)+r_length_low);
+     for i = 1:13,
+        rad(i) = abs((rad_high-rad_low).*randn(1,1)+rad_low);
+        theta(i) = randn(1,1);
+        r_length(i) = abs((r_length_high - r_length_low).*randn(1,1)+r_length_low);
          p0(i*2-1+0) = rad(i);
          p0(i*2-1+1) = theta(i);
          p0(i*2-1+2) = r_length(i);
@@ -42,6 +42,7 @@ for i=1:nTries
   %plotVectField(PHIs,Bod,Pos,TAUs,'y');         % plot solution
   %drawnow; pause(.1);                           % update display
 end
+
 [p,c]=fminsearch('cost',bestP);                 % last OPTIMIZATION @ best
 if c<bestCost,
   fprintf('bettr c=%g, ',c); bestCost=c; bestP=p% update with better cost

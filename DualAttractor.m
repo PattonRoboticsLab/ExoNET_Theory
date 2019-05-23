@@ -5,14 +5,14 @@ global F TAUs_1
 
 %% Initialize Range of Attractor 1
 %x min,max, range
-min_x = .1;
-max_x = .3;
-x1range = min_x:.025:max_x;
+min_x = .15;
+max_x = .35;
+x1range = min_x:.05:max_x;
 
 %y min,max, range
-min_y =-0.3;
-max_y = 0;
-y1range = min_y:.025:max_y;
+min_y =-.35;
+max_y = -.15;
+y1range = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
 [X Y ] = meshgrid(x1range,y1range);
@@ -28,12 +28,12 @@ center1 = [mean(x1range) mean(y1range)];
 %x min,max, range
 min_x = .1;
 max_x = .3;
-x2range = min_x:.025:max_x;
+x2range = min_x:.05:max_x;
 
 %y min,max, range
-min_y =.1;
-max_y = 0.25;
-y2range = min_y:.025:max_y;
+min_y =-.1;
+max_y = 0.1;
+y2range = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
 [X2 Y2 ] = meshgrid(x2range,y2range);
@@ -50,30 +50,102 @@ x = [x1;x2];
 %% Define Mean and Sigma of Gaussian Distribution
 for i = 1:size(x1,1)
     r1(i,:) = center1-x1(i,:);
-    R1(i,:) = 20*norm(r1(i,:));
+    R1(i,:) = norm(r1(i,:))
 end
+meanr1 = mean(R1);
+s1 = std(R1);
 for i = 1:size(x2,1)
     r2(i,:) = center2-x2(i,:);
-    R2(i,:) = 20*norm(r2(i,:));
+    R2(i,:) = norm(r2(i,:))
 end
-
+R2
+meanr2 = mean(R2);
+s2 = std(R2);
 
 meanR1 = (max(R1)-min(R1))/2;
 meanR2 = (max(R2)-min(R2))/2;
 
+%% Calculate Sigmoid Function for Both Attractors
+
 Fx1 = zeros(size(r1));
 Fx2 = zeros(size(r2));
 for i = 1:size(r1,1)
-    F1x1(i) = exp(-1*(R1(i)-meanR1).^2/(2));
-    Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
-end
+    %%Calculating Force Using Different Function
+    %Gaussian
+        %F1x1(i,:) = (1/(sqrt(2*pi*s1.^2)))*exp(-(R1(i)-meanr1).^2/(2*s1.^2));
+    %Sigmoid     
+        %F1x1(i) = 1/(1+exp((-(R1(i)-meanr1)/(s1^2*pi^2/3))));
+        %if F1x1(i) > 0.0000001
+        %F1x1(i) = F1x1(i)+1;
+        %else
+        %F1x1(i) = 0;
+        %end
+        
+     %Triangle
+        if R1(i) <= meanr1
+            F1x1(i) = R1(i);
+            
+        else
+            F1x1(i) = 2*meanr1-R1(i);
+        end
+         F1x1(i) = 20*F1x1(i);
+    
+    
+    %
+      
+    
+    
+    
+    Fx1(i,:) =transpose( F1x1(i).*(r1(i,:)./R1(i))');
+    
+         %Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
+     end
+
+
 
 for i = 1:size(r2,1)
-F1x2(i) = exp(-1*(R2(i)-meanR2).^2/(2));
-    Fx2(i,:) = transpose(F1x2(i).*r2(i,:)');
+   %%Calculating Force Using Different Function
+    %Gaussian
+        %F1x2(i,:) = (1/(sqrt(2*pi*s2.^2)))*exp(-(R2(i)-meanr2).^2/(2*s2.^2));
+    %Sigmoid     
+        
+        
+     if R2(i) == 0
+         F1x2(i) = 0
+     else 
+         F1x2(i) = 1/(1+exp((-(R2(i)-meanr2)/(s2^2*pi^2/3))))
+     end
+     if F1x2(i) > 0.0000001
+        F1x2(i) = F1x2(i)+1;
+        else
+        F1x2(i) = 0;
+        end
+         
+        
+     %Triangle
+%         if R2(i) == 0
+%             F1x2(i) = 0
+%         elseif R2(i)<=meanr2
+%             
+%             F1x2(i) = R2(i);
+%         else
+%             F1x2(i) = 2*meanr2-R2(i);
+%         end
+%          F1x2(i) = 20*F1x2(i);
+    
+    
+         %Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
+end
+for i = 1:size(r2,1)
+    if  F1x2(i) == 0
+        Fx2(i,:) = [0,0];
+    else
+        Fx2(i,:) =transpose( F1x2(i).*(r2(i,:)./R2(i))');
+     end
 end
 
-    
+
+
 
 
 %% Initialize Force Matrix (F1(i,1) = Fx and F1(i,2) = Fy)
@@ -88,6 +160,6 @@ PHIs=inverseKin(x,Bod.L); %
 Pos=forwardKin(PHIs,Bod);   % positions assoc w/ these angle combinations
 
 TAUs_1 = zeros(size(x));
-for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L))*F(i,:)'); end; %  tau=JT*F
+for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L)')*F(i,:)'); end; %  tau=JT*F
 
 end

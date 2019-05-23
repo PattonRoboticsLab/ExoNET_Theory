@@ -18,9 +18,9 @@
 function tau=tauMARIONET(phi,L,r,theta,L0)
 global tension
   
-lVect=[L*cos(phi)   L*sin(phi)    0];     % position vector of endpoint
-rVect=[r*cos(theta) r*sin(theta)  0];     % position vector of rotatorHub
-Tdir=lVect-rVect;%rVect-lVect;                         % vector of tension element
+rVect=[L*cos(phi)   L*sin(phi)    0];     % position vector of endpoint
+lVect=[r*cos(theta) r*sin(theta)  0];     % position vector of rotatorHub
+Tdir=lVect-rVect;%rVect-lVect;            % vector of tension element
 Tdist=norm(Tdir);                         % magnitude:length, rotator2endpt
 Tdir=Tdir./Tdist;                         % tension direction vector 
 T=tension(L0,Tdist);                      % map stretch2tension 
