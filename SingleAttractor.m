@@ -6,13 +6,13 @@ global TAUs_1 F x
 %% Initialize Range of Attractor
 
 %x min,max, range
-min_x = 0.2;
-max_x = .4;
+min_x = 0.1;
+max_x = .5;
 xrange = min_x:.05:max_x;
 
 %y min,max, range
-min_y =-.2;
-max_y = 0;
+min_y =-.25;
+max_y = .25;
 yrange = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
@@ -51,22 +51,22 @@ for i = 1:size(r,1)
     %F1(i,:) = (1/(sqrt(2*pi*s.^2)))*exp(-(r1(i)-meanr).^2/(2*s.^2)); 
       
     %Sigmoid
-     %F1(i,:) = 1/(1+exp((-(r1(i)-meanr)/(s^2*pi^2/3))));
-     %if F1(i) > 0.0000001
-     % F1(i) = F1(i)+1;
-     %else
-     %  F1(i) = 0;
-     %end
+     F1(i,:) = 1/(1+exp((-(r1(i)-meanr)/(s^2*pi^2/3))));
+     if F1(i) > 0.0000001
+     F1(i) = F1(i)+1;
+     else
+      F1(i) = 0;
+     end
     
      
     %Triangle Function
-    if r1(i) <= meanr
-        F1(i) = r1(i);
-        
-    else
-        F1(i) = 2*meanr-r1(i);
-    end
-    F1(i) = 20*F1(i);
+%     if r1(i) <= meanr
+%         F1(i) = r1(i);
+%         
+%     else
+%         F1(i) = 2*meanr-r1(i);
+%     end
+%     F1(i) = 20*F1(i);
     
     
  

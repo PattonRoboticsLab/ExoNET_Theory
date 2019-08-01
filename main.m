@@ -7,7 +7,7 @@ clear; close all; clc;
 fprintf('\n ~ MAIN script:  ~ \n')
 setUp % set most variables and plots; 
 
-%% gravity comp
+%gravity comp
 % fprintf('\n _____  Weight-comp : ____ \n')
 % figure(1);
 % TAUsDesired=weightEffect(Bod,Pos)                 % set torques2cancelGrav
@@ -43,7 +43,7 @@ setUp % set most variables and plots;
 % drawnow; pause(.1);   % updates display
 % save EAField
 
-% Single Attractor 
+%Single Attractor 
 % fprintf('\n _____  Single Attractor field :  _____ \n')
 % figure(3)
 % PHIsWorkspace=PHIs;
@@ -63,7 +63,7 @@ setUp % set most variables and plots;
 % % drawnow; pause(.1);   % updates display
 % %save Single Attractor
 
-%% Dual Attractor 
+% %% Dual Attractor 
 % fprintf('\n _____  Dual Attractor field :  _____ \n')
 % figure(4);
 % PHIsWorkspace=PHIs;
@@ -81,7 +81,7 @@ setUp % set most variables and plots;
 %  drawExonets(p,phiPose)                              % exonets as lineSegs
 % suptitle('Dual Attractor'); 
 % drawnow; pause(.1);   % updates display
-% %save Dual Attractor
+%save Dual Attractor
 %%
 
 %% Limit Push Field

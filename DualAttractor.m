@@ -5,8 +5,8 @@ global F TAUs_1
 
 %% Initialize Range of Attractor 1
 %x min,max, range
-min_x = .15;
-max_x = .35;
+min_x = .1;
+max_x = .3;
 x1range = min_x:.05:max_x;
 
 %y min,max, range
@@ -65,7 +65,7 @@ s2 = std(R2);
 meanR1 = (max(R1)-min(R1))/2;
 meanR2 = (max(R2)-min(R2))/2;
 
-%% Calculate Sigmoid Function for Both Attractors
+%% Calculate Sigmoid/Gaussian/Triangle Function for Both Attractors
 
 Fx1 = zeros(size(r1));
 Fx2 = zeros(size(r2));
@@ -88,15 +88,11 @@ for i = 1:size(r1,1)
         else
             F1x1(i) = 2*meanr1-R1(i);
         end
-         F1x1(i) = 20*F1x1(i);
-    
-    
-    %
-      
-    
-    
-    
-    Fx1(i,:) =transpose( F1x1(i).*(r1(i,:)./R1(i))');
+        
+     F1x1(i) = 20*F1x1(i);
+
+ 
+     Fx1(i,:) =transpose( F1x1(i).*(r1(i,:)./R1(i))');
     
          %Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
      end
