@@ -4,7 +4,7 @@ function [TAUs_1,PHIs,Pos]=AttractorField(Bod);
 global F1 TAUs_1
 
 %% Load Data
-<<<<<<< HEAD
+
 %data = load('AttractorFieldData.txt');
 %x=data(:,1:2);
 %x01=[.5 -.1];
@@ -28,13 +28,13 @@ g = reshape(c,[],2);
 x2 = g(:,1:2);
 
 x = [x1;x2];
-=======
+
 data = load('AttractorFieldData.txt');
 %x01=[.5 -.1];
 x01=[.3 -.1 ];
 x02 = [.4 .1];
 x=data(:,1:2);
->>>>>>> master
+
 
 %% Define Mean and Sigma of Gaussian Distribution
 mu = [0.05 0.05]; % max force at this distance from center
@@ -89,7 +89,7 @@ for i = 1:size(x,1)
     %F1(i,:) = F1(i,:)./norm(F1(i,:));
     
 end
->>>>>>> master
+
 %F1 = F1+F2;
 %quiver(x(:,1),x(:,2),F1(:,1),F1(:,2))
 
@@ -99,12 +99,11 @@ end
 PHIs=inverseKin(x,Bod.L); % 
 Pos=forwardKin(PHIs,Bod);   % positions assoc w/ these angle combinations
 
-<<<<<<< HEAD
+
 TAUs_1 = zeros(size(x));
 for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L))*F1(i,:)'); end; %  tau=JT*F
 
 end
-=======
 
 for i=1:size(x,1), TAUs(i,:)=((jacobian(PHIs(i,:),Bod.L))*F1(i,:)'); end; %  tau=JT*F
 

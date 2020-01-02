@@ -28,11 +28,10 @@ fprintf('\n  Set marionets...')
 Exo.K=500;          % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow 
-<<<<<<< HEAD
+
 Exo.nElements=1;     % number of stacked elements per joint
-=======
-Exo.nElements=3;     % number of stacked elements per joint
->>>>>>> master
+
+
 
 %% Bod
 Bod.M = 70;                   % body mass 

@@ -23,7 +23,7 @@ for i=1:nTries
   rad_low = .0100;
   
   %13 for 3 elements, 22 for 5 elements, 3 for 1 element
-<<<<<<< HEAD
+
 %      for i = 1:22,
 %         rad(i) = abs((rad_high-rad_low).*randn(1,1)+rad_low);
 %         theta(i) = randn(1,1);
@@ -32,7 +32,7 @@ for i=1:nTries
 %          p0(i*2-1+1) = theta(i);
 %          p0(i*2-1+2) = r_length(i);
 %      end
-=======
+
      for i = 1:13
          rad(i) = abs((rad_high-rad_low).*randn(1,1)+rad_low);
          theta(i) = randn(1,1);
@@ -41,7 +41,7 @@ for i=1:nTries
          p0(i*2-1+1) = theta(i);
          p0(i*2-1+2) = r_length(i);
      end
->>>>>>> master
+
      %p0
    %p0=randn(1,length(p0));                       % PICK RANDOM init
   [p,c]=fminsearch('cost',p0);                  % OPTIMIZATION !

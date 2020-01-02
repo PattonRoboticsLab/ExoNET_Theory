@@ -5,7 +5,7 @@ function cost=cost(p)
 
 global PHIs TAUsDesired TAUs_1
 lamda=1e7;
-<<<<<<< HEAD
+
 
 %TAUs_1, exoNetTorques(p,PHIs), p,PHIs; 
 
@@ -15,10 +15,10 @@ lamda=1e7;
 %For All Other Fields
 e = TAUs_1 - exoNetTorques(p,PHIs);
 cost=mean(sum(e.^2));  % Sum of squares of all errors at all positons
-=======
+
 e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors
 cost=sum(sum(e.^2));  % Sum of squares of all errors at all positons
->>>>>>> master
+
 
 %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
 loL0Limit= .05; % realistic amount 
