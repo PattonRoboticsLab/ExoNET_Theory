@@ -16,8 +16,8 @@ lamda=1e7;
 e = TAUs_1 - exoNetTorques(p,PHIs);
 cost=mean(sum(e.^2));  % Sum of squares of all errors at all positons
 
-e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors
-cost=sum(sum(e.^2));  % Sum of squares of all errors at all positons
+% e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors
+% cost=sum(sum(e.^2));  % Sum of squares of all errors at all positons
 
 
 %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
