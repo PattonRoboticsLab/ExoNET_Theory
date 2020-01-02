@@ -64,43 +64,43 @@ setUp % set most variables and plots;
 % %save Single Attractor
 
 % %% Dual Attractor 
-% fprintf('\n _____  Dual Attractor field :  _____ \n')
-% figure(4);
-% PHIsWorkspace=PHIs;
-% [TAUs_1,PHIs,Pos]=DualAttractor(Bod);           % set torques2cancelGrav
-% plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
-% [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
-%  figure(4);    subplot(1,2,1);                                  
-% % plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
-%   plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
-% % PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
-%  Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
-%  TAUs=exoNetTorques(p,PHIs);                         % torques @these points
-%  plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
-%  subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
-%  drawExonets(p,phiPose)                              % exonets as lineSegs
-% suptitle('Dual Attractor'); 
-% drawnow; pause(.1);   % updates display
+fprintf('\n _____  Dual Attractor field :  _____ \n')
+figure(4);
+PHIsWorkspace=PHIs;
+[TAUs_1,PHIs,Pos]=DualAttractor(Bod);           % set torques2cancelGrav
+plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
+[p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
+ figure(4);    subplot(1,2,1);                                  
+% plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
+  plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
+% PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
+ Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
+ TAUs=exoNetTorques(p,PHIs);                         % torques @these points
+ plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
+ subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
+ drawExonets(p,phiPose)                              % exonets as lineSegs
+suptitle('Dual Attractor'); 
+drawnow; pause(.1);   % updates display
 %save Dual Attractor
 %%
 
 %% Limit Push Field
-fprintf('\n _____  Limit Push field :  _____ \n')
-figure(5);
-PHIsWorkspace=PHIs;
-[TAUs_1,PHIs,Pos]=LimitPush(Bod);           % set torques2cancelGrav
-plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
-[p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
- figure(5);    subplot(1,2,1);                                  
-plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
-  plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
-PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
- Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
- TAUs=exoNetTorques(p,PHIs);                         % torques @these points
- %plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
- subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
- drawExonets(p,phiPose)                              % exonets as lineSegs
-suptitle('Limit Push'); 
-drawnow; pause(.1);   % updates display
-%save Dual Attractor
-fprintf(' end MAIN script. \n')
+% fprintf('\n _____  Limit Push field :  _____ \n')
+% figure(5);
+% PHIsWorkspace=PHIs;
+% [TAUs_1,PHIs,Pos]=LimitPush(Bod);           % set torques2cancelGrav
+% plotAttractorField(PHIs,Bod,Pos,TAUs_1,'r');        % plot desired field 
+% [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- ! global optim 
+%  figure(5);    subplot(1,2,1);                                  
+% plotAttractorField(PHIs,Bod,Pos,TAUs,'r');        % weight again to see it
+%   plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot solution
+% PHIs=PHIsWorkspace;                                 % PHIS of fullWorkspace
+%  Pos=forwardKin(PHIs,Bod);                           % positions assoc w/ 
+%  TAUs=exoNetTorques(p,PHIs);                         % torques @these points
+%  %plotVectField(PHIs,Bod,Pos,TAUs,'b');               % plot these  
+%  subplot(1,2,1); drawBody2(phiPose, Bod);            % draw body again at one posture
+%  drawExonets(p,phiPose)                              % exonets as lineSegs
+% suptitle('Limit Push'); 
+% drawnow; pause(.1);   % updates display
+% %save Dual Attractor
+% fprintf(' end MAIN script. \n')
