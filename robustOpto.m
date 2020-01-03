@@ -39,8 +39,8 @@ for i=1:nTries
   
     end 
   TAUs=exoNetTorques(p,PHIs);                   % solution calc  
-  %plotVectField(PHIs,Bod,Pos,TAUs,'y');         % plot solution
-  %drawnow; pause(.1);                           % update display
+  plotVectField(PHIs,Bod,Pos,TAUs,'y');         % plot solution
+  drawnow; pause(.1);                           % update display
 end
 
 [p,c]=fminsearch('cost',bestP);                 % last OPTIMIZATION @ best

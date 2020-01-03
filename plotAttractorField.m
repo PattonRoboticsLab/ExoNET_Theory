@@ -5,7 +5,7 @@
 function plotAttractorField(PHIs,Bod,Pos,tau,Colr)
 global TAUs_1
 scaleF =.01;    % graphical scale factor for gforce vectors
-scaleTau =.04;    % graphical scale factor toque pseudo-vectors
+scaleTau =.05;    % graphical scale factor toque pseudo-vectors
 global F
 %% euclidian position
 subplot(1,2,1); % figure(1);

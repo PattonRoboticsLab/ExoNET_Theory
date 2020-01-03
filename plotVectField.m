@@ -5,7 +5,7 @@
 function plotVectField(PHIs,Bod,Pos,tau,Colr)
 global x
 scaleF =.01;    % graphical scale factor for gforce vectors
-scaleTau =.08;    % graphical scale factor toque pseudo-vectors
+scaleTau =.2;    % graphical scale factor toque pseudo-vectors
 
 %% euclidian position
 subplot(1,2,1); % figure(1);
