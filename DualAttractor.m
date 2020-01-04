@@ -1,7 +1,9 @@
 %% Dual Attractor Field
-function [TAUs_1,PHIs,Pos]=DualAttractor(Bod);  
+function [TAUs,PHIs,Pos]=DualAttractor(Bod);  
 
-global F TAUs_1
+global ProjectName
+ProjectName='DualAttractor';
+title(ProjectName);
 
 %% Initialize Range of Attractor 1
 %x min,max, range
@@ -155,7 +157,7 @@ plot(x(:,1),x(:,2),'.','color',.8*[1 1 1]); % plot positions grey
 PHIs=inverseKin(x,Bod.L); % 
 Pos=forwardKin(PHIs,Bod);   % positions assoc w/ these angle combinations
 
-TAUs_1 = zeros(size(x));
-for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L)')*F(i,:)'); end; %  tau=JT*F
+TAUs = zeros(size(x));
+for i=1:size(x,1), TAUs(i,:)=((jacobian(PHIs(i,:),Bod.L)')*F(i,:)'); end; %  tau=JT*F
 
 end

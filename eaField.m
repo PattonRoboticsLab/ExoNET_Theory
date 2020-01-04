@@ -3,13 +3,11 @@
 % ~~~ BEGIN ~~~
 
 function [TAUs,PHIs,Pos]=eaField(Bod);                     % set torques2cancelGrav
-
-f=10;
-%d=hdrload('')
-
-x=[ textract('EAFieldData.txd','x') textract('EAFieldData.txd','y')]
-F=[ textract('EAFieldData.txd','Fx') textract('EAFieldData.txd','Fy')]
-plot(x(:,1),x(:,2),'.','color',.8*[1 1 1]); % plot positions grey
+global ProjectName
+ProjectName='ErrorAugmentationField';
+fprintf('\n - %s : - \n',ProjectName)
+x=[ textract('EAFieldData.txd','x') textract('EAFieldData.txd','y')];
+F=[ textract('EAFieldData.txd','Fx') textract('EAFieldData.txd','Fy')];
 
 PHIs=inverseKin(x,Bod.L); % 
 Pos=forwardKin(PHIs,Bod);   % positions assoc w/ these angle combinations

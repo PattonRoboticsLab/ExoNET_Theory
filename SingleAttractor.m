@@ -1,7 +1,8 @@
 %% Single Attractor Field
-function [TAUs_1,PHIs,Pos]=SingleAttractor(Bod);  
-
-global TAUs_1 F x
+function [TAUs,PHIs,Pos]=SingleAttractor(Bod);  
+global ProjectName
+ProjectName='SingleAttractor';
+title(ProjectName);
 
 %% Initialize Range of Attractor
 
@@ -16,10 +17,10 @@ max_y = .25;
 yrange = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
-[X Y ] = meshgrid(xrange,yrange);
+[X, Y] = meshgrid(xrange,yrange);
 c=cat(2,X',Y');
 newmatrix = reshape(c,[],2);
-x = newmatrix(:,1:2)
+x = newmatrix(:,1:2);
 
 %Center of Attractor
 center = [mean(xrange) mean(yrange)];
@@ -44,57 +45,28 @@ meanr = (mean(r1));
 F = zeros(size(r));
 meanr1 = mean(r1);
 for i = 1:size(r,1)
-    
-    %%Calculating Force Using Different Function
-    
-   %Gaussian
-    %F1(i,:) = (1/(sqrt(2*pi*s.^2)))*exp(-(r1(i)-meanr).^2/(2*s.^2)); 
-      
-    %Sigmoid
-     F1(i,:) = 1/(1+exp((-(r1(i)-meanr)/(s^2*pi^2/3))));
-     if F1(i) > 0.0000001
-     F1(i) = F1(i)+1;
-     else
-      F1(i) = 0;
-     end
-    
-     
-    %Triangle Function
-%     if r1(i) <= meanr
-%         F1(i) = r1(i);
-%         
-%     else
-%         F1(i) = 2*meanr-r1(i);
-%     end
-%     F1(i) = 20*F1(i);
-    
-    
- 
-   
-    %%Force Calculation
-    
-    F(i,:) =transpose( F1(i).*(r(i,:)./r1(i))');
-    
-    
-    
-     %%Plot
-        % plot(r1(i),F1(i),'bo');
-        % hold on
+  %% Calculating Force Using Different Function
+  % Gaussian
+  % F1(i,:) = (1/(sqrt(2*pi*s.^2)))*exp(-(r1(i)-meanr).^2/(2*s.^2));
+  
+  % Sigmoid
+  F1(i,:) = 1/(1+exp((-(r1(i)-meanr)/(s^2*pi^2/3))));
+  if F1(i) > 0.0000001
+    F1(i) = F1(i)+1;
+  else
+    F1(i) = 0;
+  end
+  
+  F(i,:) =transpose( F1(i).*(r(i,:)./r1(i))');    % Force Calculation
 end
 
-
-
 plot(x(:,1),x(:,2),'.','color',.8*[1 1 1]); % plot positions grey
-PHIs=inverseKin(x,Bod.L) % 
+PHIs=inverseKin(x,Bod.L);    % 
+Pos=forwardKin(PHIs,Bod);    % positions assoc w/ these angle combinations
 
-
-Pos=forwardKin(PHIs,Bod)   % positions assoc w/ these angle combinations
-
-TAUs_1 = zeros(size(x));
-for i=1:size(x,1), TAUs_1(i,:)=((jacobian(PHIs(i,:),Bod.L)')*F(i,:)'); 
-end; %  tau=JT*F
-
-
-
+TAUs = zeros(size(x));
+for i=1:size(x,1)
+  TAUs(i,:)=((jacobian(PHIs(i,:),Bod.L)')*F(i,:)');  %  tau=JT*F
+end
 
 end
