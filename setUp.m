@@ -14,24 +14,45 @@
 %   /   PHI 1
 %  o . . . . . . .
 %
+%                             .X
+%                       .   X  
+%         TVect   .      X       lVect
+%           .         X
+%       o          X       
+%   r  /        X
+%     /      X       phi
+%    /   theta        
+%   /  X            
+%  O .  .  .  .  .  .  .  .  .  .  .  . 
+
 %% ~~ BEGIN PROGRAM: ~~
 fprintf('\n  SetUp parameters...')
-global Exo Bod PHIs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace
+global Exo Bod PHIs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace 
 close all
 
 %% MARIONETS
-Exo.K=500;          % spring Stiffness 
+Exo.K=1000;         % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow
-
 disp('choose from menu...')
 Exo.nElements=menu('number of stacked elements per joint:' ...
                , '1' ...
                , '2' ...
                , '3' ...
                , '4' ...
-               , '5')
-  
+               , '5');
+
+% set desired CONSTRIANTS on the parameters: 
+RLoHi=[.01 .12];thetaLoHi=[-pi pi];  L0LoHi=[.02 .3]; % ranges
+i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
+for joint=1:Exo.nJnts
+  for element=1:Exo.nElements
+    i=i+1; Exo.pConstraint(i,:)=RLoHi;
+    i=i+1; Exo.pConstraint(i,:)=thetaLoHi;
+    i=i+1; Exo.pConstraint(i,:)=L0LoHi;
+  end
+end
+
 %% Bod
 Bod.M = 70;                   % body mass 
 Bod.L = [.35 .26;];           % segment lengths (humerous, arm)
@@ -50,12 +71,11 @@ PHIsWorkspace=PHIs;           % store this
 PosWorkspace=Pos;             % store this
 
 %% Optimization params:
-options=optimset();
-options.MaxIter = 1E3;                              % optimization limit
-options.MaxFunEvals = 1E3;                          % optimization limit
-nTries = 10;                                       % number optim reruns 
-p0=.05*(1:(Exo.nParams*Exo.nElements*Exo.nJnts));   % INIT.GUESS (L0,r,theta)
-bestCost=1e7;                                       % init very high 
+optOptions=optimset();
+optOptions.MaxIter = 1E3;                             % optimization limit
+optOptions.MaxFunEvals = 1E3;                         % optimization limit
+optimset(optOptions);
+nTries = 50;                                          % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch

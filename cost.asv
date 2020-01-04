@@ -1,12 +1,23 @@
 % evaluate cost function for desired torques TAUs at positions PHIs
+% REVISIONS:    initiated by patton January 2019
+%               2020 revised to take systematic contraints
 % ~~ BEGIN PROGRAM: ~~
 % Small Edit to See if Git Works
-function cost=cost(p)
-
-global PHIs TAUsDesired
+function [cost,meanErr]=cost(p)
+global PHIs TAUsDesired pConstraint
 lamda=1e7; 
-e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors
-cost=mean(sum(e.^2));     % Sum squares of errors at all positons
+e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors at each operating point
+cost=mean(sum(e.^2));     % !! Sum squares of errors at all positons
+meanErr=norm(mean(e));    % avg vect error (I know it isnot really a vect)
+
+%% enforce soft constraints on the paramters (if preSet in setup)
+if ~exist('pConstraint','var') % default
+  for i=1:length(p) % loop thru each parameter constraint
+    pConstraint()
+    isLow=p(i)<pConstraint(i,1); lowBy=(pConstraint(i,1)-p(i))*isLow; % howLow
+    cost=cost+lamda*lowBy;
+  end
+end
 
 %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
 loL0Limit= .05;           % realistic amount 
@@ -24,6 +35,5 @@ for i=1:3:length(p)       % R0 is fist and every third
   LargerBy=(abs(R)-R_max)*isLarger;
   cost=cost+lamda*LargerBy^3;  % keep it short
 end
-  
+
 end % END function
-    

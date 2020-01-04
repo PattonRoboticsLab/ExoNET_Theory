@@ -3,8 +3,8 @@
 % modified from second half of optimizedTorque_mixedDevice by carella
 
 function plotVectField(PHIs,Bod,Pos,tau,Colr)
-scaleF =.008;    % graphical scale factor for gforce vectors
-scaleTau =.12;    % graphical scale factor toque pseudo-vectors
+scaleF =.005;    % graphical scale factor for gforce vectors
+scaleTau =.1;    % graphical scale factor toque pseudo-vectors
 
 %% euclidian position
 subplot(1,2,1); 

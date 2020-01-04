@@ -17,24 +17,24 @@ setUp % set most variables and plots;
 
 switch fieldType
   case 1 % gravity Compensation
-    [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % cancelGravity
-    [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,nTries);      % ! global optim
+    [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
+    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
   case 2 % EA
-    [TAUsDesired,PHIs,Pos]=eaField(Bod);                % set EA field
-    [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,nTries);      % ! global optim
+    [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired
+    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
   case 3  % SingleAttractor
-    [TAUsDesired,PHIs,Pos]=SingleAttractor(Bod);        % torques
-    [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,nTries);      % ! global optim
+    [TAUsDesired,PHIs,Pos]=SingleAttractor(Bod);        % determine desired
+    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
   case 4  % DualAttractor
-    [TAUsDesired,PHIs,Pos]=DualAttractor(Bod);               % torques
-    [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,nTries);      % ! global optim
+    [TAUsDesired,PHIs,Pos]=DualAttractor(Bod);          % determine desired
+    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
     
   case 5
-    [TAUsDesired,PHIs,Pos]=LimitPush(Bod);                   % torques
-    [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,nTries);      % ! global optim
+    [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
+    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
   otherwise
     disp('exiting..'); close all

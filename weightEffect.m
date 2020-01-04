@@ -1,10 +1,9 @@
 % caluate the desired torques needed from weight cancellation
 % patton 2019-01-14
 
-
 function [tauD,PHIs,Pos]=weightEffect(Bod,Pos,showIt)
-global ProjectName Bod Pos 
-if ~exist('showIt','var'); showIt=0, end % default
+global ProjectName 
+if ~exist('showIt','var'); showIt=0; end % default
 ProjectName='GravityCompensatingField';
 title(ProjectName);
 fprintf('\n - %s : - \n',ProjectName)
