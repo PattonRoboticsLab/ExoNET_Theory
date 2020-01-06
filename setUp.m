@@ -43,7 +43,7 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
                , '5');
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[.01 .12];thetaLoHi=[-pi pi];  L0LoHi=[.02 .3]; % ranges
+RLoHi=[.01 .12];thetaLoHi=2*pi*[-1 1];  L0LoHi=[.02 .3];        % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements

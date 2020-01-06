@@ -41,7 +41,7 @@ for TRY=1:nTries
     % update plots
     clf; subplot(1,2,1);    % reset fig
     drawBody2(Bod.pose,Bod);                        % cartoon man, posed
-    drawExonets(p,Bod.pose);                    % exonet lineSegs
+    drawExonets(p,Bod.pose);                        % exonet lineSegs
     plotVectField(PHIs,Bod,Pos,TAUsDesired,'r');    % PLOT desired field
     plotVectField(PHIs,Bod,Pos,TAUs,[.8 .9 .9]);    % improvedSolution Grey
     fprintf('\n'); drawnow; pause(.1);              % updates display
@@ -63,6 +63,7 @@ if c<bestCost
 else
   fprintf(' (not an improvement) \n ');
 end 
+[c,meanErr]=cost(bestP); meanErr
 
 %% update PLOTS
 clf; subplot(1,2,1); drawBody2(Bod.pose,Bod);              % cartoon man, posed
@@ -74,7 +75,8 @@ plotVectField(PHIs,Bod,Pos,TAUs,'b');                 % plot solution
 % TAUs=exoNetTorques(p,PHIs);                         % field @these 
 % plotVectField(PHIs,Bod,Pos,TAUs,'b');               % also plot these
 subplot(1,2,2); axis(ax2); subplot(1,2,1); axis(ax1); % zoom frame
-title(ProjectName); drawnow; pause(.1);               % show tile & update
+title([ProjectName ',  AvgError=' num2str(meanErr)]); % show the goods
+drawnow; pause(.1);                                   % update
 
 eval(['save ' ProjectName]);
 orient landscape

@@ -3,11 +3,11 @@
 %               2020 revised to take systematic contraints
 % ~~ BEGIN PROGRAM: ~~
 % Small Edit to See if Git Works
-function [cost,meanErr]=cost(p)
+function [c,meanErr]=cost(p)
 global PHIs TAUsDesired Exo
-lamda=1e2; 
+lamda=10; 
 e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors at each operating point
-cost=mean(sum(e.^2));     % !! Sum squares of errors at all positons
+c=mean(sum(e.^2));     % !! Sum squares of errors at all positons
 meanErr=norm(mean(e));    % avg vect error (I know it isnot really a vect)
 
 %% enforce soft constraints on the paramters (if preSet in setup)
@@ -15,8 +15,8 @@ if ~exist('pConstraint','var') % default
   for i=1:length(p) % loop thru each parameter constraint
     isLow=p(i)<Exo.pConstraint(i,1); lowBy=(Exo.pConstraint(i,1)-p(i))*isLow; % howLow
     isHi =p(i)>Exo.pConstraint(i,2); hiBy =(p(i)-Exo.pConstraint(i,2))*isHi;  % howhi
-    cost=cost+lamda*lowBy;                        % quadratic punnishment
-    cost=cost+lamda*hiBy;                         % quadratic punnishment
+    c=c+lamda*lowBy;                        % quadratic punnishment
+    c=c+lamda*hiBy;                         % quadratic punnishment
   end
 end
 
