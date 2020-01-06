@@ -1,4 +1,5 @@
 %% Attractor Field
+%comment
 function [TAUs_1,PHIs,Pos]=AttractorField(Bod);  
 
 global F1 TAUs_1
