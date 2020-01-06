@@ -7,13 +7,13 @@ title(ProjectName);
 
 %% Initialize Range of Attractor 1
 %x min,max, range
-min_x = .1;
-max_x = .3;
+min_x = .15;
+max_x = .25;
 x1range = min_x:.05:max_x;
 
 %y min,max, range
 min_y =-.35;
-max_y = -.15;
+max_y = -.25;
 y1range = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
@@ -28,13 +28,13 @@ center1 = [mean(x1range) mean(y1range)];
 
 %% Initialize Range of Attractor 2
 %x min,max, range
-min_x = .1;
-max_x = .3;
+min_x = .15;
+max_x = .25;
 x2range = min_x:.05:max_x;
 
 %y min,max, range
-min_y =-.1;
-max_y = 0.1;
+min_y =-.15;
+max_y = 0.05;
 y2range = min_y:.05:max_y;
 
 % All combinations of X and Y in x matrix
@@ -94,7 +94,7 @@ for i = 1:size(r1,1)
      F1x1(i) = 20*F1x1(i);
 
  
-     Fx1(i,:) =transpose( F1x1(i).*(r1(i,:)./R1(i))');
+     Fx1(i,:) =1.4*transpose( F1x1(i).*(r1(i,:)./R1(i))');
     
          %Fx1(i,:) = transpose(F1x1(i).*r1(i,:)');
      end
@@ -138,7 +138,7 @@ for i = 1:size(r2,1)
     if  F1x2(i) == 0
         Fx2(i,:) = [0,0];
     else
-        Fx2(i,:) =transpose( F1x2(i).*(r2(i,:)./R2(i))');
+        Fx2(i,:) =1.4*transpose( F1x2(i).*(r2(i,:)./R2(i))');
      end
 end
 
