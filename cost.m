@@ -22,7 +22,7 @@ end
 
 %% penalize R to drive to zero
 for i=1:3:length(p) % loop thru each R parameter 
-  c=c+lamda*p(i); 
+  c=c+p(i); 
 end
 
 % %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
