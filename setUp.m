@@ -85,7 +85,7 @@ optOptions=optimset();
 optOptions.MaxIter = 1E3;                             % optimization limit
 optOptions.MaxFunEvals = 1E3;                         % optimization limit
 optimset(optOptions);
-nTries = 50;                                          % number optim reruns 
+nTries = 30*Exo.nElements;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch

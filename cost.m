@@ -25,7 +25,7 @@ for i=1:3:length(p) % loop thru each R parameter
   c=c+p(i); 
 end
 
-% %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
+%% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
 % loL0Limit= .05;           % realistic amount 
 % for i=3:3:length(p)       % L0 is every third
 %  L0=p(i);
