@@ -3,7 +3,7 @@
 % the given angles combinations for hip and knee
 % ***********************************************************************
 
-function Position = forwardKin(PHIs,BODY)
+function Position = forwardKinLeg(PHIs,BODY)
 
 Position.hip = zeros(size(PHIs)); % HIP position
 
