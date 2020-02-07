@@ -2,7 +2,7 @@
 % Draw individual Marionets at the leg pose specified by phis
 % ***********************************************************************
 
-function h = drawExonets(p,phis)
+function h = drawExonetsLeg(p,phis)
 
 %% Setup
 fprintf('\n\n\n\n Drawing Marionets~~\n')
@@ -10,7 +10,7 @@ global EXONET BODY
 
 
 %% Locations for the cartoon
-Colors = [0.5 0.7 1; 0.1 1 0.2; 1 0.6 0.3]; % 3 distinct rgb color spaces
+Colors = [0.5 0.7 1; 0.1 1 0.2; 1 0.6 0.3]; % 3 distinct RGB color spaces
 LW = 4; % lines width
 
 hip = [0, 0]; % HIP position
@@ -34,6 +34,7 @@ for element = 1:EXONET.nElements
     knee = [BODY.Lengths(1)*sind(phis(1)), ... % KNEE position
             -(BODY.Lengths(1)*cosd(phis(1)))];
     plot([rPos(1) knee(1)],[rPos(2) knee(2)],'Color',Colors(1,:),'Linewidth',LW);
+    plot([hip(1) rPos(1)],[hip(2) rPos(2)],'Color','k','Linewidth',1);
 end
 
 for element = 1:EXONET.nElements
@@ -41,13 +42,13 @@ for element = 1:EXONET.nElements
     r = p(kneeIndex+(element-1)*EXONET.nParameters+0);
     theta = p(kneeIndex+(element-1)*EXONET.nParameters+1);
     L0 = p(kneeIndex+(element-1)*EXONET.nParameters+2);
-    knee = [BODY.Lengths(1)*sind(phis(1)), ... % KNEE position
+    knee = [BODY.Lengths(1)*sind(phis(1)), ...    % KNEE position
             -(BODY.Lengths(1)*cosd(phis(1)))];
-    %rPos = knee + [r*sind(phis(1)+theta) -r*cosd(phis(1)+theta)];   % R vector
     rPos = knee + [r*sind(theta) -r*cosd(theta)]; % R vector
-    ankle = [knee(1) + BODY.Lengths(2)*sind(phis(1)-phis(2)); ... % ANKLE position
+    ankle = [knee(1) + BODY.Lengths(2)*sind(phis(1)-phis(2)), ... % ANKLE position
              knee(2) - BODY.Lengths(2)*cosd(phis(1)-phis(2))];
     plot([rPos(1) ankle(1)],[rPos(2) ankle(2)],'Color',Colors(2,:),'Linewidth',LW);
+    plot([knee(1) rPos(1)],[knee(2) rPos(2)],'Color','k','Linewidth',1);
 end
 
 if EXONET.nJoints == 3
@@ -56,10 +57,11 @@ if EXONET.nJoints == 3
         r = p(hipKneeIndex+(element-1)*EXONET.nParameters+0);
         theta = p(hipKneeIndex+(element-1)*EXONET.nParameters+1);
         L0 = p(hipKneeIndex+(element-1)*EXONET.nParameters+2);
-        rPos = [r*sind(theta) -r*cosd(theta)]; % R vector
+        rPos = [r*sind(theta) -r*cosd(theta)];                % R vector
         ankle = [knee(1) + BODY.Lengths(2)*sind(phis(1)-phis(2)); ... % ANKLE position
                  knee(2) - BODY.Lengths(2)*cosd(phis(1)-phis(2))];
         plot([rPos(1) ankle(1)],[rPos(2) ankle(2)],'Color',Colors(3,:),'Linewidth',LW);
+        plot([hip(1) rPos(1)],[hip(2) rPos(2)],'Color','k','Linewidth',1);
     end
 end
 

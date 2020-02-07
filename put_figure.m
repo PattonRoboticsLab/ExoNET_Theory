@@ -19,9 +19,9 @@ if DEBUGIT
     fprintf(' ~~ put_figure.M ~~')
 end
 
-screen_size = get(0,'ScreenSize');  % dimensions of the screen in pixels
-screen_width = screen_size(3);      % screen width in pixels
-screen_height = screen_size(4);     % screen height in pixels
+screen_size = get(0,'ScreenSize'); % dimensions of the screen in pixels
+screen_width = screen_size(3);     % screen width in pixels
+screen_height = screen_size(4);    % screen height in pixels
 
 figure(fignum)
 set(fignum,'Position',[left*screen_width up*screen_height width*screen_width height*screen_height]); % [Xleft Ybottom width height]
