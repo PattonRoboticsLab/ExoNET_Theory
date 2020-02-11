@@ -31,7 +31,7 @@ global Exo Bod PHIs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace
 close all
 
 %% MARIONETS
-Exo.K=1000;         % spring Stiffness 
+Exo.K=100;         % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow
 disp('choose from menu...')
