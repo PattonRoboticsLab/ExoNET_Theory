@@ -46,7 +46,8 @@ BODY.Mass = 70; % body mass in [kg] for a body height of 1.70 m
 BODY.Lengths = [0.4165, 0.4182]; % segments lengths (thigh, leg) in [m]
 BODY.Radii = BODY.Lengths.*[0.433, 0.433]; % proximal distance in [m] to the center of mass
                                            % with respect to the segment length (thigh, leg)
-phiPose = [25 45]; % angles in [deg] for the thigh and the leg position
+% phiPose = [25 45]; % angles in [deg] for the thigh and the leg position
+BODY.pose = [25 45]; % angles in [deg] for the thigh and the leg position
 
 
 %% IMPORT DATA OF THE WALK CYCLE
@@ -93,17 +94,17 @@ switch doGraph
   case 1 % YES
       % single pose of the right leg
       put_figure(1, 0.02, 0.07, 0.95, 0.82);
-      drawBodyLeg(phiPose,BODY); % draws the body on the background
+      drawBodyLeg(BODY); % draws the body on the background
       plot(Position.ankle(:,1),Position.ankle(:,2),'.','color',0.8*[1 1 1]); % plot the positions of the ankle in grey
       
       pause(2)
       
       % dynamic plot of the right leg
       put_figure(1, 0.02, 0.07, 0.95, 0.82);
-      for i = 1:106
-          phiPose = [PHIs(i,1) PHIs(i,2)];
+      for i = 1:length(PHIs)
+          BODY.pose = [PHIs(i,1) PHIs(i,2)];
           clf % to clear the previous plot
-          drawBodyLeg(phiPose,BODY);
+          drawBodyLeg(BODY);
           pause(0.0001)
       end
     

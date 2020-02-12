@@ -28,6 +28,10 @@ switch fieldType
     [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
+  case 6
+    setUpLeg
+    [p,c,TAUs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
+    
   otherwise
     disp('exiting..'); close all
     

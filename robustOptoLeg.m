@@ -26,7 +26,7 @@ clf % to reset the figure
 
 subplot(1,2,1)
 title(ProjectName)
-drawBodyLeg(phiPose,BODY);
+drawBodyLeg(BODY);
 plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r'); % to plot the desired torque field in red
 
 subplot(1,2,1); ax1 = axis(); % to get axis zoom frame
@@ -36,8 +36,8 @@ plotVectFieldLeg(PHIs,BODY,Position,TAUs,0.9*[1 1 1]); % to plot the initial gue
 plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r');  % to plot the desired torque field in red
 
 subplot(1,2,1)
-drawBodyLeg(phiPose,BODY);
-drawExonetsLeg(bestP,phiPose); % to draw the ExoNET line segments
+drawBodyLeg(BODY);
+drawExonetsLeg(bestP,BODY.pose); % to draw the ExoNET line segments
 
 subplot(1,2,1); axis(ax1); % to reframe the window
 subplot(1,2,2); axis(ax2); % to reframe the window
@@ -62,8 +62,8 @@ for TRY = 1:nTries
         % Update the plots
         clf % to reset the figure
         subplot(1,2,1)
-        drawBodyLeg(phiPose,BODY);
-        drawExonetsLeg(bestP,phiPose); % to draw the ExoNET line segments
+        drawBodyLeg(BODY);
+        drawExonetsLeg(bestP,BODY.pose); % to draw the ExoNET line segments
         plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r');    % to plot the desired torque field in red
         plotVectFieldLeg(PHIs,BODY,Position,TAUs,[0.8 0.9 0.9]); % to plot the improved solution in grey
         fprintf('\n');
@@ -95,8 +95,8 @@ end
 %% Update the plots
 clf
 subplot(1,2,1)
-drawBodyLeg(phiPose,BODY);
-drawExonetsLeg(bestP,phiPose);       % to draw the ExoNET line segments
+drawBodyLeg(BODY);
+drawExonetsLeg(bestP,BODY.pose);       % to draw the ExoNET line segments
 TAUs = exoNetTorquesLeg(bestP,PHIs); % to calculate the final solution
 plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r'); % to plot the desired torque field in red
 plotVectFieldLeg(PHIs,BODY,Position,TAUs,'b');        % to plot the best solution in blue
@@ -109,10 +109,10 @@ drawnow; pause(0.1) % to update the screen
 % % % %
 % put_figure(1, 0.02, 0.07, 0.95, 0.82);
 % for i = 1 : 106
-%     phiPose = [PHIs(i,1), PHIs(i,2)];
+%     BODY.pose = [PHIs(i,1), PHIs(i,2)];
 %     clf % to clear the previous plot
-%     drawBodyLeg(phiPose,BODY);
-%     drawExonetsLeg(bestP,phiPose);
+%     drawBodyLeg(BODY.pose,BODY);
+%     drawExonetsLeg(bestP,BODY.pose);
 %     pause(0.0001)
 % end
 % % % %

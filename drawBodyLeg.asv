@@ -1,5 +1,6 @@
 % ***********************************************************************
-% Draw  Bodyon background based on angles of BODY.pose (formerly phiPose) 
+% Draw the Body on the background based on the angles
+%  of BODY.pose (formerly phiPose) 
 % ***********************************************************************
 
 function h = drawBodyLeg(BODY)
@@ -15,7 +16,7 @@ eye_position = shoulder + [0.05; 0.22];
 
 hip = [0; 0]; % HIP position
 
-knee =   [BODY.Lengths(1)*sind(BODY.pose(1)); ... % KNEE position
+knee = [BODY.Lengths(1)*sind(BODY.pose(1)); ... % KNEE position
         -(BODY.Lengths(1)*cosd(BODY.pose(1)))];
 
 ankle = [knee(1) + BODY.Lengths(2)*sind(BODY.pose(1)-BODY.pose(2)); ... % ANKLE position
