@@ -1,0 +1,32 @@
+shoulder = hip
+elbow = knee
+wrist = ankle
+
+Exo = EXONET
+Bod = BODY
+PHIs = PHIs
+TAUsDesired = TAUsDESIRED
+tension = TENSION
+Pos = Position
+
+Exo.K = EXONET.K
+Exo.nParams = EXONET.nParameters
+Exo.nJnts = EXONET.nJoints
+Exo.nElements = EXONET.nElements
+
+Bod.M = BODY.Mass
+Bod.L = BODY.Lengths
+Bod.R = BODY.Radii
+
+Pos.sh = Position.shoulder
+Pos.R1 = Position.R1
+Pos.el = Position.elbow
+Pos.el2R2 = Position.elbow2R2
+Pos.R2 = Position.R2
+Pos.wr = Position.wrist = Position.ankle
+
+shIndex = hipIndex
+elIndex = kneeIndex
+shElIndex = hipKneeIndex
+
+eqWrF = eqAnkleForce
