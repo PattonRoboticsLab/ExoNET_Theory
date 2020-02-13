@@ -138,7 +138,7 @@ optOptions = optimset();
 optOptions.MaxIter = 1E3;     % optimization limit
 optOptions.MaxFunEvals = 1E3; % optimization limit
 optimset(optOptions);
-nTries = 50;                  % number of optimization reruns 
+nTries = 2;                  % number of optimization reruns 
        % 30*EXONET.nElements
 
        

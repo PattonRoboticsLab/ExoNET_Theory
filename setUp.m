@@ -55,7 +55,7 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
                , '6' );
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[0 .12];thetaLoHi=3*pi*[-1 1];  L0LoHi=[.02 .3];        % ranges
+RLoHi=[0 .14];thetaLoHi=2*pi*[0 1];  L0LoHi=[.02 .3];        % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements
@@ -87,7 +87,7 @@ optOptions=optimset();
 optOptions.MaxIter = 1E3;                             % optimization limit
 optOptions.MaxFunEvals = 1E3;                         % optimization limit
 optimset(optOptions);
-nTries = 30*Exo.nElements;                            % number optim reruns 
+nTries = 5;%30*Exo.nElements;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
