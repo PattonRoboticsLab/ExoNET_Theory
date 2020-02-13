@@ -1,26 +1,36 @@
-% evaluate cost function for desired torques TAUs at positions PHIs
-% REVISIONS:    initiated by patton January 2019
-%               2020 revised to take systematic contraints
-% ~~ BEGIN PROGRAM: ~~
-% Small Edit to See if Git Works
-function [c,meanErr]=cost(p)
-global PHIs TAUsDesired Exo
-lamda=10; 
-e=TAUsDesired-exoNetTorques(p,PHIs); % torques errors at each operating point
-c=mean(sum(e.^2));     % !! Sum squares of errors at all positons
-meanErr=norm(mean(e));    % avg vect error (I know it isnot really a vect)
+% ***********************************************************************
+% Evaluate the cost function for desired torques TAUs at positions PHIs
+% ***********************************************************************
 
-%% enforce soft constraints on the paramters (if preSet in setup)
+function [c,meanErr] = cost(p)
+
+%% Setup
+global PHIs TAUsDESIRED EXONET
+
+lambda = 10;
+e = TAUsDESIRED - exoNetTorquesLeg(p,PHIs); % torques errors at each operating point
+c = mean(sum(e.^2)); % to sum the squares of the errors at all positions
+meanErr = norm(mean(e)); % average error
+
+
+%% Enforce soft constraints on the parameters (if preSet in Setup)
 if ~exist('pConstraint','var') % default
-  for i=1:length(p) % loop thru each parameter constraint
-    isLow=p(i)<Exo.pConstraint(i,1); lowBy=(Exo.pConstraint(i,1)-p(i))*isLow; % howLow
-    isHi =p(i)>Exo.pConstraint(i,2); hiBy =(p(i)-Exo.pConstraint(i,2))*isHi;  % howhi
-    c=c+lamda*lowBy;                        % quadratic punnishment
-    c=c+lamda*hiBy;                         % quadratic punnishment
-  end
+    for i = 1:length(p) % loop thru each parameter constraint
+        isLow = p(i) < EXONET.pConstraint(i,1);
+        lowBy = (EXONET.pConstraint(i,1)-p(i))*isLow; % how low
+        isHi = p(i) > EXONET.pConstraint(i,2);
+        hiBy = (p(i)-EXONET.pConstraint(i,2))*isHi; % how high
+        c = c + lambda*lowBy; % quadratic punishment
+        c = c + lambda*hiBy;  % quadratic punishment
+    end
 end
 
-% %% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
+%% penalize R to drive to zero
+for i=1:3:length(p) % loop thru each R parameter 
+  c=c+p(i); 
+end
+
+%% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
 % loL0Limit= .05;           % realistic amount 
 % for i=3:3:length(p)       % L0 is every third
 %  L0=p(i);
@@ -37,4 +47,9 @@ end
 %   cost=cost+lamda*LargerBy^3;  % keep it short
 % end
 
-end % END function
+%% Penalize R to drive to zero
+for i = 1:3:length(p) % loop thru each R parameter
+    c = c + p(i);
+end
+
+end

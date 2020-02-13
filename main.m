@@ -4,16 +4,8 @@
 
 %% begin
 clear; close all; clc; 
-fprintf('\n ~ MAIN script:  ~ \n')
-disp('choose from menu...')
-fieldType=menu('Choose a field to approximate:' ...
-               , 'WeightCompensation' ...
-               , 'ErrorAugmentation' ...
-               , 'SingleAttractor' ...
-               , 'DualAttractor' ...
-               , 'LimitPush' ...
-               , 'EXIT');        
-setUp % set most variables and plots; 
+fprintf('\n ~ MAIN script:  ~ \n')  
+setUp % set most variables and plots in a SCRIPT 
 
 switch fieldType
   case 1 % gravity Compensation
@@ -36,6 +28,10 @@ switch fieldType
     [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
 
+  case 6
+    setUpLeg
+    [p,c,TAUs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
+    
   otherwise
     disp('exiting..'); close all
     

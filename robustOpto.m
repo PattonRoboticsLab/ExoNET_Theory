@@ -30,7 +30,7 @@ title(ProjectName); drawnow; pause(.1);             % show
 %% loop multiple optimization tries with Simmulated annealing
 fprintf('\n\n Begin optimizations:  ');
 for TRY=1:nTries
-  fprintf('Opt#%d..',TRY);
+  fprintf('Opt#%d of %d..',TRY,nTries);
   [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
   [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
   if c<bestCost                                     % if lower cost

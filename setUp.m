@@ -30,8 +30,19 @@ fprintf('\n  SetUp parameters...')
 global Exo Bod PHIs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace 
 close all
 
+%% pick the problem to solve
+disp('choose from menu...')
+fieldType=menu('Choose a field to approximate:' ...
+               , 'WeightCompensation' ...
+               , 'ErrorAugmentation' ...
+               , 'SingleAttractor' ...
+               , 'DualAttractor' ...
+               , 'LimitPush' ...
+               , 'GaitTorques' ...
+               , 'EXIT');     
+
 %% MARIONETS
-Exo.K=1000;         % spring Stiffness 
+Exo.K=100;         % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow
 disp('choose from menu...')
@@ -40,10 +51,11 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
                , '2' ...
                , '3' ...
                , '4' ...
-               , '5');
+               , '5' ...
+               , '6' );
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[.01 .12];thetaLoHi=2*pi*[-1 1];  L0LoHi=[.02 .3];        % ranges
+RLoHi=[0 .12];thetaLoHi=3*pi*[-1 1];  L0LoHi=[.02 .3];        % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements
@@ -75,13 +87,13 @@ optOptions=optimset();
 optOptions.MaxIter = 1E3;                             % optimization limit
 optOptions.MaxFunEvals = 1E3;                         % optimization limit
 optimset(optOptions);
-nTries = 50;                                          % number optim reruns 
+nTries = 30*Exo.nElements;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 
 %% plot: 
-put_fig(fieldType,.99,.35,.6,.5); subplot(1,2,1);    % place figure 
+put_fig(fieldType,.9,.35,.6,.5); subplot(1,2,1);    % place figure 
 drawBody2(Bod.pose,Bod);     hold on                % draw@1 posture
 plot(Pos.wr(:,1),Pos.wr(:,2),'.','color',.7*[1 1 1]);% positions,grey
 
