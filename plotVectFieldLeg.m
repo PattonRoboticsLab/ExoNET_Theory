@@ -26,9 +26,13 @@ for i = 1:size(PHIs,1)
     plot(PHIs(i,1),PHIs(i,2),'.','Color',Color) % dots
     hold on
 end
-xlabel('Hip Absolute Angle [deg]'); ylabel('Knee Absolute Angle [deg]'); title('Torques at the positions of the leg');
-%plot(PHIs(1,1)-[0, -scaleTau*10],PHIs(1,2)-[0, 0]-0.1,'Color',Color) % for the legend
-%text(PHIs(1,1),PHIs(1,2)-0.1,'       ','Color',Color)
+xlabel('Hip Angle [deg]'); ylabel('Knee Angle [deg]'); title('Torques at angle positions');
+simpleArrow([-3, 63],[-3, 63]+[scaleTau*10, 0],'k',1.75); % for the legend
+text(-4,64.5,'10 Nm'); % for the legend
+% plot(PHIs(1,1),PHIs(1,2),'.k'); plot(PHIs(70,1),PHIs(70,2),'.k'); % TOR
+% text(PHIs(1,1)+0.5,PHIs(1,2)+0.5,'TOR');
+% plot(PHIs(28,1),PHIs(28,2),'.k'); plot(PHIs(97,1),PHIs(97,2),'.k'); % HCR
+% text(PHIs(28,1)+0.5,PHIs(28,2)+0.5,'HCR');
 box off
 axis image
 

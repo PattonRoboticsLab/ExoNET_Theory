@@ -9,14 +9,14 @@ fprintf('\n\n\n\n MAIN SCRIPT~~\n')
 
 disp('Choose from the menu...')
 fieldType = menu('Choose a field to approximate:', ...
-                 'TorqueApproximation for Gait', ...
+                 'GaitTorques', ...
                  'EXIT');        
 
 setUpLeg % set variables and plots
 close all
 
 switch fieldType
-  case 1 % Torque Approximation for Gait
+  case 1 % GaitTorques
     [p,c,TAUs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries); % optimization
 
   otherwise
