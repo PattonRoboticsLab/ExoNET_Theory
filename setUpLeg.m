@@ -21,9 +21,9 @@ EXONET.nElements = menu('Number of stacked elements per joint:', ...
                         '5');
 
 % Set the constraints for the parameters:
-RLoHi = [0.01 0.12];     % R low and high range
+RLoHi = [0.001 0.12];     % R low and high range
 thetaLoHi = [-360 360];  % theta low and high range
-L0LoHi = [0.01 0.30];    % L0 low and high range
+L0LoHi = [0.15 0.30];    % L0 low and high range
 i=0;
 EXONET.pConstraint = NaN*zeros(EXONET.nJoints*EXONET.nElements*EXONET.nParameters,2); % initialization
 for joint = 1:EXONET.nJoints
@@ -112,8 +112,8 @@ switch doGraph
 end
 
 
-%% HANDLE = @(ARGLIST) EXPRESSION constructs an anonymous function and returns the handle to it
-TENSION = @(L0,L)    (EXONET.K.*(L-L0)).*((L-L0)>0); % (inlineFcn) + stretch
+%% HANDLE = @(ARGLIST) EXPRESSION   constructs an anonymous function and returns the handle to it
+TENSION = @(L0,L)   (EXONET.K.*(L-L0)).*((L-L0)>0); % (inlineFcn) + stretch
 
 
 %% SET FULL SPAN OF POSTURE EVALUATION POINTS (ANGLES)
@@ -137,7 +137,7 @@ optOptions = optimset();
 optOptions.MaxIter = 1E3;     % optimization limit
 optOptions.MaxFunEvals = 1E3; % optimization limit
 optimset(optOptions);
-nTries = 50;                  % number of optimization reruns 
+nTries = 100;                  % 50 number of optimization reruns 
        % 30*EXONET.nElements
 
        

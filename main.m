@@ -18,6 +18,16 @@ close all
 switch fieldType
   case 1 % GaitTorques
     [p,c,TAUs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries); % optimization
+    fprintf('\n\n\n\n The Optimal Parameters for each Element are~~\n')
+    n = 1;
+    for i = 1:3:length(p) % for loop to print the values of the optimal parameters
+        if abs(p(i+1))>360 % to correct the angle theta if it's higher than 360 degrees
+            p(i+1) = sign(p(i+1))*(abs(p(i+1))-360);
+        end
+        fprintf('\n Element %d\n',n)
+        fprintf('\n r = %4.2f   theta = %4.2f   L0 = %4.2f\n',p(i),p(i+1),p(i+2))
+        n = n+1;
+    end
 
   otherwise
     disp('exiting...');
