@@ -20,8 +20,8 @@ if ~exist('pConstraint','var') % default
         lowBy = (EXONET.pConstraint(i,1)-p(i))*isLow; % how low
         isHi = p(i) > EXONET.pConstraint(i,2);
         hiBy = (p(i)-EXONET.pConstraint(i,2))*isHi; % how high
-        c = c + lambda*lowBy; % quadratic punishment
-        c = c + lambda*hiBy;  % quadratic punishment
+        c = c + lambda*lowBy*10; % quadratic punishment
+        c = c + lambda*hiBy*10;  % quadratic punishment
     end
 end
 

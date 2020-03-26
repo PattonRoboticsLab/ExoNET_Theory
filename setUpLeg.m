@@ -10,7 +10,7 @@ global EXONET BODY PHIs TAUsDESIRED TENSION
 
 
 %% EXONET
-EXONET.K = 1000;          % springs stiffness in [N/m]
+EXONET.K = 3000;          % springs stiffness in [N/m]
 EXONET.nParameters = 3;   % number of parameters for each spring
 EXONET.nJoints = 3;       % hip, knee and hip-knee
 EXONET.nElements = menu('Number of stacked elements per joint:', ...
@@ -136,9 +136,9 @@ TENSION = @(L0,L)    (EXONET.K.*(L-L0)).*((L-L0)>0); % (inlineFcn) + stretch
 %% Optimization Parameters
 optOptions = optimset();
 optOptions.MaxIter = 1E3;     % optimization limit
-optOptions.MaxFunEvals = 1E3; % optimization limit
+optOptions.MaxFunEvals = 1E4; % optimization limit
 optimset(optOptions);
-nTries = 2;                  % number of optimization reruns 
+nTries = 3;%3*EXONET.nElements;                  % number of optimization reruns 
        % 30*EXONET.nElements
 
        

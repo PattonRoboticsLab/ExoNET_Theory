@@ -19,7 +19,7 @@ center1 = [mean(x1range) mean(y1range)];%Center of Attractor
 
 %% Initialize Range of upper Attractor 2
 x2range = .1  :Spc: .25;
-y2range = .05 :Spc: .2;
+y2range = -.05 :Spc: .1;
 [X2, Y2 ] = meshgrid(x2range,y2range);% All combinations X & Y in x matrix
 c=cat(2,X2',Y2');
 newmatrix2 = reshape(c,[],2);

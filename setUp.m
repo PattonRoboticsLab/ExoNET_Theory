@@ -1,4 +1,4 @@
-% set as many parameters as possible for the stacked marionet applications
+ % set as many parameters as possible for the stacked marionet applications
 % patton 2019-01-11
 % 
 %       | PHI2  .
@@ -87,7 +87,7 @@ optOptions=optimset();
 optOptions.MaxIter = 1E3;                             % optimization limit
 optOptions.MaxFunEvals = 1E3;                         % optimization limit
 optimset(optOptions);
-nTries = 5;%30*Exo.nElements;                            % number optim reruns 
+nTries = 25;%30*Exo.nElements;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
