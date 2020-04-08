@@ -1,11 +1,11 @@
 % ***********************************************************************
-% Draw individual Marionets at the leg pose specified by phis
+% Draw individual MARIONETs for the leg pose specified by phis
 % ***********************************************************************
 
 function h = drawExonetsLeg(p,phis)
 
 %% Setup
-fprintf('\n\n\n\n Drawing Marionets~~\n')
+fprintf('\n\n\n\n Drawing MARIONETs~~\n')
 global EXONET BODY
 
 
@@ -57,7 +57,7 @@ if EXONET.nJoints == 3
         r = p(hipKneeIndex+(element-1)*EXONET.nParameters+0);
         theta = p(hipKneeIndex+(element-1)*EXONET.nParameters+1);
         L0 = p(hipKneeIndex+(element-1)*EXONET.nParameters+2);
-        rPos = [r*sind(theta) -r*cosd(theta)];                % R vector
+        rPos = [r*sind(theta) -r*cosd(theta)];                        % R vector
         ankle = [knee(1) + BODY.Lengths(2)*sind(phis(1)-phis(2)); ... % ANKLE position
                  knee(2) - BODY.Lengths(2)*cosd(phis(1)-phis(2))];
         plot([rPos(1) ankle(1)],[rPos(2) ankle(2)],'Color',Colors(3,:),'Linewidth',LW);

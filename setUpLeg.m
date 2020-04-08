@@ -6,7 +6,7 @@
 
 %% BEGIN
 % Define Global Variables
-global EXONET BODY PHIs TAUsDESIRED TENSION
+global EXONET BODY PHIs TAUsDESIRED TENSION ENERGY
 
 
 %% EXONET
@@ -21,9 +21,9 @@ EXONET.nElements = menu('Number of stacked elements per joint:', ...
                         '5');
 
 % Set the constraints for the parameters:
-RLoHi = [0.001 0.12];     % R low and high range
+RLoHi = [0.01 0.12];     % R low and high range
 thetaLoHi = [-360 360];  % theta low and high range
-L0LoHi = [0.15 0.30];    % L0 low and high range
+L0LoHi = [0.01 0.30];    % L0 low and high range
 i=0;
 EXONET.pConstraint = NaN*zeros(EXONET.nJoints*EXONET.nElements*EXONET.nParameters,2); % initialization
 for joint = 1:EXONET.nJoints
@@ -115,6 +115,8 @@ end
 %% HANDLE = @(ARGLIST) EXPRESSION   constructs an anonymous function and returns the handle to it
 TENSION = @(L0,L)   (EXONET.K.*(L-L0)).*((L-L0)>0); % (inlineFcn) + stretch
 
+ENERGY = @(L0,L)    (1/2).*EXONET.K.*(L-L0).^2; % Potential Energy
+
 
 %% SET FULL SPAN OF POSTURE EVALUATION POINTS (ANGLES)
 % % nAngles = 5; % number of hip and knee angles in a span for evaluation
@@ -137,7 +139,7 @@ optOptions = optimset();
 optOptions.MaxIter = 1E3;     % optimization limit
 optOptions.MaxFunEvals = 1E3; % optimization limit
 optimset(optOptions);
-nTries = 100;                  % 50 number of optimization reruns 
+nTries = 50;                  % 50 number of optimization reruns 
        % 30*EXONET.nElements
 
        

@@ -1,5 +1,5 @@
 % ***********************************************************************
-% Plot the torque vector field resulting from a 2-joint MARIONET
+% Plot the torque vector field
 % ***********************************************************************
 
 function plotVectFieldLeg(PHIs,BODY,Position,tau,Color)

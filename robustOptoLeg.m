@@ -4,7 +4,7 @@
 % and return the best choice of several random initial guesses
 % ***********************************************************************
 
-function [bestP,bestCost,TAUs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries)
+function [bestP,bestCost,TAUs,PEs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries)
 
 %% Setup
 fprintf('\n\n\n\n robustOpto~~\n')
@@ -93,18 +93,37 @@ end
 
 
 %% Update the plots
+% Draw the ExoNET and plot the torques
 clf
 subplot(1,2,1)
 drawBodyLeg(BODY);
 drawExonetsLeg(bestP,BODY.pose);     % to draw the ExoNET line segments
+
 TAUs = exoNetTorquesLeg(bestP,PHIs); % to calculate the final solution
+Residual = TAUsDESIRED - TAUs;       % to calculate the Residual
 plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r'); % to plot the desired torque field in red
 plotVectFieldLeg(PHIs,BODY,Position,TAUs,'b');        % to plot the best solution in blue
+plotVectFieldLeg(PHIs,BODY,Position,Residual,'g');    % to plot the Residual in green
 
+% Adjust axis and title
 subplot(1,2,2); axis(ax2); % to zoom the frame
 subplot(1,2,1); axis(ax1); % to zoom the frame
 title([ProjectName ', Average Error = ' num2str(meanErr)]); % to show the average error
 drawnow; pause(0.1) % to update the screen
+
+% Plot the Potential Energy
+[~,PEs] = exoNetTorquesLeg(bestP,PHIs); % to calculate the total Potential Energy stored by the ExoNET
+
+percentageGaitCycle = linspace(0,100,70);               % vector with % of gait cycle
+figure
+plot(percentageGaitCycle,PEs(1:70,5),'m','LineWidth',2) % to plot the relative Potential Energy
+                                                        % with respect to the % of gait cycle
+xlabel('Gait Cycle [%]'); ylabel('Relative Potential Energy stored by the ExoNET [a.u.]');
+hold on
+plot(percentageGaitCycle(1),PEs(1,5),'.k'); text(percentageGaitCycle(1),PEs(1,5),'TOR');
+plot(percentageGaitCycle(28),PEs(28,5),'.k'); text(percentageGaitCycle(28),PEs(28,5),'HCR');
+plot(percentageGaitCycle(70),PEs(70,5),'.k'); text(percentageGaitCycle(70),PEs(70,5),'TOR');
+
 
 % % % %
 % put_figure(1, 0.02, 0.07, 0.95, 0.82);

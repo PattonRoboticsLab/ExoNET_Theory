@@ -1,5 +1,5 @@
 % ***********************************************************************
-% Evaluate the cost function for desired torques TAUs at positions PHIs
+% Evaluate the cost function for the torques TAUs at positions PHIs
 % ***********************************************************************
 
 function [c,meanErr] = cost(p)
@@ -9,8 +9,8 @@ global PHIs TAUsDESIRED EXONET
 
 lambda = 10;
 e = TAUsDESIRED - exoNetTorquesLeg(p,PHIs); % torques errors at each operating point
-c = mean(sum(e.^2)); % to sum the squares of the errors at all positions
-meanErr = norm(mean(e)); % average error
+c = mean(sum(e.^2));                        % to sum the squares of the errors at all positions
+meanErr = norm(mean(e));                    % average error
 
 
 %% Enforce soft constraints on the parameters (if preSet in Setup)
