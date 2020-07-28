@@ -29,6 +29,7 @@ function taus=tau2jMARIONET(phis,Ls,r,theta,L0)
 global tension
 
 rVect=[r*cos(theta)       r*sin(theta)       0];  % vect to rotatorPin
+%norm_r = norm(rVect);
 elbow=[Ls(1)*cos(phis(1)) Ls(1)*sin(phis(1)) 0];  % elbow pos
 wrist=[elbow(1)+Ls(2)*cos(phis(1)+phis(2)), ...   % wrist pos
        elbow(2)+Ls(2)*sin(phis(1)+phis(2)), ...
@@ -36,8 +37,33 @@ wrist=[elbow(1)+Ls(2)*cos(phis(1)+phis(2)), ...   % wrist pos
 elbow2wr=wrist-elbow;                             % elbow to wrist vect
 Tdir=rVect-wrist;                                 % tension element vector 
 Tdist=norm(Tdir);                                 % length, rotator2endpt
-Tdir=Tdir./Tdist;                                 % direction vector 
-T=tension(L0,Tdist);                              % map stretch2tension 
+Tdir=Tdir./Tdist;    % direction vector 
+L0 = 0.212725;
+%T = tension(L0,Tdist);
+%T=tension(L0,Tdist);   
+% map stretch2tension 
+%if (L0 < Tdist)
+%    T = tension(L0,Tdist);
+%else
+%    T = 0;
+%end
+
+if (L0 > 0) && (Tdist/L0 < 2)
+    T = tension(L0,Tdist);
+else
+    T = 0;
+end
+
+
+% if (norm_r < .02) && (norm_r > .1)
+%     T = 0;
+%     rVect = [0 0 0];
+% else
+%     T = T;
+%     rVect = rVect;
+% end
+
+%plot3(L0,Tdist,T);
 tau1=cross(wrist,T.*Tdir);                        % cross product
 tau2=cross(elbow2wr,T.*Tdir);                     % cross product
 taus=[tau1(3) tau2(3)];                           % 3rd-dim is torque

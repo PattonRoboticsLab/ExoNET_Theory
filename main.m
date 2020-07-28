@@ -11,6 +11,7 @@ switch fieldType
   case 1 % gravity Compensation
     [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
+    p
 
   case 2 % EA
     [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired

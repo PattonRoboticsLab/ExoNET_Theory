@@ -12,8 +12,15 @@ fprintf('~robustOpto:~'); drawnow; pause(.1);       % update display
 global TAUsDesired ProjectName
 %p0=randn(1,length(p0));                             % RANDOM init
 p0=mean(Exo.pConstraint');                          % init constraint @mid
+%p0=randn(1,length(Exo.pConstraint)); 
+
 bestP=p0; bestCost=1e5;                             % init high
 TAUs=exoNetTorques(bestP,PHIs);                     % init Guess Solution
+A = [];
+b = [];
+Aeq = [];
+beq = [];
+
 
 %% set plot
 clf; subplot(1,2,1);    title(ProjectName);         % reset fig
@@ -31,8 +38,16 @@ title(ProjectName); drawnow; pause(.1);             % show
 fprintf('\n\n Begin optimizations:  ');
 for TRY=1:nTries
   fprintf('Opt#%d of %d..',TRY,nTries);
-  [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
-  [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
+%% Trying Two Kinds of Optimization
+%fminsearch
+   [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
+    [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
+%fmincon with lower and upper bounds of parameters
+%       [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+%      [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+
+%[p,c]=fminunc('cost',p0); 
+%[p,c]=fminunc('cost',p); 
   if c<bestCost                                     % if lower cost
     fprintf(' c=%g, ',c); p'%fprintf(' p=%g ',p);     % display
     bestCost=c; bestP=p;                            % update best 
@@ -51,12 +66,15 @@ for TRY=1:nTries
     fprintf(' (not an improvement) \n ');
   end
   pKick=range(Exo.pConstraint').*(nTries/TRY);      % simmu Aneal perturb 
-  p0=bestP + 1*randn(1,length(p0)).*pKick;            % kick p away from best
+  p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);            % kick p away from best
 end
 
 %% WRAP UP OPTO with one last run starting at best location
 fprintf('Final Opt..');
-[p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best
+[p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best %fminsearch optimization
+ %[p,c] = fmincon('cost',bestP,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+ %[p,c]=fminunc('cost',bestP); 
+% fmincon optimization
 if c<bestCost
   bestCost=c; bestP=p;                                % updateW/better cost
   fprintf(' c=%g, ',c);  p'                           % display

@@ -23,6 +23,11 @@ for i=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each position
     theta=p(shIndex+(element-1)*Exo.nParams+1);
     L0=   p(shIndex+(element-1)*Exo.nParams+2);
     tau=tau+tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); % +element's torque  
+% if (r>0.02) && (r < .14)
+%         tau=tau+tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); % +element's torque
+%     else 
+%         tau = tau;
+%     end
   end
   TAUs(i,1)=tau;
   
@@ -31,7 +36,12 @@ for i=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each position
     r=     p(elIndex+(element-1)*Exo.nParams+0);      % extract from p
     theta= p(elIndex+(element-1)*Exo.nParams+1);
     L0=    p(elIndex+(element-1)*Exo.nParams+2);
-    tau=tau+tauMARIONET(PHIs(i,2),Bod.L(2),r,theta,L0); % +element's torque
+%     if (r>0.02) && (r < .14)
+%         tau=tau+tauMARIONET(PHIs(i,2),Bod.L(2),r,theta,L0); % +element's torque
+%     else 
+%         tau = tau;
+%     end
+tau=tau+tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); % +element's torque
   end
   TAUs(i,2)=tau;
   
@@ -40,7 +50,12 @@ for i=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each position
       r=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
       theta=p(shElIndex+(element-1)*Exo.nParams+1);
       L0=   p(shElIndex+(element-1)*Exo.nParams+2);
-      taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torques
+       taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torques
+%     if (r>0.02) && (r < .14)
+%         taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torque
+%     else 
+%         taus = taus;
+%     end
     end
     TAUs(i,:)=TAUs(i,:)+taus; % add this in 
   end
