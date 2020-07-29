@@ -26,7 +26,7 @@ lVect=[r*cos(theta) r*sin(theta)  0];     % position vector of rotatorHub
 Tdir=lVect-rVect;%rVect-lVect;            % vector of tension element
 Tdist=norm(Tdir);                         % magnitude:length, rotator2endpt
 Tdir=Tdir./Tdist;                         % tension direction vector 
-if (L0 > 0) && (Tdist/L0 < 2)
+if (L0 > 0)
     T = tension(L0,Tdist);
 else
     T = 0;

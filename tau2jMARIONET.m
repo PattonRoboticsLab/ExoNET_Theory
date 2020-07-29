@@ -47,8 +47,8 @@ L0 = 0.212725;
 %else
 %    T = 0;
 %end
-
-if (L0 > 0) && (Tdist/L0 < 2)
+% 
+if (L0 > 0)
     T = tension(L0,Tdist);
 else
     T = 0;

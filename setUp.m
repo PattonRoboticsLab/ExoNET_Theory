@@ -55,7 +55,7 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
                , '6' );
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[.02 .15];thetaLoHi=2*pi*[0 1];  L0LoHi=[.05 .5];        % ranges
+RLoHi=[.02 .15];thetaLoHi=2*pi*[0 1];  L0LoHi=[.10 .5];        % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements
@@ -66,8 +66,8 @@ for joint=1:Exo.nJnts
 end
 
 %% Bod
-Bod.M = 20;                   % body mass 
-Bod.L = [.35 .26;];           % segment lengths (humerous, arm)
+Bod.M = 50;                   % body mass 
+Bod.L = [.27 .31;];           % segment lengths (humerous, arm)
 Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments 
 Bod.pose=pi/180*[-97 70];     % token body position (can be anything)
 
@@ -92,14 +92,15 @@ optimset(optOptions);
 nTries = 10;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
- %tension = @(L0,L) (L0 < L)*(8.646 - 2.393*L0 + 3.119 * L + .3573*L0^2 + ...
-  %   1.856*L0*L - 1.898*L^2 - 15.19*L0^3 + 41.97*L0^2*L - 38.93*L0*L^2 + ...
-   %  13.72*L^3 + 21.03*L0^4 - 77.65*L0^3*L + 104.9*L0^2*L^2 - 62.11*L0*L^3 + ...
-    % 13.44*L^4 - 7.832*L0^5 + 37.05*L0^4*L - 69.34*L0^3*L^2 + 63.52*L0^2*L^3 - ...
-     %29.13*L0*L^4 + 5.317*L^5)*10;
-tension = @(L0,L) (-2.098*(L/L0).^6+2.101*(L/L0).^5+7.546*(L/L0).^4-2.2*(L/L0).^3-5.008*(L/L0).^2+4.423*(L/L0)+9.343).*((L-L0)>0); 
+%  tension = @(L0,L) (L0 < L)*(8.646 - 2.393*L0 + 3.119 * L + .3573*L0^2 + ...
+%     1.856*L0*L - 1.898*L^2 - 15.19*L0^3 + 41.97*L0^2*L - 38.93*L0*L^2 + ...
+%     13.72*L^3 + 21.03*L0^4 - 77.65*L0^3*L + 104.9*L0^2*L^2 - 62.11*L0*L^3 + ...
+%     13.44*L^4 - 7.832*L0^5 + 37.05*L0^4*L - 69.34*L0^3*L^2 + 63.52*L0^2*L^3 - ...
+%     29.13*L0*L^4 + 5.317*L^5);
+%tension = @(L0,L) (-2.098*(L/L0).^6+2.101*(L/L0).^5+7.546*(L/L0).^4-2.2*(L/L0).^3-5.008*(L/L0).^2+4.423*(L/L0)+9.343).*((L-L0)>0); 
 
 
+tension = @(L0,L) (89.54*(L/L0).^5 -717.9*(L/L0).^4 + 2282*(L/L0).^3 -3589*(L/L0).^2 + 2798*(L/L0) -861.8).*((L/L0)>1);
 %tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 
 %% plot: 
