@@ -1,6 +1,5 @@
 % main: main script to do exoNet
 % patton's main program. use the other main to do carella's
-% this entire directory was modified from gravityProcess_mixedDevice code
 
 %% begin
 clear; close all; clc; 
@@ -11,6 +10,7 @@ switch fieldType
   case 1 % gravity Compensation
     [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
+    p
 
   case 2 % EA
     [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired

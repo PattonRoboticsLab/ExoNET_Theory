@@ -1,4 +1,4 @@
-% set as many parameters as possible for the stacked marionet applications
+% % set as many parameters as possible for the stacked marionet applications
 % patton 2019-01-11
 % 
 %       | PHI2  .
@@ -42,7 +42,7 @@ fieldType=menu('Choose a field to approximate:' ...
                , 'EXIT');     
 
 %% MARIONETS
-Exo.K=100;         % spring Stiffness 
+Exo.K=750;         % spring Stiffness 
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow
 disp('choose from menu...')
@@ -55,7 +55,7 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
                , '6' );
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[0 .12];thetaLoHi=3*pi*[-1 1];  L0LoHi=[.02 .3];        % ranges
+RLoHi=[.03 .17];thetaLoHi=2*pi*[0 1];  L0LoHi=[.20 .40];        % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements
@@ -66,8 +66,8 @@ for joint=1:Exo.nJnts
 end
 
 %% Bod
-Bod.M = 70;                   % body mass 
-Bod.L = [.35 .26;];           % segment lengths (humerous, arm)
+Bod.M = 50;                   % body mass 
+Bod.L = [.28 .25;];           % segment lengths (humerous, arm)
 Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments 
 Bod.pose=pi/180*[-97 70];     % token body position (can be anything)
 
@@ -84,13 +84,18 @@ PosWorkspace=Pos;             % store this
 
 %% Optimization params:
 optOptions=optimset();
-optOptions.MaxIter = 1E3;                             % optimization limit
-optOptions.MaxFunEvals = 1E3;                         % optimization limit
+optOptions.MaxIter = 1E6;                             % optimization limit
+optOptions.MaxFunEvals = 1E6;                         % optimization limit
+% optOptions.TolX = 1e-13;
+% optOptions.TolFun = 1e-13;
 optimset(optOptions);
-nTries = 30*Exo.nElements;                            % number optim reruns 
+nTries = 10;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
-tension = @(L0,L)    (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
+
+%tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1); 
+%tension = @(L0,L) (89.54*(L/L0).^5 -717.9*(L/L0).^4 + 2282*(L/L0).^3 -3589*(L/L0).^2 + 2798*(L/L0) -861.8).*((L/L0)>1);%.*((L/L0)<2);
+tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 
 %% plot: 
 put_fig(fieldType,.9,.35,.6,.5); subplot(1,2,1);    % place figure 

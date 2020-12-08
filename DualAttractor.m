@@ -5,12 +5,12 @@ global ProjectName
 ProjectName='DualAttractor';
 title(ProjectName);
 
-Magn=3.9; % force scaler
+Magn=4; % force scaler
 Spc=.04; % spacing of positions 
 
 %% Initialize Range of lower Attractor 1
-x1range =  .1 :Spc:  .25;
-y1range = -.4 :Spc: -.25;
+x1range =  .1 :Spc:  .4;
+y1range = -.25 :Spc: -.05;
 [X, Y ] = meshgrid(x1range,y1range);% All combinations X & Y in x matrix
 c=cat(2,X',Y');
 newmatrix = reshape(c,[],2);
@@ -18,13 +18,16 @@ x1 = newmatrix(:,1:2);
 center1 = [mean(x1range) mean(y1range)];%Center of Attractor
 
 %% Initialize Range of upper Attractor 2
-x2range = .1  :Spc: .25;
-y2range = .05 :Spc: .2;
+x2range = .1  :Spc: .4;
+y2range = -.05 :Spc: .15;
 [X2, Y2 ] = meshgrid(x2range,y2range);% All combinations X & Y in x matrix
 c=cat(2,X2',Y2');
 newmatrix2 = reshape(c,[],2);
 x2 = newmatrix2(:,1:2);
 center2 = [mean(x2range) mean(y2range)]; %Center of Attractor 2
+
+
+
 
 %% X Matrix of Positions for both Attractors
 x = [x1;x2];

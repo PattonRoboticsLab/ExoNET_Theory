@@ -19,11 +19,35 @@ function tau=tauMARIONET(phi,L,r,theta,L0)
 global tension
   
 rVect=[L*cos(phi)   L*sin(phi)    0];     % position vector of endpoint
+norm_r = norm(rVect);
+
+
 lVect=[r*cos(theta) r*sin(theta)  0];     % position vector of rotatorHub
 Tdir=lVect-rVect;%rVect-lVect;            % vector of tension element
 Tdist=norm(Tdir);                         % magnitude:length, rotator2endpt
 Tdir=Tdir./Tdist;                         % tension direction vector 
-T=tension(L0,Tdist);                      % map stretch2tension 
+if (L0 > 0)
+    T = tension(L0,Tdist);
+else
+    T = 0;
+end
+
+%when Tdist < L0 make 0
+
+
+
+% if (norm_r < .02) && (norm_r > .1)
+%     T = 0;
+%     rvect = [0 0 0];
+% elsepi
+%     T = T;
+%     rvect = rvect;
+% end
+
+%%Constant L0?
+%L0 = .1;
+%T=tension(L0,Tdist);                      % map stretch2tension 
+%plot3(L0,Tdist,T);
 tauVect=cross(lVect,T.*Tdir);             % cross product
 tau=tauVect(3);                           % 3rd-dim is torque
 

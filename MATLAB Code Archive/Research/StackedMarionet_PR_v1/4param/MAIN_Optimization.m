@@ -19,7 +19,7 @@ L_foreArm = .26;        %length of the fore arm? [m]
 %% Minimization process
  
 [paramStruct, average_err, average_perc] = minimizationProcess_4param(n_stackedMarionet, L_upperArm,...
-    L_foreArm, choosingJoint, animations);
+    L_foreArm, 2, animations);%choosingJoint
 
 phi = linspace(0,3); %let's use angles from sample space 0-3
 desired_torque = sin(phi)+cos(phi); %torque profile follows trajectory of sin+cos

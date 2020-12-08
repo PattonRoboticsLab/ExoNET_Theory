@@ -12,7 +12,10 @@ for i=1:size(PHIs,1)  % loop ea config
   eqWrF(i,:)=(     inv(jacobian(PHIs(i,:),Bod.L)')*tau(i,:)')'; % Force
   simpleArrow(Pos.wr(i,:),Pos.wr(i,:)+scaleF*eqWrF(i,:),Colr,1.75); hold on
 end
-text(.1,Pos.wr(1,2)-.1,'   ','Color',Colr);
+
+simpleArrow([Pos.wr(1,1),Pos.wr(1,2)],[Pos.wr(1,1),Pos.wr(1,2)],'k',1.75); % for the legend
+%text(Pos.wr(1,1),Pos.wr(1,2),'10 N'); % for the legend
+
 axis image
 
 %% plot in torque field in phi domain (this cheating -- not a true vector)
@@ -22,6 +25,8 @@ for i=1:size(PHIs,1),
   plot(PHIs(i,1),PHIs(i,2),'.','color',Colr); hold on; % dot
 end
 xlabel('\phi _1'); ylabel('\phi _2'); title('Torques at positions'); 
-plot(PHIs(1,1)-[0 -scaleTau*10],PHIs(1,2)-[0 0]-.1,'Color',Colr); % FOR LEGEND
-text(PHIs(1,1),PHIs(1,2)-.1,'       ','Color',Colr)
+
+%simpleArrow([-1.5, 2.1],[-1.5, 2.1]+[scaleTau, 0],'k',1.75); % for the legend
+%text(-1.6,2.2,'1 Nm'); % for the legend
+
 box off; axis image

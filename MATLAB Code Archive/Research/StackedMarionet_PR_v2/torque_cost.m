@@ -2,7 +2,8 @@ function cost=torque_cost(p)
 
     global phi desired_torque n 
     
-    tau_tot=stacks(p, phi); 
+    tau_tot=stacks(p, phi);
+    plot(phi,tau_tot);
     cost=sum((tau_tot-desired_torque).^2);
     radius=p(n+1:2*n);
     low_val = 0.05;

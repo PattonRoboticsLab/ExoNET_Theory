@@ -11,7 +11,7 @@ function plot_single_component(param)
         y = @(p, phi) F_spring.*(L*p(2)*sin(p(1)-phi))./sqrt(p(2)^2+L^2-(2*p(2)*L*cos(p(1)-phi)));
         hold on
         t = y([param(i) param(i+n)], phi);
-        plot(phi, t, 'c');
+        %plot(phi, t, 'c');
         text(phi(1)-.48, t(end-3), ['Marionet', num2str(i)]);
     end
 end
