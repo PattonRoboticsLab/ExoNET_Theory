@@ -89,13 +89,12 @@ optOptions.MaxFunEvals = 1E6;                         % optimization limit
 % optOptions.TolX = 1e-13;
 % optOptions.TolFun = 1e-13;
 optimset(optOptions);
-nTries = 10;                            % number optim reruns 
+nTries = 3;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 
-%tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1); 
-%tension = @(L0,L) (89.54*(L/L0).^5 -717.9*(L/L0).^4 + 2282*(L/L0).^3 -3589*(L/L0).^2 + 2798*(L/L0) -861.8).*((L/L0)>1);%.*((L/L0)<2);
-tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
+tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1); 
+%tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 
 %% plot: 
 put_fig(fieldType,.9,.35,.6,.5); subplot(1,2,1);    % place figure 
