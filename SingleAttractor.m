@@ -60,7 +60,7 @@ for i = 1:size(r,1)
   F(i,:) =transpose( F1(i).*(r(i,:)./r1(i))');    % Force Calculation
 end
 
-plot(x(:,1),x(:,2),'.','color',.8*[1 1 1]); % plot positions grey
+plot(x(:,1),x(:,2),'.','color',.8*[1 1 1]) % plot positions grey
 PHIs=inverseKin(x,Bod.L);    % 
 Pos=forwardKin(PHIs,Bod);    % positions assoc w/ these angle combinations
 

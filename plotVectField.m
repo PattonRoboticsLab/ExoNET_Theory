@@ -13,8 +13,8 @@ for i=1:size(PHIs,1)  % loop ea config
   simpleArrow(Pos.wr(i,:),Pos.wr(i,:)+scaleF*eqWrF(i,:),Colr,1.75); hold on
 end
 
-simpleArrow([Pos.wr(1,1),Pos.wr(1,2)],[Pos.wr(1,1),Pos.wr(1,2)]+[scaleF*10, 0],'k',1.75); % for the legend
-text(Pos.wr(1,1)+0.06,Pos.wr(1,2),'10 N'); % for the legend
+simpleArrow([Pos.wr(1,1),Pos.wr(1,2)],[Pos.wr(1,1),Pos.wr(1,2)],'k',1.75); % for the legend
+%text(Pos.wr(1,1),Pos.wr(1,2),'10 N'); % for the legend
 
 axis image
 
@@ -26,7 +26,7 @@ for i=1:size(PHIs,1),
 end
 xlabel('\phi _1'); ylabel('\phi _2'); title('Torques at positions'); 
 
-simpleArrow([-1.5, 2.1],[-1.5, 2.1]+[scaleTau, 0],'k',1.75); % for the legend
-text(-1.6,2.2,'1 Nm'); % for the legend
+%simpleArrow([-1.5, 2.1],[-1.5, 2.1]+[scaleTau, 0],'k',1.75); % for the legend
+%text(-1.6,2.2,'1 Nm'); % for the legend
 
 box off; axis image

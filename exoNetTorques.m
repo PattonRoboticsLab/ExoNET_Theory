@@ -50,7 +50,7 @@ tau=tau+tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); % +element's torque
       r=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
       theta=p(shElIndex+(element-1)*Exo.nParams+1);
       L0=   p(shElIndex+(element-1)*Exo.nParams+2);
-       taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torques
+      taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torques
 %     if (r>0.02) && (r < .14)
 %         taus=taus+tau2jMARIONET(PHIs(i,:),Bod.L,r,theta,L0); % +element's torque
 %     else 

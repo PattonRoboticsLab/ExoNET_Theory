@@ -1,6 +1,5 @@
 % main: main script to do exoNet
 % patton's main program. use the other main to do carella's
-% this entire directory was modified from gravityProcess_mixedDevice code
 
 %% begin
 clear; close all; clc; 

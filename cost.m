@@ -5,10 +5,12 @@
 function [c,meanErr] = cost(p)
 
 %% Setup
-global PHIs TAUsDesired Exo
+global PHIs TAUsDesired Exo error_norm
 
-lambda = 100;
+lambda = 10;
 e = TAUsDesired - exoNetTorques(p,PHIs); % torques errors at each operating point
+error_norm = sqrt(sum(e.^2,2));
+
 c = sum(sum(e.^2)); % to sum the squares of the errors at all positions
 meanErr = norm(mean(e)); % average error
 
@@ -23,6 +25,15 @@ if ~exist('pConstraint','var') % default
         c = c + lambda*lowBy^3; % quadratic punishment - you can change value of exponent
         c = c + lambda*hiBy^3;  % quadratic punishment
     end
+    
+    for i = 1:3:length(p)
+        if p(i) > (Exo.pConstraint(i,2))
+            c = c+lambda^2;
+        end
+    end
+    
+
+    
 end
 
 %% penalize R to drive to zero
@@ -36,13 +47,9 @@ end
 % end
 % 
 %% REGULARIZARION: soft contraint: all r less than realistic amount %
-% R_max= .1;                % practical max 
-% for i=1:3:length(p)       % R0 is fist and every third
-%   R=p(i);
-%   isLarger=abs(R)>R_max;
-%   LargerBy=(abs(R)-R_max)*isLarger;
-%   cost=cost+lamda*LargerBy^3;  % keep it short
-% end
+% R_max= .15;                % practical max 
+
+
 
 %% Penalize R to drive to zero
 % for i = 1:3:length(p) % loop thru each R parameter

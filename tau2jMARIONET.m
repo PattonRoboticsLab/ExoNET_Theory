@@ -38,7 +38,7 @@ elbow2wr=wrist-elbow;                             % elbow to wrist vect
 Tdir=rVect-wrist;                                 % tension element vector 
 Tdist=norm(Tdir);                                 % length, rotator2endpt
 Tdir=Tdir./Tdist;    % direction vector 
-L0 = 0.212725;
+
 %T = tension(L0,Tdist);
 %T=tension(L0,Tdist);   
 % map stretch2tension 
