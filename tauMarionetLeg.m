@@ -1,5 +1,5 @@
 % ***********************************************************************
-% Calculate the torque created by one MARIONET
+% Calculate the torque created by a MARIONET
 % ***********************************************************************
 
 function tau = tauMarionetLeg(phi,L,r,theta,L0)
@@ -11,9 +11,7 @@ rVect = [r*sind(theta) -r*cosd(theta)  0]; % R vector
 Tdir = lVect - rVect;                      % MARIONET vector
 Tdist = norm(Tdir);                        % length of the MARIONET
 Tdir = Tdir./Tdist;                        % direction of the Tension exerted by the MARIONET
-
-T = TENSION(L0,Tdist); % magnitude of the Tension exerted by the MARIONET
-
+T = TENSION(L0,Tdist);                     % magnitude of the Tension exerted by the MARIONET
 tauVect = cross(rVect,T.*Tdir);            % cross product between the R position vector and the Tension
 tau = tauVect(3);                          % the 3rd dimension is the torque
 

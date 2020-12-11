@@ -30,7 +30,7 @@ switch fieldType
 
   case 6
     setUpLeg
-    [p,c,TAUs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
+    [p,c,TAUs,costs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
     
   otherwise
     disp('exiting..'); close all

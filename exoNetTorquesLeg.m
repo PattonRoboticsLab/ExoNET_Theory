@@ -22,18 +22,18 @@ for i = 1:size(PHIs,1)
         r = p(hipIndex+(element-1)*EXONET.nParameters+0);
         theta = p(hipIndex+(element-1)*EXONET.nParameters+1);
         L0 = p(hipIndex+(element-1)*EXONET.nParameters+2);
-        tau = tau + tauMarionetLeg(PHIs(i,1),BODY.Lengths(1),r,theta,L0); % torque created by the Marionet
+        tau = tau + tauMarionetLeg(PHIs(i,1),BODY.Lengths(1),r,theta,L0); % torque created by the MARIONET
     end
-    TAUs(i,1) = tau;
+    TAUs(i,1) = tau; % torque created by the hip MARIONET
     
     tau = 0;
     for element = 1:EXONET.nElements
         r = p(kneeIndex+(element-1)*EXONET.nParameters+0);
         theta = p(kneeIndex+(element-1)*EXONET.nParameters+1);
         L0 = p(kneeIndex+(element-1)*EXONET.nParameters+2);
-        tau = tau + tauMarionetLeg(PHIs(i,1)-PHIs(i,2),BODY.Lengths(2),r,theta,L0); % torque created by the Marionet
+        tau = tau + tauMarionetLeg(PHIs(i,1)-PHIs(i,2),BODY.Lengths(2),r,theta,L0); % torque created by the MARIONET
     end
-    TAUs(i,2) = tau;
+    TAUs(i,2) = tau; % torque created by the knee MARIONET
     
     if EXONET.nJoints == 3
         taus = [0 0];
@@ -41,9 +41,10 @@ for i = 1:size(PHIs,1)
             r = p(hipKneeIndex+(element-1)*EXONET.nParameters+0);
             theta = p(hipKneeIndex+(element-1)*EXONET.nParameters+1);
             L0 = p(hipKneeIndex+(element-1)*EXONET.nParameters+2);
-            taus = taus + tau2jMarionetLeg(PHIs(i,:),BODY.Lengths,r,theta,L0); % torques created by the Marionet
+            taus = taus + tau2jMarionetLeg(PHIs(i,:),BODY.Lengths,r,theta,L0); % torques created by the MARIONET
         end
-        TAUs(i,:) = TAUs(i,:) + taus;
+        TAUs(i,:) = TAUs(i,:) + taus; % torques created by the hip-knee MARIONET
     end
+end
 
 end
