@@ -2,7 +2,7 @@
 % patton's main program. use the other main to do carella's
 
 %% begin
-clear; close all; clc; 
+clear all; close all; clc; 
 fprintf('\n ~ MAIN script:  ~ \n')  
 setUp % set most variables and plots in a SCRIPT 
 
@@ -10,7 +10,7 @@ switch fieldType
   case 1 % gravity Compensation
     [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    show_tensionstretch(PHIs,Bod,p)
+    %show_tensionstretch(PHIs,Bod,p)
     
 
   case 2 % EA

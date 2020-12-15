@@ -15,8 +15,8 @@
 %  O .  .  .  .  .  .  .  .  .  .  .  . 
 
 
-function [tau, T, Tdist]=tauMARIONET(phi,L,r,theta,L0)
-global tension
+function tau=tauMARIONET(phi,L,r,theta,L0)
+global tension stretch_ratio
   
 rVect=[L*cos(phi)   L*sin(phi)    0];     % position vector of endpoint
 norm_r = norm(rVect);
@@ -27,9 +27,12 @@ Tdir=lVect-rVect;%rVect-lVect;            % vector of tension element
 Tdist=norm(Tdir);                         % magnitude:length, rotator2endpt
 Tdir=Tdir./Tdist;                         % tension direction vector 
 
-
-T = tension(L0,Tdist);                    % Uses Inline Function for Tension in Setup.m
-
+stretch_ratio = Tdist/L0;
+if (L0 > 0)
+    T = tension(L0,Tdist);
+else
+    T = 0;
+end
 
 tauVect=cross(lVect,T.*Tdir);             % cross product
 tau=tauVect(3);                           % 3rd-dim is torque

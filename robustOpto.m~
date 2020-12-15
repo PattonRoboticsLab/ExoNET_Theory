@@ -61,10 +61,7 @@ for TRY=1:nTries
     plotVectField(PHIs,Bod,Pos,TAUs,[.8 .9 .9]);    % improvedSolution Grey
     fprintf('\n'); drawnow; pause(.1);              % updates display
     title([ProjectName ', cost=' num2str(c)]);
-    size(Exo.T)
-    size(Exo.Tdist)
     drawnow; pause(.1);      
-    
   else
     fprintf(' (not an improvement) \n ');
   end

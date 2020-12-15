@@ -25,10 +25,10 @@ function show_tensionstretch(PHIs,Bod,p)
 
         Tdir=Tdir./Tdist;    % direction vector 
 
-        if (L0 < Tdist)
-        T = tension(L0,Tdist)
+        if (L0 > 0)
+        T = tension(L0,Tdist);
         else
-        T = 0
+        T = 0;
         end
         spring_force(:,k) = T;
      end
@@ -41,10 +41,10 @@ plot(all_stretch(i,:),all_force(i,:),'o','MarkerSize',7,'MarkerFaceColor','k','M
 hold on
 %xlim([0 10])
 %ylim([-0.4 40])
-xlabel('Stretch (m)')
+xlabel('Stretch Ratio')
 ylabel('Tension (Nm)')
 title('Stretch vs Tension on Bungee Cords with Optimized Parameter Values')
-text(x(1),y(1),'   max')
+%text(x(1),y(1),'   max')
 end
 % plot(all_stretch(3,:),all_force(3,:),'go')
 % hold on
