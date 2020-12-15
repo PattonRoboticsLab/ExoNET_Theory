@@ -84,9 +84,7 @@ Pos=forwardKin(PHIs,Bod);     % positions assoc w/ these angle combinations
 PHIsWorkspace=PHIs;           % store this
 PosWorkspace=Pos;             % store this
 
-Exo.T = zeros(size(PHIs, 1), 3, Exo.nElements)
-Exo.Tdist = zeros(size(PHIs, 1), 3, Exo.nElements)
-size(Exo.T)
+Exo.T = zeros(size(PHis, 1), 
 %% Optimization params:
 optOptions=optimset();
 optOptions.MaxIter = 1E6;                             % optimization limit

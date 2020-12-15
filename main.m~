@@ -2,7 +2,7 @@
 % patton's main program. use the other main to do carella's
 
 %% begin
-clear all; close all; clc; 
+clear; close all; clc; 
 fprintf('\n ~ MAIN script:  ~ \n')  
 setUp % set most variables and plots in a SCRIPT 
 

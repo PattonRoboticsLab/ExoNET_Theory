@@ -26,8 +26,8 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     theta=p(shIndex+(element-1)*Exo.nParams+1);
     L0=   p(shIndex+(element-1)*Exo.nParams+2);
     %[new_tau, T, Tdist] = tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); %
-    [new_tau, Exo.T(test_point, 1, element), Exo.Tdist(test_point, 1, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
-    if plotIt, plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'o'); end
+    [new_tau, Exo.T(test_point, shIndex, element), Exo.Tdist(test_point, shIndex, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
+    if plotIt, plot(Exo.Tdist(test_point, shIndex, element), Exo.T(test_point, shIndex, element), 'o'); end
     hold on
     tau=tau+new_tau; % +element's torque  
   end
@@ -38,8 +38,8 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     r=     p(elIndex+(element-1)*Exo.nParams+0);      % extract from p
     theta= p(elIndex+(element-1)*Exo.nParams+1);
     L0=    p(elIndex+(element-1)*Exo.nParams+2);
-    [new_tau, Exo.T(test_point, 2, element), Exo.Tdist(test_point, 2, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
-    if plotIt, plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'o'); end
+    [new_tau, Exo.T(test_point, elIndex, element), Exo.Tdist(test_point, elIndex, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
+    if plotIt, plot(Exo.Tdist(test_point, elIndex, element), Exo.T(test_point, elIndex, element), 'o'); end
     tau=tau+new_tau; % +element's torque
   end
   TAUs(test_point,2)=tau;                                        % Storing Elbow Torque 
@@ -49,15 +49,14 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
       r=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
       theta=p(shElIndex+(element-1)*Exo.nParams+1);
       L0=   p(shElIndex+(element-1)*Exo.nParams+2);
-      [new_tau, Exo.T(test_point, 3, element), Exo.Tdist(test_point, 3, element)] = tau2jMARIONET(PHIs(test_point,:),Bod.L,r,theta,L0);
-      if plotIt, plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'o'); end
+      [new_tau, Exo.T(test_point, shElIndex, element), Exo.Tdist(test_point, shElIndex, element)] = tau2jMARIONET(PHIs(test_point,:),Bod.L,r,theta,L0);
+      if plotIt, plot(Tdist, T, 'o'); end
       taus=taus+new_tau; % +element's torques
     end
     TAUs(test_point,:)=TAUs(test_point,:)+taus; % add 2joint calculations            
   end
-
+  
 end % END loop for each position
-
 if plotIt, figure(cf); end
 %% this was intitial development for a 2-joint with single elements on each
 % for i=1:size(PHIs,1) % loop for each position
