@@ -7,7 +7,7 @@
 function TAUs=exoNetTorques(p,PHIs, plotIt)
 
 %% Setup
-global Exo Bod
+global Exo Bod tension
 if ~exist('plotIt', 'var'), plotIt = 0; end     % if plotIt argument not passed
     
 TAUs=NaN*zeros(size(PHIs)); % init
@@ -27,7 +27,7 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     L0=   p(shIndex+(element-1)*Exo.nParams+2);
     %[new_tau, T, Tdist] = tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); %
     [new_tau, Exo.T(test_point, 1, element), Exo.Tdist(test_point, 1, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
-    if plotIt, plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'o'); end
+    if plotIt, plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'bo'); end
     hold on
     tau=tau+new_tau; % +element's torque  
   end
@@ -39,7 +39,7 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     theta= p(elIndex+(element-1)*Exo.nParams+1);
     L0=    p(elIndex+(element-1)*Exo.nParams+2);
     [new_tau, Exo.T(test_point, 2, element), Exo.Tdist(test_point, 2, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
-    if plotIt, plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'o'); end
+    if plotIt, plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'go'); end
     tau=tau+new_tau; % +element's torque
   end
   TAUs(test_point,2)=tau;                                        % Storing Elbow Torque 
@@ -50,7 +50,7 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
       theta=p(shElIndex+(element-1)*Exo.nParams+1);
       L0=   p(shElIndex+(element-1)*Exo.nParams+2);
       [new_tau, Exo.T(test_point, 3, element), Exo.Tdist(test_point, 3, element)] = tau2jMARIONET(PHIs(test_point,:),Bod.L,r,theta,L0);
-      if plotIt, plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'o'); end
+      if plotIt, plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'ro'); end
       taus=taus+new_tau; % +element's torques
     end
     TAUs(test_point,:)=TAUs(test_point,:)+taus; % add 2joint calculations            
