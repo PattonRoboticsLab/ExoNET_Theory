@@ -32,7 +32,7 @@ switch fieldType
     [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
     show_tensionstretch(PHIs,Bod,p)
-
+% - Danny says hi
   case 6
     setUpLeg
     [p,c,TAUs,costs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
