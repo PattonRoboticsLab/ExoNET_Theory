@@ -94,7 +94,7 @@ optOptions.MaxFunEvals = 1E6;                         % optimization limit
 % optOptions.TolX = 1e-13;
 % optOptions.TolFun = 1e-13;
 optimset(optOptions);
-nTries = 2;                            % number optim reruns 
+nTries = 5;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 
