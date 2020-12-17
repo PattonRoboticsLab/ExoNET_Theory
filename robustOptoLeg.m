@@ -69,7 +69,7 @@ for TRY = 1:nTries
 %         plotVectFieldLeg(PHIs,BODY,Position,TAUs,[0.8 0.9 0.9]); % to plot the improved solution in grey
 %         fprintf('\n');
 %         drawnow; pause(0.1) % to update the display
-%         title([ProjectName ', cost = ' num2str(c)])
+%         title([ProjectName ', costLeg = ' num2str(c)])
 %         drawnow; pause(0.1) % to update the display
     else
         fprintf('\n\n (not an improvement)~~\n')

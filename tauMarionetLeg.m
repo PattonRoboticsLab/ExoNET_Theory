@@ -5,10 +5,10 @@
 function tau = tauMarionetLeg(phi,L,r,theta,L0)
 
 global TENSION
-  
-lVect = [L*sind(phi)   -L*cosd(phi)    0]; % hip-knee or knee-ankle vector
+
 rVect = [r*sind(theta) -r*cosd(theta)  0]; % R vector
-Tdir = lVect - rVect;                      % MARIONET vector
+lVect = [L*sind(phi)   -L*cosd(phi)    0]; % hip-knee or knee-ankle vector
+Tdir = rVect - lVect;                      % MARIONET vector
 Tdist = norm(Tdir);                        % length of the MARIONET
 Tdir = Tdir./Tdist;                        % direction of the Tension exerted by the MARIONET
 T = TENSION(L0,Tdist);                     % magnitude of the Tension exerted by the MARIONET
