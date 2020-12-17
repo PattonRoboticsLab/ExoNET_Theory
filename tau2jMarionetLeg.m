@@ -1,5 +1,5 @@
 % ***********************************************************************
-% Calculate the torques created by one MARIONET on 2 joints
+% Calculate the torques created by a 2-joints MARIONET
 % ***********************************************************************
 
 function taus = tau2jMarionetLeg(phis,Ls,r,theta,L0)
