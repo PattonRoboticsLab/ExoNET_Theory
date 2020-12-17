@@ -40,11 +40,11 @@ for TRY=1:nTries
   fprintf('Opt#%d of %d..',TRY,nTries);
 %% Trying Two Kinds of Optimization
 %fminsearch
-     [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
-     [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
+      [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
+      [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
 %fmincon with lower and upper bounds of parameters
-%        [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
-%        [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+     %  [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+      % [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
 
 %[p,c]=fminunc('cost',p0); 
 %[p,c]=fminunc('cost',p); 
@@ -61,12 +61,15 @@ for TRY=1:nTries
     plotVectField(PHIs,Bod,Pos,TAUs,[.8 .9 .9]);    % improvedSolution Grey
     fprintf('\n'); drawnow; pause(.1);              % updates display
     title([ProjectName ', cost=' num2str(c)]);
+    size(Exo.T)
+    size(Exo.Tdist)
     drawnow; pause(.1);      
+    
   else
     fprintf(' (not an improvement) \n ');
   end
   pKick=range(Exo.pConstraint').*(nTries/TRY);      % simmu Aneal perturb 
-  p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);            % kick p away from best
+  p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);      % kick p away from best
 end
 
 %% WRAP UP OPTO with one last run starting at best location
@@ -86,9 +89,10 @@ end
 %% update PLOTS
 clf; subplot(1,2,1); drawBody2(Bod.pose,Bod);              % cartoon man, posed
 drawExonets(bestP,Bod.pose);                          % exonet lineSegs
-TAUs=exoNetTorques(bestP,PHIs);                       % solution calc
+TAUs=exoNetTorques(bestP,PHIs, 'plotIt');             % solution calc
 plotVectField(PHIs,Bod,Pos,TAUsDesired,'r');          % desired again
 plotVectField(PHIs,Bod,Pos,TAUs,'b');                 % plot solution 
+
 % PHIs=PHIsWorkspace; Pos=PosWorkspace;               % add fullWorkspace
 % TAUs=exoNetTorques(p,PHIs);                         % field @these 
 % plotVectField(PHIs,Bod,Pos,TAUs,'b');               % also plot these

@@ -9,7 +9,7 @@ title(ProjectName);
 fprintf('\n - %s : - \n',ProjectName)
 
 %% Setup span of full workspace posture evaluation points (angles)
-nAngles = 7; % # shoulder & elbow angles in a span for evaluation
+nAngles = 8; % # shoulder & elbow angles in a span for evaluation
 phi1=pi/180*linspace(-100,0,nAngles); phi2=pi/180*linspace(25,145,nAngles);  
 PHIs=[];  
 for i=1:length(phi1)          % nested 2-loop establishes grid of phi's
