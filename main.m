@@ -35,9 +35,9 @@ switch fieldType
 
   case 6
     setUpLeg
-    [p,c,TAUs,costs]=robustOptoLeg(PHIs,BODY,Pos,Exo,nTries)     % ! global optim
-    show_tensionstretch(PHIs,Bod,p)
-
+    [p,c,TAUs,costs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries);  % optimization
+    showGraphTorquesLeg(percentageGaitCycle,TAUsDESIRED,TAUs)
+    
     
   otherwise
     disp('exiting..'); close all
