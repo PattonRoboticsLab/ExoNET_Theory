@@ -29,4 +29,7 @@ xlabel('\phi _1'); ylabel('\phi _2'); title('Torques at positions');
 %simpleArrow([-1.5, 2.1],[-1.5, 2.1]+[scaleTau, 0],'k',1.75); % for the legend
 %text(-1.6,2.2,'1 Nm'); % for the legend
 
+
+
+
 box off; axis image

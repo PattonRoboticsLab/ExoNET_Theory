@@ -90,9 +90,11 @@ end
 clf; subplot(1,2,1); drawBody2(Bod.pose,Bod);              % cartoon man, posed
 drawExonets(bestP,Bod.pose);                          % exonet lineSegs
 TAUs=exoNetTorques(bestP,PHIs, 'plotIt');             % solution calc
+%TAUs=exoNetTorques(bestP,PHIs);
 plotVectField(PHIs,Bod,Pos,TAUsDesired,'r');          % desired again
 plotVectField(PHIs,Bod,Pos,TAUs,'b');                 % plot solution 
-
+%fig = gcf();
+savefig('current_solution.fig');
 % PHIs=PHIsWorkspace; Pos=PosWorkspace;               % add fullWorkspace
 % TAUs=exoNetTorques(p,PHIs);                         % field @these 
 % plotVectField(PHIs,Bod,Pos,TAUs,'b');               % also plot these
