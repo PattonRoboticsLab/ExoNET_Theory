@@ -68,7 +68,7 @@ for joint=1:Exo.nJnts
 end
 
 %% Bod
-Bod.M = 10;                   % body mass 
+Bod.M = 50;                   % body mass 
 Bod.L = [.28 .25;];           % segment lengths (humerous, arm)
 Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments 
 Bod.pose=pi/180*[-97 70];     % token body position (can be anything)
@@ -98,10 +98,10 @@ nTries = 5;                            % number optim reruns
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 
-%% Tension Function for Rohith's Eighth Inch Bungee Cords
-tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1);
+%% Tension Funcit
+%tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1);
 %% Tension for Yaseen's Quarter Inch Bungee Cords
-%tension = @(L0,L) (710.5*(L/L0).^5-5442*(L/L0).^4+1.654e4*(L/L0).^3-2.495e4*(L/L0).^2+1.871e4*(L/L0)-5575).*((L/L0)>1);
+tension = @(L0,L) (710.5*(L/L0).^5-5442*(L/L0).^4+1.654e4*(L/L0).^3-2.495e4*(L/L0).^2+1.871e4*(L/L0)-5575).*((L/L0)>1);
 %tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 
 %% plot: 
