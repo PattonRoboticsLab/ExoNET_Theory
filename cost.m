@@ -5,8 +5,9 @@
 function [c,meanErr] = cost(p)
 %% Setup
 global PHIs TAUsDesired Exo error_norm 
-lambda = 10;
+lambda = 1000;
 e = TAUsDesired - exoNetTorques(p,PHIs); % torques errors at each operating point
+Exo.E = e;
 error_norm = sqrt(sum(e.^2,2));
 c = sum(sum(e.^2)); % to sum the squares of the errors at all positions
 meanErr = norm(mean(e)); % average error

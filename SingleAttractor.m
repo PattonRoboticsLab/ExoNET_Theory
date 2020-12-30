@@ -8,7 +8,7 @@ title(ProjectName);
 
 %x min,max, range
 min_x = 0.1;
-max_x = .5;
+max_x = .45;
 xrange = min_x:.05:max_x;
 
 %y min,max, range

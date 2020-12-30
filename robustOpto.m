@@ -40,11 +40,11 @@ for TRY=1:nTries
   fprintf('Opt#%d of %d..',TRY,nTries);
 %% Trying Two Kinds of Optimization
 %fminsearch
-      [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
-      [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
+     % [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
+     % [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
 %fmincon with lower and upper bounds of parameters
-     %  [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
-      % [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+       [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+       [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
 
 %[p,c]=fminunc('cost',p0); 
 %[p,c]=fminunc('cost',p); 
@@ -74,8 +74,8 @@ end
 
 %% WRAP UP OPTO with one last run starting at best location
 fprintf('Final Opt..');
- [p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best %fminsearch optimization
- %[p,c] = fmincon('cost',bestP,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+ %[p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best %fminsearch optimization
+ [p,c] = fmincon('cost',bestP,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
  %[p,c]=fminunc('cost',bestP); 
 % fmincon optimization
 if c<bestCost
@@ -102,6 +102,9 @@ subplot(1,2,2); axis(ax2); subplot(1,2,1); axis(ax1); % zoom frame
 title([ProjectName ',  AvgError=' num2str(meanErr)]); % show the goods
 drawnow; pause(.1);                                   % update
 
+ Exo.param = p;
+ Exo.phis = PHIs;
+ Exo.pos = Pos;
 eval(['save ' ProjectName]);
 orient landscape
 eval(['print -dpdf ' ProjectName]);
