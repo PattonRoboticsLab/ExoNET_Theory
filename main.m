@@ -10,13 +10,11 @@ switch fieldType
   case 1 % gravity Compensation
     [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    %show_tensionstretch(PHIs,Bod,p)
-    
+
 
   case 2 % EA
     [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    show_tensionstretch(PHIs,Bod,p)
 
   case 3  % SingleAttractor
     [TAUsDesired,PHIs,Pos]=SingleAttractor(Bod);        % determine desired
@@ -26,12 +24,10 @@ switch fieldType
   case 4  % DualAttractor
     [TAUsDesired,PHIs,Pos]=DualAttractor(Bod);          % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    show_tensionstretch(PHIs,Bod,p)
-    
+
   case 5
     [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
     [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    show_tensionstretch(PHIs,Bod,p)
 
   case 6
     setUpLeg

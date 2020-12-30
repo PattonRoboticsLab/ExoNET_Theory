@@ -43,7 +43,7 @@ fieldType=menu('Choose a field to approximate:' ...
 
 %% MARIONETS
 Exo.K=750;         % spring Stiffness 
-Exo.stretch_ratio_limit = 2; %
+Exo.stretch_ratio_limit = 1.5; %
 Exo.nParams=3;      % number of parameters governing each element
 Exo.nJnts=3;        % shoulder and elbow and shoulder elbow
 disp('choose from menu...')
@@ -57,7 +57,7 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
 
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[.03 .20];thetaLoHi=2*pi*[0 1];  L0LoHi=[.10 .60];               % ranges
+RLoHi=[.03 .20];thetaLoHi=2*pi*[0 1];  L0LoHi=[.21 .60];               % ranges
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements
@@ -94,7 +94,7 @@ optOptions.MaxFunEvals = 1E6;                         % optimization limit
 % optOptions.TolX = 1e-13;
 % optOptions.TolFun = 1e-13;
 optimset(optOptions);
-nTries = 5;                            % number optim reruns 
+nTries = 20;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 

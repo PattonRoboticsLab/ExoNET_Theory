@@ -28,12 +28,14 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     %[new_tau, T, Tdist] = tauMARIONET(PHIs(i,1),Bod.L(1),r,theta,L0); %
     [new_tau, Exo.T(test_point, 1, element), Exo.Tdist(test_point, 1, element)] = tauMARIONET(PHIs(test_point,1),Bod.L(1),r,theta,L0); %
     if plotIt, 
-    plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), '.', 'Color',Colors(1,:), 'MarkerSize',30); 
-    hold on
+    
+    
     stretch_max = max(Exo.Tdist(test_point,1,element));
     x = 0:.001:stretch_max;
     y = tension(L0,x);
     plot(x,y,'Color',Colors(1,:), 'LineWidth',2.5)
+    hold on
+    plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8); 
     end
     tau=tau+new_tau; % +element's torque  
   end
@@ -46,12 +48,12 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     L0=    p(elIndex+(element-1)*Exo.nParams+2);
     [new_tau, Exo.T(test_point, 2, element), Exo.Tdist(test_point, 2, element)] = tauMARIONET(PHIs(test_point,2),Bod.L(2),r,theta,L0); %
     if plotIt, 
-    plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), '.', 'Color',Colors(2,:), 'MarkerSize',30); 
+    
     stretch_max = max(Exo.Tdist(test_point,2,element));
     x = 0:.001:stretch_max;
     y = tension(L0,x);
     plot(x,y,'Color',Colors(2,:), 'LineWidth',2.5)
-    
+    plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8);
     
     end
     tau=tau+new_tau; % +element's torque
@@ -64,12 +66,15 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
       theta=p(shElIndex+(element-1)*Exo.nParams+1);
       L0=   p(shElIndex+(element-1)*Exo.nParams+2);
       [new_tau, Exo.T(test_point, 3, element), Exo.Tdist(test_point, 3, element)] = tau2jMARIONET(PHIs(test_point,:),Bod.L,r,theta,L0);
-      if plotIt, plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), '.', 'Color',Colors(3,:), 'MarkerSize',30);
+      if plotIt, 
         stretch_max = max(Exo.Tdist(test_point,3,element));
         x = 0:.001:stretch_max;
         y = tension(L0,x);
         plot(x,y,'Color',Colors(3,:),'LineWidth',2.5)
-        
+        plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8);
+        xlabel('Stretch (m)')
+        ylabel('Tension (Nm)')
+        title('Stretch vs  Tension on ExoNET Elements')
       
       
       end
