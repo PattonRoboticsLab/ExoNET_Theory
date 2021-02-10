@@ -35,7 +35,7 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     y = tension(L0,x);
     plot(x,y,'Color',Colors(1,:), 'LineWidth',2.5)
     hold on
-    plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8); 
+    plot(Exo.Tdist(test_point, 1, element), Exo.T(test_point, 1, element), 'o','MarkerFaceColor',Colors(1,:), 'MarkerEdgeColor', 'w','MarkerSize',8); 
     end
     tau=tau+new_tau; % +element's torque  
   end
@@ -53,7 +53,7 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     x = 0:.001:stretch_max;
     y = tension(L0,x);
     plot(x,y,'Color',Colors(2,:), 'LineWidth',2.5)
-    plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8);
+    plot(Exo.Tdist(test_point, 2, element), Exo.T(test_point, 2, element), 'o','MarkerFaceColor',Colors(2,:), 'MarkerEdgeColor', 'w','MarkerSize',8);
     
     end
     tau=tau+new_tau; % +element's torque
@@ -71,13 +71,14 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
         x = 0:.001:stretch_max;
         y = tension(L0,x);
         plot(x,y,'Color',Colors(3,:),'LineWidth',2.5)
-        plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'o','MarkerEdgeColor','w', 'MarkerFaceColor', 'k','MarkerSize',8);
+        plot(Exo.Tdist(test_point, 3, element), Exo.T(test_point, 3, element), 'o','MarkerFaceColor',Colors(3,:), 'MarkerEdgeColor', 'w','MarkerSize',8);
         xlabel('Stretch (m)')
         ylabel('Tension (Nm)')
         title('Stretch vs  Tension on ExoNET Elements')
       
       
       end
+
       
       taus=taus+new_tau; % +element's torques
     end
