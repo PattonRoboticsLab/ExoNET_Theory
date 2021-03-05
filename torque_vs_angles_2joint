@@ -1,0 +1,71 @@
+%% two joint
+
+clear all
+close all
+clc
+theta=30;
+r=5;
+l=10;
+deg1=0:5:90;
+deg2=-45:5:45;
+phi1=-90+deg1;
+phi2=deg2;
+R=[r*cosd(theta),   r*sind(theta),   0];
+dt=0.1;
+figure(1)
+xlabel('x')
+ylabel('y')
+title('vector position')
+for i=1:length(phi1)
+    
+    L1=[l*cosd(phi1(i)), l*sind(phi1(i)) ,0];
+    L2=[l*cosd(phi2(i)), l*sind(phi2(i)) ,0];
+    L=L1+L2;
+    T=R+L;
+    
+    torque1(i,:)=cross(L,R);
+    torque2(i,:)=cross(L2,R+L1);
+    rho1(i,:)=(cross(L,R))/(sqrt((T(1))^2+(T(2))^2+(T(3))^2));
+    rho2(i,:)=(cross(L2,R+L1))/(sqrt((T(1))^2+(T(2))^2+(T(3))^2));
+    
+    xr = [0 r*cosd(theta)];
+    yr = [0 r*sind(theta)];
+    
+    xl1=[0 L1(1)];
+    yl1=[0 L1(2)];
+    xl2=[L1(1) L1(1)+L2(1)];
+    yl2=[L1(2) L1(2)+L2(2)];
+    
+    xt=[R(1) L1(1)+L2(1)];
+    yt=[R(2) L1(2)+L2(2)];
+    hold on
+    xlim([-20 20])
+    ylim([-20 20])
+    %axis([-15 15 -15 15])
+    plot(xr,yr,'-y',xl1,yl1,'-r',xl2,yl2,'-r',xt,yt,'-b')
+    
+    pause(dt)
+    %hold on
+end
+legend('R','L1','L2','T');
+figure(2)
+subplot(2,2,1);
+plot(phi1,torque1(:,3), 'r-',phi1,torque2(:,3),'g');
+xlabel('phi1')
+ylabel('torque')
+legend('torque1','torque2')
+subplot(2,2,2);
+plot(phi2,torque1(:,3), 'r-',phi2,torque2(:,3),'g');
+xlabel('phi2')
+ylabel('torque')
+legend('torque1','torque2')
+subplot(2,2,3);
+plot(phi1,rho1(:,3), 'r-',phi1,rho2(:,3), 'g-');
+xlabel('phi1')
+ylabel('rho')
+legend('rho1','rho2')
+subplot(2,2,4);
+plot(phi2,rho1(:,3), 'r-',phi2,rho2(:,3), 'g-');
+xlabel('phi2')
+ylabel('rho')
+legend('rho1','rho2')
