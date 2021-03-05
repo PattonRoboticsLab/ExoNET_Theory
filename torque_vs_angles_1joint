@@ -1,0 +1,50 @@
+%% one joint
+
+clear all
+close all
+theta=120;
+r=5;
+l=10;
+phi=1:10:120;
+R=[r*cosd(theta),   r*sind(theta),   0];
+dt=0.0001;
+figure(1)
+xlabel('x')
+ylabel('y')
+title('vector position')
+for i=1:length(phi)
+    L=[l*cosd(phi(i)), l*sind(phi(i)) ,0];
+    T=R-L;
+    
+    torque(i,:)=-cross(R,L);
+    rho(i,:)=(-cross(R,L))/(sqrt((T(1))^2+(T(2))^2+(T(3))^2));
+    
+    xr = [0 r*cosd(theta)];
+    yr = [0 r*sind(theta)];
+    
+    xl=[0 l*cosd(phi(i))];
+    yl=[0 l*sind(phi(i))];
+    
+    xt=[L(1) R(1)];
+    yt=[L(2) R(2)];
+    hold on
+    xlim([-15 15])
+    ylim([-15 15])
+    
+    plot(xr,yr,'-g',xl,yl,'-r',xt,yt,'-b')
+    
+    pause(dt)
+    hold on
+end
+legend('R','L','T');
+figure(2)
+
+subplot(1,2,1);
+plot(phi,torque(:,3), 'r-');
+xlabel('phi')
+ylabel('torque')
+subplot(1,2,2);
+plot(phi,rho(:,3), 'r-');
+xlabel('phi')
+ylabel('rho')
+
