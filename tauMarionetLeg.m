@@ -2,7 +2,7 @@
 % Calculate the torque created by a MARIONET
 % ***********************************************************************
 
-function tau = tauMarionetLeg(phi,L,r,theta,L0)
+function [tau,T,Tdist] = tauMarionetLeg(phi,L,r,theta,L0)
 
 global TENSION
 

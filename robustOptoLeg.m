@@ -100,13 +100,18 @@ costs(TRY+1) = c;  % vector collecting the cost at each try
 clf
 subplot(1,2,1)
 drawBodyLeg(BODY);
-drawExonetsLeg(bestP,BODY.pose);     % to draw the ExoNET line segments
+drawExonetsLeg(bestP,BODY.pose);          % to draw the ExoNET line segments
 
-TAUs = exoNetTorquesLeg(bestP,PHIs); % to calculate the final solution
-Residual = TAUsDESIRED - TAUs;       % to calculate the Residual
+% figure;
+% drawBodyLeg(BODY);
+% drawRestingLengthsLeg(bestP,BODY.pose);   % to draw the resting lengths L0
+
+TAUs = exoNetTorquesTensionsLeg(bestP,PHIs,'plotIt'); % to calculate the final solution
+
+Residual = TAUsDESIRED - TAUs;                        % to calculate the Residual
 plotVectFieldLeg(PHIs,BODY,Position,TAUsDESIRED,'r'); % to plot the desired torque field in red
 plotVectFieldLeg(PHIs,BODY,Position,TAUs,'b');        % to plot the best solution in blue
-% plotVectFieldLeg(PHIs,BODY,Position,Residual,[0.8 0.9 0.9]);  % to plot the Residual in grey
+%plotVectFieldLeg(PHIs,BODY,Position,Residual,[0.8 0.9 0.9]);  % to plot the Residual in grey
 
 % Adjust axis and title
 subplot(1,2,2); axis(ax2); % to zoom the frame
@@ -117,7 +122,7 @@ drawnow; pause(0.1) % to update the screen
 
 % % % %
 % put_figure(1, 0.02, 0.07, 0.95, 0.82);
-% for i = 1 : 106
+% for i = 1 : length(PHIs)
 %     BODY.pose = [PHIs(i,1), PHIs(i,2)];
 %     clf % to clear the previous plot
 %     drawBodyLeg(BODY);

@@ -10,7 +10,7 @@ global EXONET BODY PHIs TAUsDESIRED TENSION
 
 
 %% EXONET
-EXONET.K = 10000;         % springs stiffness in [N/m]
+EXONET.K = 2000;          % springs stiffness in [N/m]
 EXONET.nParameters = 3;   % number of parameters for each spring
 EXONET.nJoints = 3;       % hip, knee and hip-knee
 EXONET.nElements = menu('Number of stacked elements per joint:', ...
@@ -21,9 +21,9 @@ EXONET.nElements = menu('Number of stacked elements per joint:', ...
                         '5');
 
 % Set the constraints for the parameters:
-RLoHi = [0.001 0.14];    % R low and high range
-thetaLoHi = [-360 360];  % theta low and high range
-L0LoHi = [0.05 0.30];    % L0 low and high range
+RLoHi = [0.001 0.16];    % R low and high range in [m]
+thetaLoHi = [-360 360];  % theta low and high range in [deg]
+L0LoHi = [0.05 0.30];    % L0 low and high range in [m]
 i=0;
 EXONET.pConstraint = NaN*zeros(EXONET.nJoints*EXONET.nElements*EXONET.nParameters,2); % initialization
 for joint = 1:EXONET.nJoints
@@ -35,6 +35,11 @@ for joint = 1:EXONET.nJoints
         i = i+1;
         EXONET.pConstraint(i,:) = L0LoHi;
     end
+end
+LL0LoHi = [0.10 0.80];    % L0 low and high range in [m] for the 2-joint element
+I = (9*EXONET.nElements)-3*(EXONET.nElements-1);
+for j = I:3:length(EXONET.pConstraint)
+    EXONET.pConstraint(j,:) = LL0LoHi;
 end
 
 
@@ -89,30 +94,30 @@ Position = forwardKinLeg(PHIs,BODY); % positions associated to the angles
 
 
 %% DRAW THE BODY ON THE BACKGROUND
-doGraph = menu('Do you want to draw the body?', ...
-                'YES', ...
-                'NO');        
-switch doGraph
-    case 1 % YES
-    % single pose of the right leg
-    put_figure(1, 0.02, 0.07, 0.95, 0.82);
-    drawBodyLeg(BODY); % draws the body on the background
-    plot(Position.ankle(:,1),Position.ankle(:,2),'.','color',0.8*[1 1 1]); % plot the positions of the ankle in grey
-      
-    pause(2)
-      
-    % dynamic plot of the right leg
-    put_figure(1, 0.02, 0.07, 0.95, 0.82);
-    for i = 1:length(PHIs)
-        BODY.pose = [PHIs(i,1) PHIs(i,2)];
-        clf % to clear the previous plot
-        drawBodyLeg(BODY);
-        pause(0.0001)
-    end
-    
-    otherwise % NO
-    close all
-end
+% doGraph = menu('Do you want to draw the body?', ...
+%                 'YES', ...
+%                 'NO');        
+% switch doGraph
+%     case 1 % YES
+%     % single pose of the right leg
+%     put_figure(1, 0.02, 0.07, 0.95, 0.82);
+%     drawBodyLeg(BODY); % draws the body on the background
+%     plot(Position.ankle(:,1),Position.ankle(:,2),'.','color',0.8*[1 1 1]); % plot the positions of the ankle in grey
+%       
+%     pause(2)
+%       
+%     % dynamic plot of the right leg
+%     put_figure(1, 0.02, 0.07, 0.95, 0.82);
+%     for i = 1:length(PHIs)
+%         BODY.pose = [PHIs(i,1) PHIs(i,2)];
+%         clf % to clear the previous plot
+%         drawBodyLeg(BODY);
+%         pause(0.0001)
+%     end
+%     
+%     otherwise % NO
+%     close all
+% end
 
 
 %% HANDLE = @(ARGLIST) EXPRESSION   constructs an anonymous function and returns the handle to it

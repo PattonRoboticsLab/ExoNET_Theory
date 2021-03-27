@@ -33,7 +33,7 @@ for i = 1:size(PHIs,1)
         L0 = p(kneeIndex+(element-1)*EXONET.nParameters+2);
         tau = tau + tauMarionetLeg(PHIs(i,1)-PHIs(i,2),BODY.Lengths(2),r,theta,L0); % torque created by the MARIONET
     end
-    TAUs(i,2) = tau; % torque created by the knee MARIONET
+    TAUs(i,2) = tau; % torque created by the knee MARIONET (acting only on 1 joint)
     
     if EXONET.nJoints == 3
         taus = [0 0];

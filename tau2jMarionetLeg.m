@@ -1,8 +1,8 @@
 % ***********************************************************************
-% Calculate the torques created by a 2-joints MARIONET
+% Calculate the torques created by a 2-joint MARIONET
 % ***********************************************************************
 
-function taus = tau2jMarionetLeg(phis,Ls,r,theta,L0)
+function [taus,T,Tdist] = tau2jMarionetLeg(phis,Ls,r,theta,L0)
 
 global TENSION
 

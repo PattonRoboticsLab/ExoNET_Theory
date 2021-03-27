@@ -19,8 +19,8 @@ for i = 1:3:length(p) % loop thru each R parameter
     lowBy = (EXONET.pConstraint(i,1)-p(i))*isLow; % how low
     isHi = p(i) > EXONET.pConstraint(i,2);        % if is higher than the max
     hiBy = (p(i)-EXONET.pConstraint(i,2))*isHi;   % how high
-    c = c + 10*lowBy; % increase cost if is lower than the min
-    c = c + 100*hiBy; % increase cost if is higher than the max
+    c = c + 1*lowBy;   % increase cost if is lower than the min
+    c = c + 1000*hiBy; % increase cost if is higher than the max
 end
 
 
@@ -33,8 +33,8 @@ for i = 3:3:length(p) % loop thru each L0 parameter
     lowBy = (EXONET.pConstraint(i,1)-p(i))*isLow; % how low
     isHi = p(i) > EXONET.pConstraint(i,2);        % if is higher than the max
     hiBy = (p(i)-EXONET.pConstraint(i,2))*isHi;   % how high
-    c = c + 10*lowBy; % increase cost if is lower than the min
-    c = c + 100*hiBy; % increase cost if is higher than the max
+    c = c + 1000*lowBy; % increase cost if is lower than the min
+    c = c + 1000*hiBy;  % increase cost if is higher than the max
 end
 
 end
