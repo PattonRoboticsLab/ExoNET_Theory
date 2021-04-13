@@ -72,6 +72,6 @@ switch fieldType
     
 end % END switch
 % %Yaseen Data swap
- %DoubleSA6=Exo;
- %save('DoubleSA6.mat');
+ %WC6=Exo;
+ %save('WC6.mat');
 fprintf(' end MAIN script. \n')
