@@ -68,7 +68,7 @@ for joint=1:Exo.nJnts
 end
 
 %% Bod
-Bod.M = 150;                   % body mass 100+150 kg
+Bod.M = 50;                   % body mass 100+150 kg
 Bod.L = [.28 .25;];           % segment lengths (humerous, arm)
 Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments 
 Bod.pose=pi/180*[-97 70];     % token body position (can be anything)
@@ -104,7 +104,7 @@ nTries = 30;                            % number optim reruns
 %tension = @(L0,L) (710.5*(L/L0).^5-5442*(L/L0).^4+1.654e4*(L/L0).^3-2.495e4*(L/L0).^2+1.871e4*(L/L0)-5575).*((L/L0)>1);
 %tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 %% Tension Quarter Inch Bungee
-tension = @(L0,L) (1*(370.9*(L/L0).^5-2963*(L/L0).^4+9398*(L/L0).^3-14790*(L/L0).^2+11590*(L/L0)-3600)).*((L/L0)>1);
+tension = @(L0,L) (.5*(370.9*(L/L0).^5-2963*(L/L0).^4+9398*(L/L0).^3-14790*(L/L0).^2+11590*(L/L0)-3600)).*((L/L0)>1);
 %% plot: 
 put_fig(fieldType,.9,.35,.6,.5); subplot(1,2,1);    % place figure 
 drawBody2(Bod.pose,Bod);     hold on                % draw@1 posture

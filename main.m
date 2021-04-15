@@ -71,7 +71,7 @@ switch fieldType
     disp('exiting..'); close all
     
 end % END switch
-% %Yaseen Data swap
- %WC6=Exo;
- %save('WC6.mat');
+ %Yaseen Data swap
+ %LP6=Exo;
+ %save('LP6.mat');
 fprintf(' end MAIN script. \n')
