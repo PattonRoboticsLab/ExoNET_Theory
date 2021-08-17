@@ -5,6 +5,7 @@
 clear all; close all; clc; 
 fprintf('\n ~ MAIN script:  ~ \n')  
 setUp_mod % set most variables and plots in a SCRIPT 
+print('completed')
 
 switch fieldType
   case 1 % gravity Compensation
