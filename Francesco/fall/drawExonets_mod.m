@@ -34,9 +34,16 @@ for element=1:Exo.nElements, fprintf(' shoulder element %d..',element);
   plot([r0Pos(1) r1Pos(1)], [r0Pos(2) r1Pos(2)], ...
     'Color',Colors(1,:), 'linewidth',LW);
   plot([shoulder(1) r0Pos(1)], [shoulder(2) r0Pos(2)], ...
-    'b', 'linewidth',LW);
+    'b', 'linewidth',2);
   plot([shoulder(1) r1Pos(1)], [shoulder(2) r1Pos(2)], ...
-    'y', 'linewidth',LW);
+    'y', 'linewidth',2);
+
+% plot([r0Pos(1) r1Pos(1)+elbow(1)], [r0Pos(2) r1Pos(2)+elbow(2)], ...
+%     'Color',Colors(1,:), 'linewidth',LW);
+% plot([shoulder(1) r0Pos(1)], [shoulder(2) r0Pos(2)], ...
+%     'b', 'linewidth',LW);
+% plot([elbow(1) r1Pos(1)+elbow(1)], [elbow(2) r1Pos(2)+elbow(2)], ...
+%     'y', 'linewidth',LW);
  
 end
 
@@ -51,23 +58,42 @@ for element=1:Exo.nElements, fprintf(' elbow element %d..',element);
   r1Pos=elbow+[r1*cos(phis(1)+theta1)  r1*sin(phis(1)+theta1) ];  % vect to rotatorPin
   wrist=[elbow(1)+Bod.L(2)*cos(phis(1)+phis(2)), ...   % wrist pos
          elbow(2)+Bod.L(2)*sin(phis(1)+phis(2)) ];
-  
-  plot([r0Pos(1) r1Pos(1)], [r0Pos(2) r1Pos(2)], ...
-    'Color',Colors(2,:), 'linewidth',LW);
+     
+       plot([r0Pos(1) r1Pos(1)], [r0Pos(2) r1Pos(2)], ...
+         'Color',Colors(2,:), 'linewidth',LW);
+       plot([elbow(1) r0Pos(1)], [elbow(2) r0Pos(2)], ...
+         'b', 'linewidth',2);
+       plot([elbow(1) r1Pos(1)], [elbow(2) r1Pos(2)], ...
+         'y', 'linewidth',2);
+
+%   plot([r0Pos(1) r1Pos(1)+wrist(1)], [r0Pos(2) r1Pos(2)+wrist(2)], ...
+%     'Color',Colors(2,:), 'linewidth',LW);
+%   plot([elbow(1) r0Pos(1)], [elbow(2) r0Pos(2)], ...
+%     'b', 'linewidth',LW);
+%   plot([wrist(1) r1Pos(1)+wrist(1)], [wrist(2) r1Pos(2)+wrist(2)], ...
+%     'y', 'linewidth',LW);
 
   
 end
 
 if Exo.nJnts==3,
   for element=1:Exo.nElements, fprintf(' 2joint element %d..',element);
-    r=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
-    theta=p(shElIndex+(element-1)*Exo.nParams+1);
-    L0=   p(shElIndex+(element-1)*Exo.nParams+2);
-    rPos=[r*cos(theta)       r*sin(theta) ];  % vect to rotatorPin
+    r0=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
+    theta0=p(shElIndex+(element-1)*Exo.nParams+1);
+    r2=    p(shElIndex+(element-1)*Exo.nParams+2);   % extract from p
+    theta2=p(shElIndex+(element-1)*Exo.nParams+3);
+    L0=   p(shElIndex+(element-1)*Exo.nParams+4);
+    r0Pos=[r0*cos(theta0)       r0*sin(theta0) ];  % vect to rotatorPin
+    r2Pos=[r2*cos(theta2+phis(1))       r2*sin(theta2+phis(1)) ];
     wrist=[elbow(1)+Bod.L(2)*cos(phis(1)+phis(2)), ...   % wrist pos
            elbow(2)+Bod.L(2)*sin(phis(1)+phis(2)) ];
-  plot([rPos(1) wrist(1)], [rPos(2) wrist(2)],...
+  plot([r0Pos(1) r2Pos(1)+elbow(1)], [r0Pos(2) r2Pos(2)+elbow(2)],...
     'Color',Colors(3,:), 'linewidth',LW);
+
+  plot([shoulder(1) r0Pos(1)], [shoulder(2) r0Pos(2)], ...
+         'c', 'linewidth',2);
+       plot([elbow(1) r2Pos(1)+elbow(1)], [elbow(2) r2Pos(2)+elbow(2)], ...
+         'm', 'linewidth',2);
   end
 end
   

@@ -27,7 +27,7 @@
 
 %% ~~ BEGIN PROGRAM: ~~
 fprintf('\n  SetUp parameters...')
-global Exo Bod PHIs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace T
+global Exo Bod TESTPOINTs TAUsDesired tension ProjectName PHIsWorkspace PosWorkspace T
 close all
 
 %% pick the problem to solve
@@ -44,7 +44,7 @@ fieldType=menu('Choose a field to approximate:' ...
 %% MARIONETS
 Exo.K=1000;         % spring Stiffness 
 Exo.stretch_ratio_limit = 2; %
-Exo.nParams=5;      % number of parameters governing each element    %% r0,theta0,r1,theta1,l0
+Exo.nParams=3;      % number of parameters governing each element    %% r0,theta0,r1,theta1,l0
 Exo.nJnts=2;        % shoulder and elbow and shoulder elbow
 disp('choose from menu...')
 Exo.nElements=menu('number of stacked elements per joint:' ...
@@ -57,14 +57,12 @@ Exo.nElements=menu('number of stacked elements per joint:' ...
 
 
 % set desired CONSTRIANTS on the parameters: 
-RLoHi=[.05 .20];thetaLoHi=2*pi*[0 1]; theta1LoHi=2*pi*[0 1]; L0LoHi=[.10 .20]; %L0LoHi=[.21 .70]; %L0LoHi=[.10 .20];      % ranges 0.21
+RLoHi=[.05 .20];L0LoHi=[.10 .20]; %L0LoHi=[.21 .70]; %L0LoHi=[.10 .20];      
 i=0; Exo.pConstraint=NaN*zeros(Exo.nJnts*Exo.nElements*Exo.nParams,2); % init %*2 variable origin and attachment
 for joint=1:Exo.nJnts
   for element=1:Exo.nElements %% adding constrain to new paramenters
     i=i+1; Exo.pConstraint(i,:)=RLoHi;
-    i=i+1; Exo.pConstraint(i,:)=thetaLoHi;
     i=i+1; Exo.pConstraint(i,:)=RLoHi;
-    i=i+1; Exo.pConstraint(i,:)=theta1LoHi;
     i=i+1; Exo.pConstraint(i,:)=L0LoHi;
     
   end
@@ -77,12 +75,22 @@ Bod.R = Bod.L.*[.45 .5];      % proximal to centers of mass of segments
 Bod.pose=pi/180*[-97 70];     % token body position (can be anything)
 
 %% Setup span of full workspace posture evaluation points (angles)
-nAngles = 10; % # shoulder & elbow angles in a span for evaluation
-phi1=pi/180*linspace(-100,0,nAngles); phi2=pi/180*linspace(25,145,nAngles);  
-PHIs=[];  
-for i=1:length(phi1)          % nested 2-loop establishes grid of phi's
-  for j=1:length(phi2), PHIs=[PHIs; phi1(i),phi2(j)]; end % stack up list
-end 
+nPosition = 10; % # shoulder & elbow angles in a span for evaluation
+%phi1=pi/180*linspace(-100,0,nAngles); phi2=pi/180*linspace(25,145,nAngles);  phi3=pi/180*linspace(25,145,nAngles);
+TEST_POINTs=[];
+position1=[0 0 -Bod.L(1);...
+           Bod.L(1) 0 0;...
+           sqrt((Bod.L(1)^3)/3) sqrt((Bod.L(1)^3)/3) sqrt((Bod.L(1)^3)/3);...
+                                                                          ...
+                                                                          ...];
+position2=[sqrt((Bod.L(2)^3)/3) sqrt((Bod.L(2)^3)/3) sqrt((Bod.L(2)^3)/3)];
+for i=1:length(position1)          % nested 2-loop establishes grid of phi's
+  for j=1:length(position2),
+      
+          TEST_POINTs=[TEST_POINTs; position1,position2]; 
+       % stack up list
+  end 
+end
 Pos=forwardKin(PHIs,Bod);     % positions assoc w/ these angle combinations
 PHIsWorkspace=PHIs;           % store this
 PosWorkspace=Pos;             % store this

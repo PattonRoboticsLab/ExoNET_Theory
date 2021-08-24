@@ -94,15 +94,15 @@ optOptions.MaxFunEvals = 1E6;                         % optimization limit
 % optOptions.TolX = 1e-13;
 % optOptions.TolFun = 1e-13;
 optimset(optOptions);
-nTries = 30;                            % number optim reruns 
+nTries = 600;                            % number optim reruns 
 
 %% HANDLE=@(ARGLIST)EXPRESSION constructs anon fcn & returns handle to it 
 
 %% Tension Function for Rohith's Eighth Inch Bungee Cords
-tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1);
+%tension = @(L0,L) (112.2*(L/L0).^5-838.3*(L/L0).^4+2494*(L/L0).^3-3689*(L/L0).^2+2717*(L/L0)-794.2).*((L/L0)>1);
 %% Tension for Yaseen's Quarter Inch Bungee Cords
 %tension = @(L0,L) (710.5*(L/L0).^5-5442*(L/L0).^4+1.654e4*(L/L0).^3-2.495e4*(L/L0).^2+1.871e4*(L/L0)-5575).*((L/L0)>1);
-%tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
+tension = @(L0,L) (Exo.K.*(L-L0)).*((L-L0)>0);   % (inlineFcn) +Stretch
 %% Tension Quarter Inch Maroon_Teal Bungee
 %tension = @(L0,L) (370.9*(L/L0).^5-2963*(L/L0).^4+9398*(L/L0).^3-14790*(L/L0).^2+11590*(L/L0)-3600).*((L/L0)>1);
 %% plot: 

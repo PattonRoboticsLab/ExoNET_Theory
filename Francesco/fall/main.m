@@ -4,12 +4,12 @@
 %% begin
 clear all; close all; clc; 
 fprintf('\n ~ MAIN script:  ~ \n')  
-setUp_mod % set most variables and plots in a SCRIPT 
+setUp % set most variables and plots in a SCRIPT 
 
 switch fieldType
   case 1 % gravity Compensation
     [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
-    [p,c,TAUs]=robustOpto_mod(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
+    [p,c,TAUs,parameter,good]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
@@ -71,6 +71,13 @@ switch fieldType
     disp('exiting..'); close all
     
 end % END switch
+figure
+hold on
+scatter3(parameter(:,1),parameter(:,3),parameter(:,5),parameter(:,6))
+scatter3(parameter(good,1),parameter(good,3),parameter(good,5),parameter(good,6),'r')
+hold off
+
+fprintf(' end MAIN script. \n')
 
 
 fprintf(' end MAIN script. \n')

@@ -4,13 +4,13 @@
 %% begin
 clear all; close all; clc; 
 fprintf('\n ~ MAIN script:  ~ \n')  
-setUp_mod % set most variables and plots in a SCRIPT 
+setUp_mod_3D % set most variables and plots in a SCRIPT 
 print('completed')
 
 switch fieldType
   case 1 % gravity Compensation
-    [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
-    [p,c,TAUs,parameter,good]=robustOpto_mod(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
+    [TAUsDesired,PHIs,Pos]=weightEffect_3D(Bod,Pos);       % determine desired
+    [p,c,TAUs,parameter,good]=robustOpto_mod_3D(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;

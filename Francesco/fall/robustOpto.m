@@ -5,14 +5,14 @@
 %               2020-01 Patton altered signifcantly, including input args 
 % ~~ BEGIN: ~~
 
-function [bestP,bestCost,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)
+function [bestP,bestCost,TAUs,parameter,good]=robustOpto(PHIs,Bod,Pos,Exo,nTries)
 
 %% setup 
 fprintf('~robustOpto:~'); drawnow; pause(.1);       % update display
 global TAUsDesired ProjectName
 %p0=randn(1,length(p0));                             % RANDOM init
-p0=mean(Exo.pConstraint');                       % init constraint @mid
-%p0=randn(1,length(Exo.pConstraint)); 
+%p0=mean(Exo.pConstraint');                       % init constraint @mid
+p0=randn(1,length(Exo.pConstraint)); 
 % p0 =[0.1371
 %     4.4370
 %     0.2288
@@ -84,19 +84,33 @@ for TRY=1:nTries
   fprintf('Opt#%d of %d..',TRY,nTries);
 %% Trying Two Kinds of Optimization
 %fminsearch
-     %[p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
-     %[p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
+%      [p,c]=fminsearch('cost',p0);                      % ! OPTIMIZATION !
+%      [p,c]=fminsearch('cost',p);                      % ! OPTIMIZATION !
 %fmincon with lower and upper bounds of parameters
        [p,c] = fmincon('cost',p0,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
        [p,c] = fmincon('cost',p,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
 
 %[p,c]=fminunc('cost',p0); 
 %[p,c]=fminunc('cost',p); 
+shIndex=  1;
+elIndex=  Exo.nParams*Exo.nElements+1;
+shElIndex=Exo.nParams*Exo.nElements*2+1;
+index=1;
+
+ for element=1:Exo.nElements,  %fprintf(' element %d..',element);
+    parameter(TRY,1)=     p(shIndex+(element-1)*Exo.nParams+0);   %r0   % extract from p %all the parameters
+    parameter(TRY,2)= p(shIndex+(element-1)*Exo.nParams+1);%theta0
+    parameter(TRY,3)=     p(shIndex+(element-1)*Exo.nParams+2);   %r1   
+    parameter(TRY,4)= p(shIndex+(element-1)*Exo.nParams+3);%theta1
+    parameter(TRY,5)=     p(shIndex+(element-1)*Exo.nParams+4);%L0
+    parameter(TRY,6)= c;
+  end
+
   if c<bestCost                                     % if lower cost
     fprintf(' c=%g, ',c); p'%fprintf(' p=%g ',p);     % display
     bestCost=c; bestP=p;                            % update best 
     TAUs=exoNetTorques(p,PHIs);                     % calc improvedSolution
-    
+    good=TRY;
     % update plots
     clf; subplot(1,2,1);    % reset fig
     drawBody2(Bod.pose,Bod);                        % cartoon man, posed
@@ -112,23 +126,23 @@ for TRY=1:nTries
   else
     fprintf(' (not an improvement) \n ');
   end
-  pKick=range(Exo.pConstraint').*(nTries/TRY);      % simmu Aneal perturb 
-  p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);      % kick p away from best
+ pKick=range(Exo.pConstraint').*(nTries/TRY);      % simmu Aneal perturb 
+ p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);      % kick p away from best
 end
 
 %% WRAP UP OPTO with one last run starting at best location
-fprintf('Final Opt..');
- %[p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best %fminsearch optimization
- [p,c] = fmincon('cost',bestP,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
- %[p,c]=fminunc('cost',bestP); 
-% fmincon optimization
-if c<bestCost
-  bestCost=c; bestP=p;                                % updateW/better cost
-  fprintf(' c=%g, ',c);  p'                           % display
-else
-  fprintf(' (not an improvement) \n ');
-end 
-[c,meanErr]=cost(bestP); meanErr
+% fprintf('Final Opt..');
+%  [p,c]=fminsearch('cost',bestP);                       % last OPTIM @ best %fminsearch optimization
+%  %[p,c] = fmincon('cost',bestP,A,b,Aeq,beq,Exo.pConstraint(:,1),Exo.pConstraint(:,2));
+%  %[p,c]=fminunc('cost',bestP); 
+% % fmincon optimization
+% if c<bestCost
+%   bestCost=c; bestP=p;                                % updateW/better cost
+%   fprintf(' c=%g, ',c);  p'                           % display
+% else
+%   fprintf(' (not an improvement) \n ');
+% end 
+ [c,meanErr]=cost(bestP); meanErr
 
 %% update PLOTS
 clf; subplot(1,2,1); drawBody2(Bod.pose,Bod);              % cartoon man, posed

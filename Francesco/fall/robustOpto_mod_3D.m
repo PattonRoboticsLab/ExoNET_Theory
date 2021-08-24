@@ -5,7 +5,7 @@
 %               2020-01 Patton altered signifcantly, including input args 
 % ~~ BEGIN: ~~
 
-function [bestP,bestCost,TAUs,parameter,good]=robustOpto_mod(PHIs,Bod,Pos,Exo,nTries)
+function [bestP,bestCost,TAUs,parameter,good]=robustOpto_mod_3D(PHIs,Bod,Pos,Exo,nTries)
 
 %% setup 
 fprintf('~robustOpto:~'); drawnow; pause(.1);       % update display
@@ -59,7 +59,7 @@ p0=randn(1,length(Exo.pConstraint));
 %     1.3821
 %     0.5414]';
 bestP=p0; bestCost=1e5;                             % init high
-TAUs=exoNetTorques_mod(bestP,PHIs);                     % init Guess Solution
+TAUs=exoNetTorques_mod_3D(bestP,PHIs);                     % init Guess Solution
 
 A = [];
 b = [];

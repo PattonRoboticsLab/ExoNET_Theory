@@ -21,6 +21,7 @@ if plotIt, cf = gcf(); figure(40); end    % Add cf and switch to another figure
 for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each position
   
   tau=0; %fprintf(' shoulder..');  tau=tauMARIONET(phi,L,r,theta,L0)
+
   for element=1:Exo.nElements,  %fprintf(' element %d..',element);
     r0=     p(shIndex+(element-1)*Exo.nParams+0);      % extract from p %all the parameters
     theta0= p(shIndex+(element-1)*Exo.nParams+1);
@@ -42,14 +43,14 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     tau=tau+new_tau; % +element's torque  
   end
   TAUs(test_point,1)=tau;                                        % Storing Shoulder Torque 
-  
+ 
   tau=0; %fprintf(' elbow..');
   for element=1:Exo.nElements,  %fprintf(' element %d..',element);
-    r0=     p(shIndex+(element-1)*Exo.nParams+0);      % extract from p %all the parameters
-    theta0= p(shIndex+(element-1)*Exo.nParams+1);
-    r1=     p(shIndex+(element-1)*Exo.nParams+2);      
-    theta1= p(shIndex+(element-1)*Exo.nParams+3);
-    L0=     p(shIndex+(element-1)*Exo.nParams+4);
+    r0=     p(elIndex+(element-1)*Exo.nParams+0);      % extract from p %all the parameters
+    theta0= p(elIndex+(element-1)*Exo.nParams+1);
+    r1=     p(elIndex+(element-1)*Exo.nParams+2);      
+    theta1= p(elIndex+(element-1)*Exo.nParams+3);
+    L0=     p(elIndex+(element-1)*Exo.nParams+4);
     [new_tau, Exo.T(test_point, 2, element), Exo.Tdist(test_point, 2, element)] = tauMARIONET_mod(PHIs(test_point,2),Bod.L(2),r0,theta0,r1,theta1,L0); %
     if plotIt, 
     
@@ -62,14 +63,16 @@ for test_point=1:size(PHIs,1) %fprintf('\n point %d..',i); % loop for each posit
     end
     tau=tau+new_tau; % +element's torque
   end
-  TAUs(test_point,2)=tau;                                        % Storing Elbow Torque 
+   TAUs(test_point,2)= tau;                                        % Storing Elbow Torque 
   
   if Exo.nJnts==3, taus=[0 0]; %fprintf(' 2 joint..');     
      for element=1:Exo.nElements,  %fprintf(' element %d..',element);
-      r=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
-      theta=p(shElIndex+(element-1)*Exo.nParams+1);
-      L0=   p(shElIndex+(element-1)*Exo.nParams+2);
-      [new_tau, Exo.T(test_point, 3, element), Exo.Tdist(test_point, 3, element)] = tau2jMARIONET(PHIs(test_point,:),Bod.L,r,theta,L0);
+      r0=    p(shElIndex+(element-1)*Exo.nParams+0);   % extract from p
+      theta0=p(shElIndex+(element-1)*Exo.nParams+1);
+      r2=    p(shElIndex+(element-1)*Exo.nParams+2);   % extract from p
+      theta2=p(shElIndex+(element-1)*Exo.nParams+3);
+      L0=   p(shElIndex+(element-1)*Exo.nParams+4);
+      [new_tau, Exo.T(test_point, 3, element), Exo.Tdist(test_point, 3, element)] = tau2jMARIONET_mod(PHIs(test_point,:),Bod.L,r0,theta0,r2,theta2,L0);
       if plotIt, 
         stretch_max = max(Exo.Tdist(test_point,3,element));
         x = 0:.001:stretch_max;
