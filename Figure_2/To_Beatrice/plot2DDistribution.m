@@ -11,7 +11,7 @@ if nRy<nCy; y = y'; end; N = length(y);
 for i = 1:N
     XX = x(i);
     YY = y(i);
-    plot(XX,YY,'o','LineWidth',1,'MarkerEdgeColor','w','MarkerFaceColor',c);
+    plot(XX,YY,'o','LineWidth',1,'MarkerSize',10,'MarkerEdgeColor','w','MarkerFaceColor',c);
     hold on
 end
 
@@ -52,9 +52,9 @@ line(xlim, [0 0],'Color','k','LineWidth',1.5);
 
 
 box off
-% axis equal
+axis equal
 axis image
-% axis([-40 25 -40 25])
+axis([-10 10 -8 6])
 
 % title('Error Distribution')
 xlabel('Shoulder Torque Error [Nm]')

@@ -15,21 +15,20 @@ close all
 %% FIGURE ON THE NEW PAPER
 figure
 
-load('err_gc_1e2j.mat')
-plot2DDistribution(a(:,1),a(:,2),'m')
+load('err_EA_1e2j.mat')
+plot2DDistribution(unnamed(:,1),unnamed(:,2),'m')
 %plot2DDistribution(err_DA_1e2j(:,1),err_DA_1e2j(:,2),'m')
 hold on
 
 
-load('err_gc_1e.mat')
-plot2DDistribution(b(:,1),b(:,2),'g')
+load('err_EA_1e.mat')
+plot2DDistribution(unnamed(:,1),unnamed(:,2),'g')
 hold on
 
-
-load('err_gc_5e.mat')
-plot2DDistribution(c(:,1),c(:,2),'b')
+load('err_EA_5e.mat')
+plot2DDistribution(unnamed(:,1),unnamed(:,2),'b')
 
 % title('Gravity Compensation')
 % labels = {'No 2-Joint Elements ExoNET','Single Element ExoNET','Multi-Joint Multi-Element ExoNET'};
 %legend(labels,'Location','Southeast')
-set(gca,'FontSize',20)
+set(gca,'FontSize',30)

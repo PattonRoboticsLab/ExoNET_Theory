@@ -9,7 +9,7 @@ title(ProjectName);
 fprintf('\n - %s : - \n',ProjectName)
 
 %% Setup span of full workspace posture evaluation points (angles)
-nAngles = 8; % # shoulder & elbow angles in a span for evaluation
+nAngles = 10; % # shoulder & elbow angles in a span for evaluation
 phi1=pi/180*linspace(-100,0,nAngles); phi2=pi/180*linspace(25,145,nAngles);  
 PHIs=[];  
 for i=1:length(phi1)          % nested 2-loop establishes grid of phi's
@@ -19,10 +19,10 @@ Pos=forwardKin(PHIs,Bod);     % positions assoc w/ these angle combinations
 
 %% weights
 g= 9.81;                                                % gravity constant
-hand_weight       = 0.226796*g;%(0.61/100)*Bod.M*g;                 % from winter's book
-foreArm_weight    = 0.408233*g;%(1.62/100)*Bod.M*g;
+hand_weight       = (0.61/100)*Bod.M*g;%0.226796*g;%(0.61/100)*Bod.M*g;                 % from winter's book
+foreArm_weight    = (1.62/100)*Bod.M*g;%0.408233*g;%(1.62/100)*Bod.M*g;
 forearmHandWeight = foreArm_weight+hand_weight;         % sum 'cause they're 1`
-upperArm_weight   = (0.453592+0.317515)*g;%(2.71/100)*Bod.M*g;
+upperArm_weight   = (2.71/100)*Bod.M*g;%(0.453592+0.317515)*g;%(2.71/100)*Bod.M*g;
 Bod.weights       = [upperArm_weight, foreArm_weight, hand_weight];
 for i=1:size(PHIs,1) % torques from weights:              % loop ea config
   tauSh=cross([Pos.R1(i,:) 0],[0 -upperArm_weight 0])+ ...% 3Dvects 4this

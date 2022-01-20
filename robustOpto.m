@@ -11,8 +11,8 @@ function [bestP,bestCost,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)
 fprintf('~robustOpto:~'); drawnow; pause(.1);       % update display
 global TAUsDesired ProjectName
 %p0=randn(1,length(p0));                             % RANDOM init
-p0=mean(Exo.pConstraint');                       % init constraint @mid
-%p0=randn(1,length(Exo.pConstraint)); 
+%p0=mean(Exo.pConstraint');                       % init constraint @mid
+p0=randn(1,length(Exo.pConstraint)); 
 % p0 =[0.1371
 %     4.4370
 %     0.2288
@@ -113,7 +113,7 @@ for TRY=1:nTries
     fprintf(' (not an improvement) \n ');
   end
   pKick=range(Exo.pConstraint').*(nTries/TRY);      % simmu Aneal perturb 
-  p0=bestP+ 1*randn(1,length(p0)).*(.5*pKick);      % kick p away from best
+  p0=bestP+ 1*randn(1,length(p0)).*(1.5*pKick);      % kick p away from best
 end
 
 %% WRAP UP OPTO with one last run starting at best location

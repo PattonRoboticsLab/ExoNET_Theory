@@ -13,6 +13,9 @@ switch fieldType
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
+    filename = 'grav_comp_latest.mat';
+    savdir = '/Users/partharyali/Documents/ExoNET/ExoNET/Best_Results';
+    save(fullfile(savdir,filename))
 
   case 2 % EA
     [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired
@@ -20,6 +23,9 @@ switch fieldType
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
+    filename = 'EA_latest.mat';
+    savdir = '/Users/partharyali/Documents/ExoNET/ExoNET/Best_Results';
+    save(fullfile(savdir,filename))
     
   case 3  % SingleAttractor
     [TAUsDesired,PHIs,Pos]=SingleAttractor(Bod);        % determine desired
@@ -27,6 +33,9 @@ switch fieldType
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
+    filename = 'singleattractor_latest.mat';
+    savdir = '/Users/partharyali/Documents/ExoNET/ExoNET/Best_Results';
+    save(fullfile(savdir,filename))
 
   case 4  % DualAttractor
     [TAUsDesired,PHIs,Pos]=DualAttractor(Bod);          % determine desired
@@ -34,6 +43,9 @@ switch fieldType
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
+    filename = 'dual_attractor_latest.mat';
+    savdir = '/Users/partharyali/Documents/ExoNET/ExoNET/Best_Results';
+    save(fullfile(savdir,filename))
     
   case 5
     [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
@@ -41,6 +53,9 @@ switch fieldType
     Exo.param = p;
     Exo.phis = PHIs;
     Exo.pos = Pos;
+    filename = 'limitpush_latest.mat';
+    savdir = '/Users/partharyali/Documents/ExoNET/ExoNET/Best_Results';
+    save(fullfile(savdir,filename))
     
   case 6
     setUpLeg

@@ -5,7 +5,7 @@ clc
 global H phi desired_torque springStiffness L_springRest cost %some variables are global because of the way the code is done
 
 %% Load data
-Data=load('Desired_torque_fake2.txt');    %loading data
+Data=load('BRD_data.txt');    %loading data
 phi= Data(:,1);    %angles [rad]
 desired_torque = Data(:, 2); %desired torque
 
@@ -28,4 +28,4 @@ ylabel('Torque (N*m)');
 
 %% Minimization process
 
-[optimal_param, average_err] = minimization_process(n_stackedMarionet, L_upperArm, L_foreArm, choosingJoint, animations);
+[optimal_param] = minimization_process(n_stackedMarionet, L_upperArm, L_foreArm, choosingJoint, animations);

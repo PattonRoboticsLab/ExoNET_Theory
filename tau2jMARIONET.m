@@ -2,7 +2,7 @@
 %  Using vector algebra. 
 % VERSIONS:  2019-Jan-31 Patton Created from tauMARIONET
 %            2019-Feb-10 Patton fixed (small!) L2 bug in elbow position,
-%                        and (bigger!) r bug in rVect
+%                        and (bigger!) r bug in rVect          
 %           
 %                                                  endpoint: wr>  
 %                                            .  X  

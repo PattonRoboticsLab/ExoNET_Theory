@@ -1,4 +1,4 @@
-function [opt_param, avg_error] = minimization_process(n_stackedMarionet, L_upperArm, L_foreArm, choosingJoint, animations)
+function [opt_param] = minimization_process(n_stackedMarionet, L_upperArm, L_foreArm, choosingJoint, animations)
 
     global phi desired_torque n torque err L L_2 spring y fig1 fig2 mean_err_old
     
