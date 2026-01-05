@@ -1,76 +1,35 @@
 % main: main script to do exoNet
-% patton's main program. use the other main to do carella's
+% patton's main program. 
+% this entire directory was modified from gravityProcess_mixedDevice code
 
-%% begin
-clear all; close all; clc; 
-fprintf('\n ~ MAIN script:  ~ \n')  
-setUp % set most variables and plots in a SCRIPT 
+clear; close all; clc; fprintf('\n ~ MAIN script:  ~ \n')  % begin
 
-switch fieldType
-  case 1 % gravity Compensation
-    [TAUsDesired,PHIs,Pos]=weightEffect(Bod,Pos);       % determine desired
-    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    Exo.param = p;
-    Exo.phis = PHIs;
-    Exo.pos = Pos;
+setUpArm % sets basic params
 
-  case 2 % EA
-    [TAUsDesired,PHIs,Pos]=eaField(Bod);                % determine desired
-    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    Exo.param = p;
-    Exo.phis = PHIs;
-    Exo.pos = Pos;
-    
-  case 3  % SingleAttractor
-    [TAUsDesired,PHIs,Pos]=SingleAttractor(Bod);        % determine desired
-    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    Exo.param = p;
-    Exo.phis = PHIs;
-    Exo.pos = Pos;
+task=menu('Choose:','anti-gravity','EA','Draw your own'); % exoDesign
 
-  case 4  % DualAttractor
-    [TAUsDesired,PHIs,Pos]=DualAttractor(Bod);          % determine desired
-    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    Exo.param = p;
-    Exo.phis = PHIs;
-    Exo.pos = Pos;
-    
-  case 5
-    [TAUsDesired,PHIs,Pos]=LimitPush(Bod);              % determine desired
-    [p,c,TAUs]=robustOpto(PHIs,Bod,Pos,Exo,nTries)     % ! global optim
-    Exo.param = p;
-    Exo.phis = PHIs;
-    Exo.pos = Pos;
-    
-  case 6
-    setUpLeg
-    [p,c,TAUs,costs] = robustOptoLeg(PHIs,BODY,Position,EXONET,nTries);  % optimization
-    showGraphTorquesLeg(percentageGaitCycle,TAUsDESIRED,TAUs)
-    
-    pp = p;
-    fprintf('\n\n\n\n The Optimal Parameters for each Element are~~\n')
-    n = 1;
-    for i = 1:3:length(pp)  % for loop to print the values of the optimal parameters
-        if abs(pp(i+1))>360 % to adjust the angle theta if it's higher than 360 degrees
-            while abs(pp(i+1))>360
-                pp(i+1) = sign(pp(i+1))*(abs(pp(i+1))-360);
-            end
-        end
-        if pp(i)<0          % if r is negative
-            pp(i) = pp(i)*(-1);
-            pp(i+1) = pp(i+1)+180;
-        end
-        fprintf('\n Element %d\n',n)
-        fprintf('\n r = %4.2f cm   theta = %4.2f deg   L0 = %4.2f cm\n',pp(i)*100,pp(i+1),pp(i+2)*100)
-        n = n+1;
-    end
-    
-    
-    
+switch task
+  
+  case 1 % gravity comp
+  setUpGrav                                        % set variables & plots 
+  [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- globalOptim
+  save gravity;  playwav('SHOOP.WAV');
+
+  case 2  %% EA
+  setUpEA                                       % set variables & plots
+  [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- globalOptim
+  save EAField; playwav('SHOOP.WAV');
+
+  case 3 %% Draw your own
+  setUpDrawn
+  [p,c,TAUs]=robustOpto(p0,PHIs,Bod,Pos,options.nTries); % <-- globalOptim
+  evalThesePoints  % also plot vectors for extra points not in optimization
+  save drawnField; playwav('SHOOP.WAV');
+
   otherwise
-    disp('exiting..'); close all
-    
+    disp('not developed yet.   ')
+
 end % END switch
 
-
 fprintf(' end MAIN script. \n')
+

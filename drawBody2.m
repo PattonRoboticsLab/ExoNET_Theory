@@ -25,6 +25,6 @@ scatter(elbow(1), elbow(2),5,'k','filled')
 scatter(wrist(1), wrist(2),5,'k','filled')
 scatter(eye_pos(1), eye_pos(2),20,'k','filled')
 
-fprintf('\n done Drawing.  ')
+fprintf('done. \n  ')
 
 end

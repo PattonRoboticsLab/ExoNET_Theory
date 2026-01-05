@@ -1,16 +1,22 @@
-% ***********************************************************************
-% Evaluate the cost function for desired torques TAUs at positions PHIs
-% ***********************************************************************
+% cost: evaluate cost function for ExoNET at positions PHIs
+%% ~~ BEGIN PROGRAM: ~~
+function c=cost(p)
 
-function [c,meanErr] = cost(p)
-%% Setup
-global PHIs TAUsDesired Exo error_norm 
-lambda = 1000;
-e = TAUsDesired - exoNetTorques(p,PHIs); % torques errors at each operating point
-Exo.E = e;
-error_norm = sqrt(sum(e.^2,2));
-c = sum(sum(e.^2)); % to sum the squares of the errors at all positions
-meanErr = norm(mean(e)); % average error
+global PHIs TAUsDesired Exo
+lamda=1e6;
+dontPlotIt=0;
+e=TAUsDesired-exoNetTorques(p,PHIs,dontPlotIt); % torques errors
+c=sum(sum(e.^2));  % Sum of squares of all errors at all positons
+
+%% REGULARIZARION: soft contraint: all L0 if less than realistic amount %
+loL0Limit= .05; % realistic amount 
+for i=3:3:length(p) % L0 is every third
+ L0=p(i);
+ ifShorter=L0<loL0Limit;
+ shorterBy=(loL0Limit-L0)*ifShorter;
+ c=c+lamda*shorterBy;
+end
+
 %% Enforce soft constraints on the parameters (if preSet in Setup)
 if ~exist('pConstraint','var') % default
     for i = 1:length(p) % loop thru each parameter constraint
@@ -18,23 +24,7 @@ if ~exist('pConstraint','var') % default
         lowBy = (Exo.pConstraint(i,1)-p(i))*isLow; % how low
         isHi = p(i) > Exo.pConstraint(i,2);
         hiBy = (p(i)-Exo.pConstraint(i,2))*isHi; % how high
-        c = c + lambda*lowBy^3; % punishment - you can change value of exponent
-        c = c + lambda*hiBy^3;  % punishment
+        c = c + lamda*lowBy^3; % punishment - you can change value of exponent
+        c = c + lamda*hiBy^3;  % punishment
     end    
-end
-
-
-%% Regularization for Stretch Ratio
-for test_point = 1:size(e,1)
-    for joint = 1:3
-        for element = 1:size(p,1)
-         L0 = p(joint+(element-1)*Exo.nParams+2);       % Extract L0
-         stretch_ratio = Exo.Tdist(test_point, joint, element)/L0;                  % Calculate Ratio
-         isHi = stretch_ratio > Exo.stretch_ratio_limit;    %boolean, if not true, isHi = 0
-         hiBy = (stretch_ratio-Exo.stretch_ratio_limit)*isHi; % how high
-         c = c + lambda*hiBy^3;  %  punishment
-        end
-    end
-end
-
 end

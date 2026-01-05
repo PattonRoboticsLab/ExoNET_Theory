@@ -9,7 +9,6 @@ global Exo Bod
 
 %% locations for cartoon
 Colors=  [.5 .7 1; .1 1 .2;  1 .6 .3]; % 3 distinct rgb color specs  
-LW=4; % line widths
 shoulder=[0 0];
 elbow=[Bod.L(1)*cos(phis(1)) Bod.L(2)*sin(phis(1))];  % elbow pos
 wrist=[elbow(1)+Bod.L(2)*cos(phis(1)+phis(2)), ...   % wrist pos
@@ -28,7 +27,7 @@ for element=1:Exo.nElements, fprintf(' shoulder element %d..',element);
   rPos=[r*cos(theta)       r*sin(theta) ];  % vect to rotatorPin
   elbow=[Bod.L(1)*cos(phis(1)) Bod.L(1)*sin(phis(1))];  % elbow pos
   plot([rPos(1) elbow(1)], [rPos(2) elbow(2)],...
-    'Color',Colors(1,:), 'linewidth',LW);
+    'Color',Colors(1,:), 'linewidth',3);
 end
 
 for element=1:Exo.nElements, fprintf(' elbow element %d..',element);
@@ -40,7 +39,7 @@ for element=1:Exo.nElements, fprintf(' elbow element %d..',element);
   wrist=[elbow(1)+Bod.L(2)*cos(phis(1)+phis(2)), ...   % wrist pos
          elbow(2)+Bod.L(2)*sin(phis(1)+phis(2)) ];
   plot([rPos(1) wrist(1)], [rPos(2) wrist(2)],...
-    'Color',Colors(2,:), 'linewidth',LW);
+    'Color',Colors(2,:), 'linewidth',3);
 end
 
 if Exo.nJnts==3,
@@ -52,7 +51,7 @@ if Exo.nJnts==3,
     wrist=[elbow(1)+Bod.L(2)*cos(phis(1)+phis(2)), ...   % wrist pos
            elbow(2)+Bod.L(2)*sin(phis(1)+phis(2)) ];
   plot([rPos(1) wrist(1)], [rPos(2) wrist(2)],...
-    'Color',Colors(3,:), 'linewidth',LW);
+    'Color',Colors(3,:), 'linewidth',3);
   end
 end
   
