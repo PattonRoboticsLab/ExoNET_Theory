@@ -1,5 +1,5 @@
 %% Function to evaluate the torques of the exo 
-function [tauvect, T, Tdist] = tauMARIONET_wr( elbow, endpoint, Actual_Pin, l0, k, robot, q)
+function [tauvect, T, Tdist] = tauMARIONET_wr( elbow, endpoint, Actual_Pin, l0)
 
     rVect  = endpoint - elbow; 
     lVect  = Actual_Pin - elbow;    

@@ -2984,108 +2984,402 @@ skull_start = neck_end+1;
 [skull_end,tmp] = size(skull_polygons);
 skull_end=skull_end+skull_start-1;
 
-%% Angoli di rotazione
-% Angoli di rotazione
-    elevation_angle = 0; % Elevazione in gradi
-    flexion_angle = -60;   % Flessione in gradi
-    external_rotation_angle = 0; % Rotazione esterna in gradi
-    forearm_flexion_angle = 0;   % Flessione dell'avambraccio in gradi
-    hand_rotation_angle = 0;     % Rotazione della mano in gradi
+%% ========================================================================
+%  SISTEMA DI ASSI ANATOMICI PER IL BRACCIO SINISTRO
+% =========================================================================
 
-    % Converti gli angoli in radianti
-    elevation_rad = deg2rad(elevation_angle);
-    flexion_rad = deg2rad(flexion_angle);
-    external_rotation_rad = deg2rad(external_rotation_angle);
-    hand_rotation_rad = deg2rad(hand_rotation_angle);
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║              CONFIGURAZIONE ANATOMICA DEL BRACCIO                  ║
+% ╚═══════════════════════════════════════════════════════════════════╝
 
-    % Matrice di rotazione per l'elevazione (intorno all'asse Y)
-    R_elevation = [cos(elevation_rad) 0 sin(elevation_rad);
-               0 1 0;
-               -sin(elevation_rad) 0 cos(elevation_rad)];
+% ---- SPALLA (definisce orientamento del braccio) ----
+shoulder_abduction = 60;     % Abduzione: intorno all'asse AVANTI/DIETRO (Z)
+                             % 0° = braccio giù, 90° = braccio laterale, 180° = su
+
+shoulder_flexion = -25;        % Flessione: intorno all'asse LATERALE (X)
+                             % 0° = neutro, 90° = braccio avanti, -45° = braccio dietro
+
+shoulder_rotation = -90;       % Rotazione: intorno all'asse del BRACCIO stesso
+                             % (interna/esterna, come girare una maniglia)
+
+% ---- GOMITO (flette nel piano del braccio ruotato) ----
+elbow_flexion = 80;          % Flessione: intorno all'asse locale perpendicolare al braccio
+                             % 0° = teso, 90° = piegato, 150° = molto piegato
+
+% ---- POLSO (ruota rispetto all'avambraccio ruotato) ----
+wrist_flexion = 0;           % Su/giù nel sistema locale
+wrist_deviation = 0;         % Laterale nel sistema locale
+wrist_pronation = 0;         % Rotazione lungo l'avambraccio
+
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║                    IMPLEMENTAZIONE                                 ║
+% ╚═══════════════════════════════════════════════════════════════════╝
+
+% Identifica le parti
+upperarm_indices = s8:(s8+size(l_upperarm_point,1)-1);
+elbow_indices = s9:(s9+size(l_elbow_point,1)-1);
+hand_indices = s10:(s10+size(l_wrist_hand_point,1)-1);
+arm_indices = s8:(s10+size(l_wrist_hand_point,1)-1);
+forearm_indices = s9:(s10+size(l_wrist_hand_point,1)-1);
+
+shoulder_center = [0.164, 1.39, -0.0373];
+
+% Funzioni base di rotazione
+Rx = @(a) [1, 0, 0; 0, cos(a), -sin(a); 0, sin(a), cos(a)];     % Asse laterale
+Ry = @(a) [cos(a), 0, sin(a); 0, 1, 0; -sin(a), 0, cos(a)];     % Asse verticale
+Rz = @(a) [cos(a), -sin(a), 0; sin(a), cos(a), 0; 0, 0, 1];     % Asse sagittale
+
+fprintf('\n╔════════════════════════════════════════════════════════════╗\n');
+fprintf('║       SISTEMA DI ASSI ANATOMICI - BRACCIO SINISTRO       ║\n');
+fprintf('╚════════════════════════════════════════════════════════════╝\n\n');
+
+% =========================================================================
+% STEP 1: COSTRUISCI IL SISTEMA LOCALE DELLA SPALLA
+% =========================================================================
+
+fprintf('📐 STEP 1: Rotazione della spalla\n');
+fprintf('   ────────────────────────────────\n');
+
+% Converti angoli in radianti
+abd_rad = deg2rad(shoulder_abduction);
+flex_rad = deg2rad(shoulder_flexion);
+rot_rad = deg2rad(shoulder_rotation);
+
+% ★ COSTRUISCI LA MATRICE NELL'ORDINE ANATOMICO CORRETTO ★
+% 1. Prima la FLESSIONE (intorno a X laterale)
+R_flex = Rx(flex_rad);
+
+% 2. Poi l'ABDUZIONE (intorno a Z sagittale)  
+R_abd = Rz(abd_rad);
+
+% 3. Infine la ROTAZIONE (intorno all'asse Y locale del braccio)
+% Ma Y locale cambia dopo flessione e abduzione!
+% Quindi dobbiamo applicarla DOPO aver orientato il braccio
+R_rot = Ry(rot_rad);
+
+% ★ MATRICE COMPLETA DELLA SPALLA (ordine: flessione → abduzione → rotazione) ★
+R_shoulder = R_abd * R_flex * R_rot;
+
+fprintf('   Flessione:  %6.1f° (intorno all''asse X laterale)\n', shoulder_flexion);
+fprintf('   Abduzione:  %6.1f° (intorno all''asse Z sagittale)\n', shoulder_abduction);
+fprintf('   Rotazione:  %6.1f° (intorno all''asse del braccio)\n', shoulder_rotation);
+
+% Calcola gli assi locali del braccio dopo la rotazione della spalla
+X_local_arm = R_shoulder * [1; 0; 0];  % Asse lungo il braccio
+Y_local_arm = R_shoulder * [0; 1; 0];  % Asse verticale locale
+Z_local_arm = R_shoulder * [0; 0; 1];  % Asse di flessione gomito
+
+fprintf('\n   Assi locali del braccio (dopo rotazione spalla):\n');
+fprintf('   • Asse braccio (X):      [%6.2f, %6.2f, %6.2f]\n', X_local_arm);
+fprintf('   • Asse verticale (Y):    [%6.2f, %6.2f, %6.2f]\n', Y_local_arm);
+fprintf('   • Asse gomito (Z):       [%6.2f, %6.2f, %6.2f] ← gomito flette qui\n', Z_local_arm);
+
+% Applica la rotazione a tutto il braccio
+points(arm_indices, :) = points(arm_indices, :) - shoulder_center;
+points(arm_indices, :) = (R_shoulder * points(arm_indices, :)')';
+points(arm_indices, :) = points(arm_indices, :) + shoulder_center;
+
+% =========================================================================
+% STEP 2: FLESSIONE GOMITO NEL SISTEMA LOCALE DEL BRACCIO
+% =========================================================================
+
+if elbow_flexion ~= 0
+    fprintf('\n💪 STEP 2: Flessione del gomito\n');
+    fprintf('   ────────────────────────────────\n');
     
-    % Matrice di rotazione per la flessione (intorno all'asse X)
-    R_flexion = [1 0 0;
-             0 cos(flexion_rad) -sin(flexion_rad);
-             0 sin(flexion_rad) cos(flexion_rad)];
+    elbow_center = mean(points(elbow_indices, :), 1);
+    elbow_rad = deg2rad(elbow_flexion);
     
-    % Matrice di rotazione per la rotazione esterna (intorno all'asse Z)
-    R_external_rotation = [cos(external_rotation_rad) -sin(external_rotation_rad) 0;
-                           sin(external_rotation_rad) cos(external_rotation_rad) 0;
-                           0 0 1];
+    fprintf('   Angolo:     %6.1f°\n', elbow_flexion);
+    fprintf('   Asse:       Z locale = [%6.2f, %6.2f, %6.2f]\n', Z_local_arm);
     
-    % Matrice di rotazione per la flessione dell'avambraccio (intorno all'asse X)
-    R_forearm_flexion = [1 0 0;
-                         0 cos(forearm_flexion_rad) -sin(forearm_flexion_rad);
-                         0 sin(forearm_flexion_rad) cos(forearm_flexion_rad)];
+    % ★ Crea rotazione nel sistema locale (intorno a Z locale) ★
+    R_elbow_local = Rz(elbow_rad);
     
-    % Matrice di rotazione per la rotazione della mano (intorno all'asse Z)
-    R_hand_rotation = [cos(hand_rotation_rad) -sin(hand_rotation_rad) 0;
-                       sin(hand_rotation_rad) cos(hand_rotation_rad) 0;
-                       0 0 1];
-
-    % Indici dei vertici del braccio destro
-    l_upperarm_start = s8;
-    [l_upperarm_end, ~] = size(l_upperarm_point);
-    l_upperarm_end = l_upperarm_end + l_upperarm_start - 1;
-
-    l_elbow_start = l_upperarm_end + 1;
-    [l_elbow_end, ~] = size(l_elbow_point);
-    l_elbow_end = l_elbow_end + l_elbow_start - 1;
-
-    l_wrist_hand_start = l_elbow_end + 1;
-    [l_wrist_hand_end, ~] = size(l_wrist_hand_point);
-    l_wrist_hand_end = l_wrist_hand_end + l_wrist_hand_start - 1;
-
-    % Posizione della spalla destra
-    left_shoulder_position = [0.15, 1.35, -0.0373];
-
-    % Applica le trasformazioni relative alla posizione della spalla
-    left_arm_indices = l_upperarm_start:l_upperarm_end;
-    points(left_arm_indices, :) = points(left_arm_indices, :) - left_shoulder_position;
-
-    points(left_arm_indices, :) = (R_elevation * points(left_arm_indices, :)')';
-
-    points(left_arm_indices, :) = (R_flexion * points(left_arm_indices, :)')';
+    % ★ Trasforma nel sistema globale ★
+    R_elbow_global = R_shoulder * R_elbow_local * R_shoulder';
     
-    % points(left_arm_indices, :) = (R_external_rotation * points(left_arm_indices, :)')';
-    points(left_arm_indices, :) = points(left_arm_indices, :) + left_shoulder_position;
+    % Applica
+    points(forearm_indices, :) = points(forearm_indices, :) - elbow_center;
+    points(forearm_indices, :) = (R_elbow_global * points(forearm_indices, :)')';
+    points(forearm_indices, :) = points(forearm_indices, :) + elbow_center;
     
-    % Posizione di attacco per la rotazione dell'avambraccio
-    % Treat the forearm
-    flex_elbow = 0;
-    rotate_elbow = 0;
-    flexion_rad_sh = 270;
-    rot_xy = deg2rad(90);
-
-    forearm_flexion_rad = deg2rad(flex_elbow);
-    forearm_rot_rad = deg2rad(rotate_elbow);
-    forearm_rotation_position = [-1, 1.1, 0.05]; % destra alto avanti
+    % ★ AGGIORNA IL SISTEMA LOCALE PER L'AVAMBRACCIO ★
+    R_forearm = R_shoulder * R_elbow_local;
     
-    R_flexion_sh = [1 0 0;
-             0 cos(flexion_rad_sh) -sin(flexion_rad_sh);
-             0 sin(flexion_rad_sh) cos(flexion_rad_sh)];
-
-    R_flexion_fore = [cos(forearm_flexion_rad) 0 sin(forearm_flexion_rad);
-             0 1 0;
-             -sin(forearm_flexion_rad) 0 cos(forearm_flexion_rad)];
-
-    R_rotation_xy = [cos(rot_xy) sin(rot_xy) 0;
-        0 0 1;
-                    -sin(rot_xy) cos(rot_xy) 0];
-
-
-    % Applica la flessione dell'avambraccio
-    forearm_indices = l_elbow_start:l_wrist_hand_end;
-    % points(forearm_indices, :) = points(forearm_indices, :) - forearm_rotation_position;
-    points(forearm_indices, :) = (R_flexion_sh * points(forearm_indices, :)')';
-    points(forearm_indices, :) = (R_flexion_fore * points(forearm_indices, :)')'; % external rotation is what I need to flex the elbow
-    points(forearm_indices, :) = (R_rotation_xy * points(forearm_indices, :)')';
-    points(forearm_indices, :) = [points(forearm_indices, 1), points(forearm_indices, 2), points(forearm_indices, 3)] - [0.87 -1.45 -0.4 ];
+    % Nuovi assi locali dell'avambraccio
+    X_local_forearm = R_forearm * [1; 0; 0];  % Lungo l'avambraccio
+    Y_local_forearm = R_forearm * [0; 1; 0];  
+    Z_local_forearm = R_forearm * [0; 0; 1];  
     
-    % Applica la rotazione della mano
-    % hand_indices = l_wrist_hand_start:l_wrist_hand_end;
-    % points(hand_indices, :) = [points(hand_indices, 2), points(hand_indices, 1), points(hand_indices, 3)] - [0.9 -0.9 0 ]  ;
-   % positivo verso destra % negativo verso su
+    fprintf('\n   Assi locali aggiornati per l''avambraccio:\n');
+    fprintf('   • Asse avambraccio (X):  [%6.2f, %6.2f, %6.2f]\n', X_local_forearm);
+    fprintf('   • Asse Y locale:         [%6.2f, %6.2f, %6.2f]\n', Y_local_forearm);
+    fprintf('   • Asse Z locale:         [%6.2f, %6.2f, %6.2f]\n', Z_local_forearm);
+else
+    R_forearm = R_shoulder;
+    X_local_forearm = X_local_arm;
+    Y_local_forearm = Y_local_arm;
+    Z_local_forearm = Z_local_arm;
+end
+
+% =========================================================================
+% STEP 3: ROTAZIONE POLSO NEL SISTEMA LOCALE DELL'AVAMBRACCIO
+% =========================================================================
+
+if wrist_flexion ~= 0 || wrist_deviation ~= 0 || wrist_pronation ~= 0
+    fprintf('\n✋ STEP 3: Rotazione del polso\n');
+    fprintf('   ────────────────────────────────\n');
+    
+    wrist_center = mean(points(hand_indices([1,2,10,11]), :), 1);
+    
+    wf_rad = deg2rad(wrist_flexion);
+    wd_rad = deg2rad(wrist_deviation);
+    wp_rad = deg2rad(wrist_pronation);
+    
+    fprintf('   Flessione:   %6.1f° (intorno a Y locale)\n', wrist_flexion);
+    fprintf('   Deviazione:  %6.1f° (intorno a Z locale)\n', wrist_deviation);
+    fprintf('   Pronazione:  %6.1f° (intorno a X locale - lungo avambraccio)\n', wrist_pronation);
+    
+    % ★ Rotazione nel sistema locale dell'avambraccio ★
+    R_wrist_local = Rx(wp_rad) * Ry(wf_rad) * Rz(wd_rad);
+    
+    % ★ Trasforma nel sistema globale ★
+    R_wrist_global = R_forearm * R_wrist_local * R_forearm';
+    
+    % Applica
+    points(hand_indices, :) = points(hand_indices, :) - wrist_center;
+    points(hand_indices, :) = (R_wrist_global * points(hand_indices, :)')';
+    points(hand_indices, :) = points(hand_indices, :) + wrist_center;
+    
+    fprintf('   Mano ruotata nel sistema globale\n');
+end
+
+fprintf('\n✓ Configurazione completata!\n');
+fprintf('════════════════════════════════════════════════════════════\n\n');
+
+%% Fine sistema anatomico
+
+%% ========================================================================
+%  CONTROLLI FINE - ALLINEAMENTO AVAMBRACCIO
+% =========================================================================
+
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║     ROTAZIONI AGGIUNTIVE PER CORREGGERE L'ALLINEAMENTO            ║
+% ╚═══════════════════════════════════════════════════════════════════╝
+
+% ---- ROTAZIONE FINE SPALLA (lungo l'asse del braccio) ----
+shoulder_fine_rotation = 0;       % Ruota il braccio su se stesso per sistemare
+                                   % Range: -180 a 180 gradi
+
+% ---- ROTAZIONE FINE AVAMBRACCIO+MANO (insieme) ----
+forearm_fine_X = 0;               % Rotazione intorno all'asse X locale (pitch)
+forearm_fine_Y = 0;               % Rotazione intorno all'asse Y locale (yaw)
+forearm_fine_Z = 0;               % Rotazione intorno all'asse Z locale (roll)
+
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║                    APPLICAZIONE CORREZIONI                         ║
+% ╚═══════════════════════════════════════════════════════════════════╝
+
+fprintf('\n🔧 STEP EXTRA: Controlli fine\n');
+fprintf('   ────────────────────────────────\n');
+
+% =========================================================================
+% CORREZIONE 1: ROTAZIONE FINE DELLA SPALLA
+% =========================================================================
+
+if shoulder_fine_rotation ~= 0
+    fprintf('   🔄 Rotazione fine spalla: %.1f°\n', shoulder_fine_rotation);
+    
+    % Centro della spalla (già definito)
+    % shoulder_center = [0.164, 1.39, -0.0373];
+    
+    % Calcola l'asse del braccio attuale (direzione spalla → gomito)
+    elbow_center = mean(points(elbow_indices, :), 1);
+    arm_axis = elbow_center - shoulder_center;
+    arm_axis = arm_axis / norm(arm_axis);  % Normalizza
+    
+    fprintf('      Asse braccio: [%.3f, %.3f, %.3f]\n', arm_axis);
+    
+    % Converti angolo in radianti
+    fine_rot_rad = deg2rad(shoulder_fine_rotation);
+    
+    % Crea matrice di rotazione intorno all'asse arbitrario (formula di Rodrigues)
+    K = [0, -arm_axis(3), arm_axis(2);
+         arm_axis(3), 0, -arm_axis(1);
+         -arm_axis(2), arm_axis(1), 0];
+    
+    R_fine_shoulder = eye(3) + sin(fine_rot_rad)*K + (1-cos(fine_rot_rad))*(K*K);
+    
+    % Applica rotazione a TUTTO il braccio (braccio + avambraccio + mano)
+    points(arm_indices, :) = points(arm_indices, :) - shoulder_center;
+    points(arm_indices, :) = (R_fine_shoulder * points(arm_indices, :)')';
+    points(arm_indices, :) = points(arm_indices, :) + shoulder_center;
+    
+    fprintf('      ✓ Braccio ruotato lungo il suo asse\n');
+end
+
+% =========================================================================
+% CORREZIONE 2: ROTAZIONE FINE AVAMBRACCIO+MANO (insieme)
+% =========================================================================
+
+if forearm_fine_X ~= 0 || forearm_fine_Y ~= 0 || forearm_fine_Z ~= 0
+    fprintf('   🔧 Rotazione fine avambraccio+mano:\n');
+    fprintf('      X: %.1f° | Y: %.1f° | Z: %.1f°\n', ...
+            forearm_fine_X, forearm_fine_Y, forearm_fine_Z);
+    
+    % Ricalcola il centro del gomito (potrebbe essere cambiato)
+    elbow_center = mean(points(elbow_indices, :), 1);
+    
+    % Calcola gli assi locali dell'avambraccio
+    % (basati sulla matrice R_forearm calcolata prima)
+    if exist('R_forearm', 'var')
+        X_local = R_forearm * [1; 0; 0];
+        Y_local = R_forearm * [0; 1; 0];
+        Z_local = R_forearm * [0; 0; 1];
+    else
+        % Se non esiste, usa il sistema della spalla
+        X_local = R_shoulder * [1; 0; 0];
+        Y_local = R_shoulder * [0; 1; 0];
+        Z_local = R_shoulder * [0; 0; 1];
+    end
+    
+    fprintf('      Assi locali avambraccio:\n');
+    fprintf('      • X (lungo): [%.3f, %.3f, %.3f]\n', X_local);
+    fprintf('      • Y:          [%.3f, %.3f, %.3f]\n', Y_local);
+    fprintf('      • Z:          [%.3f, %.3f, %.3f]\n', Z_local);
+    
+    % Converti angoli in radianti
+    fx_rad = deg2rad(forearm_fine_X);
+    fy_rad = deg2rad(forearm_fine_Y);
+    fz_rad = deg2rad(forearm_fine_Z);
+    
+    % Crea rotazioni intorno agli assi locali usando la formula di Rodrigues
+    
+    % Rotazione intorno a X locale
+    if forearm_fine_X ~= 0
+        K_x = [0, -X_local(3), X_local(2);
+               X_local(3), 0, -X_local(1);
+               -X_local(2), X_local(1), 0];
+        R_fx = eye(3) + sin(fx_rad)*K_x + (1-cos(fx_rad))*(K_x*K_x);
+    else
+        R_fx = eye(3);
+    end
+    
+    % Rotazione intorno a Y locale
+    if forearm_fine_Y ~= 0
+        K_y = [0, -Y_local(3), Y_local(2);
+               Y_local(3), 0, -Y_local(1);
+               -Y_local(2), Y_local(1), 0];
+        R_fy = eye(3) + sin(fy_rad)*K_y + (1-cos(fy_rad))*(K_y*K_y);
+    else
+        R_fy = eye(3);
+    end
+    
+    % Rotazione intorno a Z locale
+    if forearm_fine_Z ~= 0
+        K_z = [0, -Z_local(3), Z_local(2);
+               Z_local(3), 0, -Z_local(1);
+               -Z_local(2), Z_local(1), 0];
+        R_fz = eye(3) + sin(fz_rad)*K_z + (1-cos(fz_rad))*(K_z*K_z);
+    else
+        R_fz = eye(3);
+    end
+    
+    % Combina le rotazioni
+    R_fine_forearm = R_fx * R_fy * R_fz;
+    
+    % Applica rotazione a AVAMBRACCIO+MANO (insieme)
+    points(forearm_indices, :) = points(forearm_indices, :) - elbow_center;
+    points(forearm_indices, :) = (R_fine_forearm * points(forearm_indices, :)')';
+    points(forearm_indices, :) = points(forearm_indices, :) + elbow_center;
+    
+    fprintf('      ✓ Avambraccio+mano ruotati insieme\n');
+end
+
+fprintf('\n✓ Controlli fine completati!\n');
+fprintf('════════════════════════════════════════════════════════════\n\n');
+
+%% ========================================================================
+%  TRASLAZIONE MANUALE SPALLA→MANO (upperarm + forearm + hand)
+% =========================================================================
+
+% ---- VETTORE DI TRASLAZIONE (in metri) ----
+% Modifica questi valori per spostare TUTTO il braccio (dalla spalla alla mano)
+translation_vector_arm = [-0.03, -0.025, -0.04];   % [X, Y, Z]
+
+% Esempi:
+% translation_vector_arm = [0.05, 0, 0];      % 5 cm a destra
+% translation_vector_arm = [0, 0.08, 0];      % 8 cm in su
+% translation_vector_arm = [0, 0, -0.04];     % 4 cm indietro
+
+if norm(translation_vector_arm) > 0
+
+    % Applica la traslazione a TUTTI i punti del braccio
+    points(arm_indices, 1) = points(arm_indices, 1) + translation_vector_arm(1);
+    points(arm_indices, 2) = points(arm_indices, 2) + translation_vector_arm(2);
+    points(arm_indices, 3) = points(arm_indices, 3) + translation_vector_arm(3);
+
+    % Mantieni coerenza: aggiorna anche il centro spalla usato come pivot altrove
+    shoulder_center = shoulder_center + translation_vector_arm;
+
+
+else
+    fprintf('\n📍 Nessuna traslazione SPALLA→MANO applicata (vettore nullo)\n');
+end
+
+%% Fine controlli fine
+
+%% ========================================================================
+%  TRASLAZIONE MANUALE AVAMBRACCIO+MANO
+% =========================================================================
+
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║     SPOSTA AVAMBRACCIO+MANO CON UN VETTORE DI TRASLAZIONE         ║
+% ╚═══════════════════════════════════════════════════════════════════╝
+
+% ---- VETTORE DI TRASLAZIONE (in metri) ----
+% Modifica questi valori per spostare l'avambraccio e la mano
+translation_vector = [-0.06, 0.03, 0.03];    % [X, Y, Z]
+                                    % X: destra(+) / sinistra(-)
+                                    % Y: su(+) / giù(-)
+                                    % Z: avanti(+) / dietro(-)
+
+% Esempi:
+% translation_vector = [0.05, 0, 0];      % Sposta 5cm a destra
+% translation_vector = [0, 0.1, 0];       % Sposta 10cm in su
+% translation_vector = [0, 0, 0.03];      % Sposta 3cm avanti
+% translation_vector = [0.02, -0.05, 0.01]; % Combinazione
+
+% ╔═══════════════════════════════════════════════════════════════════╗
+% ║                    APPLICAZIONE TRASLAZIONE                        ║
+% ╚═══════════════════════════════════════════════════════════════════╝
+
+if norm(translation_vector) > 0
+    
+    % Salva posizione originale (per debug)
+    original_elbow_pos = mean(points(elbow_indices, :), 1);
+    
+    % APPLICA LA TRASLAZIONE a tutti i punti di avambraccio+mano
+    points(forearm_indices, 1) = points(forearm_indices, 1) + translation_vector(1);
+    points(forearm_indices, 2) = points(forearm_indices, 2) + translation_vector(2);
+    points(forearm_indices, 3) = points(forearm_indices, 3) + translation_vector(3);
+    
+    % Nuova posizione gomito (per verifica)
+    new_elbow_pos = mean(points(elbow_indices, :), 1);
+    
+    fprintf('\n   Posizione gomito:\n');
+    fprintf('   • Prima:  [%.4f, %.4f, %.4f]\n', original_elbow_pos);
+    fprintf('   • Dopo:   [%.4f, %.4f, %.4f]\n', new_elbow_pos);
+    fprintf('   • Delta:  [%.4f, %.4f, %.4f]\n', new_elbow_pos - original_elbow_pos);
+    
+    fprintf('\n   ✓ Avambraccio+mano traslati!\n');
+else
+    fprintf('\n📍 Nessuna traslazione applicata (vettore nullo)\n');
+end
+
+fprintf('════════════════════════════════════════════════════════════\n\n');
+
 %%%%%%%%%%%%%%%%%%%%%% Start display section %%%%%%%%%%%%%%%
 
 [number_of_patches,d]=size(polygons);

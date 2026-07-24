@@ -33,8 +33,8 @@ function [bestP_3D, Torque_Exo, Torque_desired, Force_vector] = loadTorques()
 
     % Initialize output structures
     bestP_3D = [];
-    Torque_Exo = struct('shoulder', [], 'elbow', []);
-    Torque_desired = struct('shoulder', [], 'elbow', []);
+    Torque_Exo = struct('elevationSh', [], 'elevationEl', []);
+    Torque_desired = struct('TauSh_tot', [], 'TauEl_tot', []);
     Force_vector = struct('exo_extended', [], 'desired_extended', [], ...
                            'exo_flexed',  [],  'desired_flexed',  []);
 
@@ -55,21 +55,21 @@ function [bestP_3D, Torque_Exo, Torque_desired, Force_vector] = loadTorques()
 
         % Torque exo
         if isfield(data, 'TauExo')
-            if isfield(data.TauExo, 'elevationSh') && isempty(Torque_Exo.shoulder)
-                Torque_Exo.shoulder = data.TauExo.elevationSh;
+            if isfield(data.TauExo, 'elevationSh') && isempty(Torque_Exo.elevationSh)
+                Torque_Exo.elevationSh = data.TauExo.elevationSh;
             end
-            if isfield(data.TauExo, 'elevationEl') && isempty(Torque_Exo.elbow)
-                Torque_Exo.elbow = data.TauExo.elevationEl;
+            if isfield(data.TauExo, 'elevationEl') && isempty(Torque_Exo.elevationEl)
+                Torque_Exo.elevationEl = data.TauExo.elevationEl;
             end
         end
 
         % Torque desired
         if isfield(data, 'TAUsDesired')
-            if isfield(data.TAUsDesired, 'TauSh_tot') && isempty(Torque_desired.shoulder)
-                Torque_desired.shoulder = data.TAUsDesired.TauSh_tot;
+            if isfield(data.TAUsDesired, 'TauSh_tot') && isempty(Torque_desired.TauSh_tot)
+                Torque_desired.TauSh_tot = data.TAUsDesired.TauSh_tot;
             end
-            if isfield(data.TAUsDesired, 'TauEl_tot') && isempty(Torque_desired.elbow)
-                Torque_desired.elbow = data.TAUsDesired.TauEl_tot;
+            if isfield(data.TAUsDesired, 'TauEl_tot') && isempty(Torque_desired.TauEl_tot)
+                Torque_desired.TauEl_tot = data.TAUsDesired.TauEl_tot;
             end
         end
 
@@ -94,15 +94,11 @@ function [bestP_3D, Torque_Exo, Torque_desired, Force_vector] = loadTorques()
     if isempty(bestP_3D)
         error('Variable "bestP_3D" not found in any .mat file.');
     end
-    if isempty(Torque_Exo.shoulder) || isempty(Torque_Exo.elbow)
+    if isempty(Torque_Exo.elevationSh) || isempty(Torque_Exo.elevationEl)
         error('Torque_Exo fields missing.');
     end
-
-    if isempty(Torque_desired.elbow)
-        error('Torque_desired.elbow fields missing.');
-    end
     
-    if isempty(Torque_desired.shoulder) || isempty(Torque_desired.elbow)
+    if isempty(Torque_desired.TauSh_tot) || isempty(Torque_desired.TauEl_tot)
         error('Torque_desired.shoulder fields missing.');
     end
 

@@ -16,13 +16,12 @@ function [tauvect, T, Tdist] = tauMARIONET3D( shoulder, endpoint, Actual_Pin, l0
         T = - k * pre_extension; % Tension fo the spring 
         Tmin = - k_recoil * (l0_recoil - L_pre_extended_recoil); % Evaluate the minimun force to have the recoil system activated
             
-        if l0_recoil <= L_pre_extended_recoil % Recoil is pre-extended    
+        if l0_recoil < L_pre_extended_recoil % Recoil is pre-extended    
             if T > Tmin
                 k_eq = (k * k_recoil) / (k + k_recoil); % Evaluate the equal stiffness
                 T = - k_eq * (l0 + l0_recoil - Tdist - Lrail); % Evaluate the tension using the stiffness K_eq
             end
         end
-
     end
     
     tauvect = cross(rVect, T .* Tdir_unit);

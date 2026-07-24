@@ -1,4 +1,4 @@
-function SaveResults(TauExo, TauResidual, TAUsDesired, Actual_Pin, bestCost, RMSE, bestP_3D, Force_vector)
+function SaveResults(TauExo, TAUsDesired, Actual_Pin, bestCost, RMSE, bestP_3D, Force_vector)
     
 % Find all the figures
 figures = findall(0, 'Type', 'figure');
@@ -38,8 +38,8 @@ for i = 1:numFigures
 end
 
 % Save results in new folder
-    results = { TauExo,   TauResidual,   TAUsDesired,   Actual_Pin,   bestCost,   RMSE,   bestP_3D,   Force_vector, };
-resultNames = {'TauExo', 'TauResidual', 'TAUsDesired', 'Actual_Pin', 'bestCost', 'RMSE', 'bestP_3D', 'Force_vector' };
+    results = { TauExo,    TAUsDesired,   Actual_Pin,   bestCost,   RMSE,   bestP_3D,   Force_vector, };
+resultNames = {'TauExo',  'TAUsDesired', 'Actual_Pin', 'bestCost', 'RMSE', 'bestP_3D', 'Force_vector' };
 
 for i = 1:length(results)
     filename = fullfile(folderName, sprintf('%s.mat', resultNames{i}));

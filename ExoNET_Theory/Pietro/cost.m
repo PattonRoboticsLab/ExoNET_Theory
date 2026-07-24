@@ -1,14 +1,14 @@
 % ***********************************************************************
 % Evaluate the cost function for desired torques TAUs at positions PHIs 
 % ***********************************************************************
-function [c, gradc] = cost(p, TAUsDesired, Exo, Pos, Bod, robot, q)
+function [c, gradc] = cost(p, TAUsDesired, Exo, Pos, Bod, robot, q, Force_flexed, Force_extended)
 
 % CostOnly evaluate the cost
-c = costOnly(p, TAUsDesired, Exo, Pos, Bod, robot, q);
-
-% ApproxGrad evaluate an approximation of the gradient of the function to
-% accelerate fmincon function
-gradc = approxGrad(p, @(pp) costOnly(pp, TAUsDesired, Exo, Pos, Bod, robot, q), c);
+c = costOnly(p, TAUsDesired, Exo, Pos, Bod);
+gradc = approxGrad(p, @(pp) costOnly(pp, TAUsDesired, Exo, Pos, Bod), c);
+             
+% c = cost_force_vectors(p, TAUsDesired,Exo, Pos, Bod, robot, q, Force_flexed, Force_extended);
+% gradc = approxGrad(p, @(pp) cost_force_vectors(pp, TAUsDesired,Exo, Pos, Bod,robot, q, Force_flexed, Force_extended), c);
 
 %% Code below here may be helpful for other stuff like regolarization
 % nparams = Exo.nParamsSh * round( Exo.numbconstraints(2) );    

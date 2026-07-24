@@ -1,6 +1,6 @@
     % Compute Jacobian using the current arm configuration
     % This is a simplified approach using the arm vectors
-function J = computeSimpleJacobian(p_shoulder, p_elbow, p_wrist, Bod, , robot, Exo, q)
+function J = computeSimpleJacobian(p_shoulder, p_elbow, p_wrist)
     
     %% Arm vectors from shoulder, elbow and wrist position
       v_upper = p_elbow - p_shoulder;    % Upper arm vector

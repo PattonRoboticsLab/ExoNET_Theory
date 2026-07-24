@@ -34,24 +34,30 @@ function robot = create3DArmModel(upperarm_length, forearm_length, Bod)
     body3.Joint = jnt3;
     addBody(robot, body3, 'humeral_elevation');
 
-    %% UPPER ARM with ELBOW
+    %% UPPER ARM (fixed link shoulder->elbow)
     body4 = rigidBody('upper_arm');
-    jnt4 = rigidBodyJoint('elbow','revolute');
-    jnt4.JointAxis = [0 1 0];
-    setFixedTransform(jnt4, trvec2tform([0 0 L1]));
+    jnt4  = rigidBodyJoint('jnt4','fixed');     % joint del figlio upper_arm = fisso
+    setFixedTransform(jnt4, trvec2tform([0 0 0]));
     body4.Joint = jnt4;
     body4.Mass = m1;
     body4.CenterOfMass = [0 0 cm1_ratio * L1];
     addBody(robot, body4, 'humeral_rotation');
 
-    %% FOREARM (fixed after elbow)
+    %% FOREARM (joint = elbow at z = L1)
     body5 = rigidBody('forearm');
-    jnt5 = rigidBodyJoint('fixed','fixed');
-    setFixedTransform(jnt5, trvec2tform([0 0 L2]));
+    jnt5  = rigidBodyJoint('elbow','revolute'); % il gomito vive sul figlio forearm
+    jnt5.JointAxis = [0 1 0];
+    setFixedTransform(jnt5, trvec2tform([0 0 L1]));  % gomito in fondo all'omero
     body5.Joint = jnt5;
     body5.Mass = m2;
     body5.CenterOfMass = [0 0 cm2_ratio * L2];
     addBody(robot, body5, 'upper_arm');
+    
+        %% HAND (end-effector) a L2 lungo +Z dal gomito
+    hand = rigidBody('hand');
+    jntH = rigidBodyJoint('wrist_fix','fixed');
+    setFixedTransform(jntH, trvec2tform([0 0 L2]));    hand.Joint = jntH;
+    addBody(robot, hand, 'forearm');
 
     %% FIGURES TO PLOT THE RESULTS
     % figure('Name','3D Arm Model 1');

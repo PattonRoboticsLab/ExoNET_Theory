@@ -1,9 +1,7 @@
 % Calcuate the desired torques needed from weight cancellation
 % Patton 2019-01-14
 function [TAUsDesired, MaxTorques, robot, q ] = weightEffect3D( Bod, Pos, Exo )
-    global ProjectName
-    fprintf('\n - %s : - \n', ProjectName)
-
+    
     %% Evaluation of the torque for swivel angle
     Tau_shoulder = zeros(length(Pos.wrSwivel),3);
        Tau_elbow = zeros(length(Pos.wrSwivel),3);
@@ -15,13 +13,18 @@ function [TAUsDesired, MaxTorques, robot, q ] = weightEffect3D( Bod, Pos, Exo )
         % Position of the CM of the forearm and upperarm
         upperarm_CM = Pos.sh                + ( Pos.elbowSwivel(i, :) - Pos.sh  )            * Bod.R(1) ; 
         forearm_CM  = Pos.elbowSwivel(i, :) + ( Pos.wrSwivel(i, :) - Pos.elbowSwivel(i, :) ) * Bod.R(2) ; 
-    
+                
+        % FORZA i vettori ad essere [1x3]
+        forearm_CM = reshape(forearm_CM, 1, 3);
+        elbow_pos = reshape(Pos.elbowSwivel(i,:), 1, 3);
+        
+        % Ora calcola il cross product
+        Tau_El = cross(forearm_CM - elbow_pos, [0, 0, -(Bod.weights(2) + Bod.weights(3))] * g);
+
         % Torque force acting on the shoulder and elbow
         Tau_Sh = cross( forearm_CM - Pos.sh,  [ 0, 0, -( Bod.weights(2) + Bod.weights(3) ) ] * g ) + ...
                  cross( upperarm_CM - Pos.sh, [ 0, 0,           - Bod.weights(1)           ] * g );
-    
-        Tau_El = cross( forearm_CM - Pos.elbowSwivel(i, :),  [ 0, 0, -( Bod.weights(2) + Bod.weights(3) ) ] * g );
-    
+        
         % Store the torques
         Tau_shoulder(i, :) = - Tau_Sh;     Tau_elbow(i,:) = - Tau_El;
     end
@@ -58,10 +61,10 @@ function [TAUsDesired, MaxTorques, robot, q ] = weightEffect3D( Bod, Pos, Exo )
     % q contains yaw pitch roll and wrist
     nSamples = length(Pos.elbowSwivel);    q = zeros(nSamples, 4);
     robot = create3DArmModel( Bod.L(1), Bod.L(2), Bod ); % Create the model of the robot
-
+    showdetails(robot);
+    
     for i=1:nSamples
         q(i,:) = computeJointAngles3D( Pos.sh, Pos.elbowSwivel(i,:), Pos.wrSwivel(i,:));
-        %q(i,:) = estimateJointAnglesFromPositions(robot, Pos.sh, Pos.elbowSwivel(i,:), Pos.wrSwivel(i,:));
     end
 
 end % End of the function
